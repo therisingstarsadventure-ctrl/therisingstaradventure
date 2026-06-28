@@ -91,7 +91,7 @@ Log in to GoDaddy, open the DNS Management panel for `therisingstarsadventures.o
 | :---: | :---: | :--- | :---: |
 | **A** | `@` | `76.76.21.21` *(Vercel IP Address)* | Custom |
 | **CNAME** | `www` | `cname.vercel-dns.com` *(Vercel DNS)* | Custom |
-| **CNAME** | `api` | `your-railway-app-hostname.up.railway.app` *(Your Railway default URL)* | Custom |
+| **CNAME** | `api` | `therisingstaradventure-production.up.railway.app` | Custom |
 
 ---
 
