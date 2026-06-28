@@ -250,7 +250,7 @@ window.openMyBookingsModal = async function(e) {
         trackingLinkHTML = `
           <div class="tracking-upcoming-banner">
             🔒 <strong>Secure Parent Tracking Code:</strong> Save this link for trek day:<br>
-            <code>http://localhost:5000/track.html?tripId=${b.tripId}&token=${b.trip.trackingToken}</code>
+            <code>${window.location.origin}/track.html?tripId=${b.tripId}&token=${b.trip.trackingToken}</code>
           </div>
         `;
       }
