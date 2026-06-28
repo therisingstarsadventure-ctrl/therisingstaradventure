@@ -16,6 +16,10 @@ import * as admin from './controllers/admin.controller.js';
 import { verifyToken, isAdmin, isLeader } from './middleware/auth.middleware.js';
 
 const app = express();
+const allowedOrigins = (process.env.CORS_ORIGINS || 'https://therisingstarsadventures.org,https://www.therisingstarsadventures.org,https://api.therisingstarsadventures.org')
+  .split(',')
+  .map(origin => origin.trim())
+  .filter(Boolean);
 
 // 1. Security & Logger Middlewares
 app.use(helmet({
@@ -23,11 +27,7 @@ app.use(helmet({
 }));
 
 app.use(cors({
-  origin: [
-    'https://therisingstarsadventures.org',
-    'https://www.therisingstarsadventures.org',
-    'https://api.therisingstarsadventures.org'
-  ],
+  origin: allowedOrigins,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
