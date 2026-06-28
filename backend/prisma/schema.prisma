@@ -1,0 +1,108 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id           Int       @id @default(autoincrement())
+  name         String
+  email        String    @unique
+  phone        String
+  passwordHash String
+  role         String    @default("USER") // USER, LEADER, ADMIN
+  bookings     Booking[]
+  tripsLed     Trip[]
+  reviews      Review[]
+}
+
+model Trek {
+  id           String    @id // e.g. "kalsubai"
+  title        String
+  location     String
+  price        Float
+  days         String
+  description  String
+  images       String    // Comma-separated image URLs or JSON
+  zone         String    // maharashtra, mp, himachal
+  difficulty   String    // Easy, Moderate, Challenging
+  duration     String
+  elevation    String
+  groupSize    String
+  bestSeason   String
+  meetingPoint String
+  inclusions   String    // JSON list of strings
+  exclusions   String    // JSON list of strings
+  timeline     String    // JSON list of timeline objects
+  trips        Trip[]
+  reviews      Review[]
+}
+
+model Trip {
+  id                 String    @id // unique trip ID (e.g. "TRIP-8F4K2Q")
+  trekId             String
+  trek               Trek      @relation(fields: [trekId], references: [id])
+  date               DateTime
+  totalSeats         Int
+  bookedSeats        Int       @default(0)
+  status             String    @default("UPCOMING") // UPCOMING, STARTING, ON_ROUTE, REACHED_DESTINATION, RETURNING, COMPLETED
+  tripLeaderId       Int?
+  tripLeader         User?     @relation(fields: [tripLeaderId], references: [id])
+  currentLat         Float     @default(0.0)
+  currentLng         Float     @default(0.0)
+  lastLocationUpdate DateTime?
+  trackingToken      String    @unique
+  bookings           Booking[]
+}
+
+model Booking {
+  id          Int       @id @default(autoincrement())
+  userId      Int
+  user        User      @relation(fields: [userId], references: [id])
+  tripId      String
+  trip        Trip      @relation(fields: [tripId], references: [id])
+  members     Int
+  totalAmount Float
+  status      String    @default("PENDING") // PENDING, CONFIRMED, CANCELLED
+  createdAt   DateTime  @default(now())
+  payments    Payment[]
+}
+
+model Payment {
+  id            Int      @id @default(autoincrement())
+  bookingId     Int
+  booking       Booking  @relation(fields: [bookingId], references: [id])
+  amount        Float
+  paymentStatus String   @default("PENDING") // PENDING, PAID, FAILED
+  transactionId String?  @unique
+  method        String   @default("UPI") // UPI, CASH, BANK_TRANSFER
+  createdAt     DateTime @default(now())
+}
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  trekId    String
+  trek      Trek     @relation(fields: [trekId], references: [id])
+  rating    Int      // 1 to 5 stars
+  comment   String
+  createdAt DateTime @default(now())
+}
+
+model ContactMessage {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String
+  message   String
+  createdAt DateTime @default(now())
+}
+
+model NewsletterSubscriber {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  createdAt DateTime @default(now())
+}

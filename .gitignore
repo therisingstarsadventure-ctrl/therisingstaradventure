@@ -1,0 +1,19 @@
+# Dependency directories
+node_modules/
+backend/node_modules/
+
+# Local databases and locks
+backend/prisma/dev.db
+backend/prisma/dev.db-journal
+*.db
+*.log
+
+# Sensitive environment configs
+.env
+backend/.env
+
+# Editor and OS junk
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
