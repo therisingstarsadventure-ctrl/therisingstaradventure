@@ -23,7 +23,11 @@ app.use(helmet({
 }));
 
 app.use(cors({
-  origin: '*', // For development, allow any origin. In production this should be restricted.
+  origin: [
+    'https://therisingstarsadventures.org',
+    'https://www.therisingstarsadventures.org',
+    'https://api.therisingstarsadventures.org'
+  ],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
