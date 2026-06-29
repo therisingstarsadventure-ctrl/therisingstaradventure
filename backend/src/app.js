@@ -3,6 +3,8 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import rateLimit from 'express-rate-limit';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 import { errorHandler } from './middleware/error.middleware.js';
 import * as auth from './controllers/auth.controller.js';
@@ -15,31 +17,33 @@ import * as contact from './controllers/contact.controller.js';
 import * as admin from './controllers/admin.controller.js';
 import { verifyToken, isAdmin, isLeader } from './middleware/auth.middleware.js';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const app = express();
-const allowedOrigins = (process.env.CORS_ORIGINS || 'https://therisingstarsadventures.org,https://www.therisingstarsadventures.org,https://api.therisingstarsadventures.org')
+
+const allowedOrigins = (process.env.CORS_ORIGINS || 'https://therisingstarsadventures.org,https://www.therisingstarsadventures.org')
   .split(',')
   .map(origin => origin.trim())
   .filter(Boolean);
 
 const allowDynamicOrigin = (origin) => {
-  if (!origin) return true; // server-to-server or same-origin requests
+  if (!origin) return true;
   if (allowedOrigins.includes(origin)) return true;
   if (origin.endsWith('.vercel.app')) return true;
-  if (origin.startsWith('http://localhost') || origin.startsWith('http://127.0.0.1') || origin.startsWith('http://0.0.0.0')) return true;
+  if (origin.startsWith('http://localhost') || origin.startsWith('http://127.0.0.1')) return true;
   return false;
 };
 
 // 1. Security & Logger Middlewares
-app.use(helmet({
-  crossOriginResourcePolicy: false // Allow loading maps & fonts in development
-}));
+app.use(helmet({ crossOriginResourcePolicy: false }));
 
 app.use(cors({
   origin: (origin, callback) => {
     if (allowDynamicOrigin(origin)) {
       callback(null, true);
     } else {
-      callback(new Error(`CORS blocked by origin: ${origin}`));
+      callback(new Error(`CORS blocked: ${origin}`));
     }
   },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -49,10 +53,10 @@ app.use(cors({
 app.use(express.json());
 app.use(morgan('dev'));
 
-// Rate Limiter to protect endpoints
+// Rate Limiter
 const apiLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 300, // Limit each IP to 300 requests per window
+  windowMs: 15 * 60 * 1000,
+  max: 300,
   standardHeaders: true,
   legacyHeaders: false,
   message: { message: 'Too many requests, please try again later.' }
@@ -126,26 +130,20 @@ const adminRouter = express.Router();
 adminRouter.get('/stats', verifyToken, isAdmin, admin.getDashboardStats);
 app.use('/api/admin', adminRouter);
 
-import path from 'path';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// Serve static frontend files (HTML, CSS, JS) from the root folder
-app.use(express.static(path.join(__dirname, '../../')));
-
-// API Status Route
+// 10. API Health Check
 app.get('/api', (req, res) => {
-  res.json({
-    name: 'The Rising Stars API',
-    version: '1.5.0',
-    status: 'online',
-    docs: 'https://github.com/shashank/the-rising-star'
-  });
+  res.json({ name: 'The Rising Stars API', version: '1.5.0', status: 'online' });
 });
 
-// 10. Global Error Handler
+// 11. Serve static frontend files from project root (for local dev)
+app.use(express.static(path.join(__dirname, '../../')));
+
+// 12. Fallback: serve index.html for any unmatched route (SPA support)
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../../index.html'));
+});
+
+// 13. Global Error Handler
 app.use(errorHandler);
 
 export default app;

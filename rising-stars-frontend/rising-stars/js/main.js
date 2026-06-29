@@ -72,26 +72,6 @@ let memberCount = 1;
 let basePrice = 999;
 
 function openBooking(name, price, date) {
-  const currentUser = window.api && typeof window.api.getCurrentUser === 'function'
-    ? window.api.getCurrentUser()
-    : null;
-
-  if (!currentUser) {
-    if (typeof window.openAuthModal === 'function') {
-      window.openAuthModal();
-    }
-    return;
-  }
-
-  if (typeof window.openBookingFormModal === 'function') {
-    window.openBookingFormModal({
-      name: name || 'Adventure Trek',
-      price: price || '',
-      upcomingTrips: []
-    });
-    return;
-  }
-
   document.getElementById('modalTrekName').textContent = name;
   const priceNum = parseInt(price.replace(/[^0-9]/g, ''));
   basePrice = priceNum;

@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Rising Stars – Premium Adventure Experiences</title>
+<meta name="description" content="Premium trekking and adventure experiences across Maharashtra and India. Book your next adventure with The Rising Stars.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800;900&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- PAGE LOADER -->
+<div id="loader">
+  <div class="loader-inner">
+    <div class="loader-star">★</div>
+    <p>THE RISING STARS</p>
+  </div>
+</div>
+
+<!-- FLOATING BUTTONS -->
+<a href="https://wa.me/919999999999" class="float-btn whatsapp" target="_blank" title="WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.555 4.122 1.528 5.855L0 24l6.335-1.507A11.946 11.946 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.93 0-3.74-.52-5.295-1.427l-.38-.222-3.762.895.952-3.65-.248-.395A9.943 9.943 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/></svg>
+</a>
+<a href="#treks" class="float-btn book-now">Book Now</a>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <span class="logo-the">THE</span><span class="logo-rising">RISING</span><span class="logo-stars">STARS ★</span>
+    </a>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#treks">Treks</a></li>
+      <li><a href="#departures">Dates</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#reviews">Reviews</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="#treks" class="btn-nav">Book Now</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="home" class="hero">
+  <div class="hero-bg">
+    <div class="hero-overlay"></div>
+    <div class="stars-bg"></div>
+  </div>
+  <div class="hero-content">
+    <span class="hero-eyebrow">Maharashtra's #1 Adventure Company</span>
+    <h1 class="hero-title">Adventure Begins<br><span class="gradient-text">Where Comfort Ends</span></h1>
+    <p class="hero-sub">Premium trekking experiences across Maharashtra and India — crafted for those who seek the extraordinary.</p>
+    <div class="hero-btns">
+      <a href="#treks" class="btn-primary">Explore Treks</a>
+      <a href="#gallery" class="btn-ghost">Watch Reel ▶</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hstat"><span class="hstat-num" data-target="1000">0</span><span>+</span><p>Trekkers</p></div>
+      <div class="hstat-div"></div>
+      <div class="hstat"><span class="hstat-num" data-target="250">0</span><span>+</span><p>Trips</p></div>
+      <div class="hstat-div"></div>
+      <div class="hstat"><span>4.9</span><p>★ Rating</p></div>
+      <div class="hstat-div"></div>
+      <div class="hstat"><span>100%</span><p>Safety</p></div>
+    </div>
+  </div>
+  <div class="scroll-indicator">
+    <div class="scroll-dot"></div>
+  </div>
+</section>
+
+<!-- FEATURED TREKS -->
+<section id="treks" class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="eyebrow">Handpicked Adventures</span>
+      <h2>Featured <span class="gradient-text">Treks</span></h2>
+      <p>From night treks to sunrise expeditions — every trip is curated for maximum thrill and safety.</p>
+    </div>
+    <div class="treks-grid">
+
+      <div class="trek-card" onclick="openBooking('Kalsubai Night Trek','₹999','12 July')">
+        <div class="trek-img" style="background:linear-gradient(135deg,#1a0a00,#3d1f00)">
+          <div class="trek-img-overlay"></div>
+          <span class="trek-badge hard">Hard</span>
+          <div class="trek-mountain">⛰</div>
+        </div>
+        <div class="trek-info">
+          <h3>Kalsubai Night Trek</h3>
+          <p>Maharashtra's highest peak. Sunrise from the top will change you forever.</p>
+          <div class="trek-meta">
+            <span>🕐 1 Night</span>
+            <span>📍 Ahmednagar</span>
+            <span class="seats-left">6 Seats Left</span>
+          </div>
+          <div class="trek-footer">
+            <div class="trek-price">₹999 <small>/person</small></div>
+            <button class="btn-book">Book Now</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="trek-card" onclick="openBooking('Harishchandragad Trek','₹1,299','19 July')">
+        <div class="trek-img" style="background:linear-gradient(135deg,#000d1a,#001f3f)">
+          <div class="trek-img-overlay"></div>
+          <span class="trek-badge medium">Medium</span>
+          <div class="trek-mountain">🏔</div>
+        </div>
+        <div class="trek-info">
+          <h3>Harishchandragad Trek</h3>
+          <p>Ancient fort, Konkankada cliff, and caves — a trek with history and drama.</p>
+          <div class="trek-meta">
+            <span>🕐 2 Days</span>
+            <span>📍 Ahmednagar</span>
+            <span class="seats-left">10 Seats Left</span>
+          </div>
+          <div class="trek-footer">
+            <div class="trek-price">₹1,299 <small>/person</small></div>
+            <button class="btn-book">Book Now</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="trek-card" onclick="openBooking('Rajmachi Camping','₹1,499','26 July')">
+        <div class="trek-img" style="background:linear-gradient(135deg,#0a1a00,#1a3300)">
+          <div class="trek-img-overlay"></div>
+          <span class="trek-badge easy">Easy</span>
+          <div class="trek-mountain">🏕</div>
+        </div>
+        <div class="trek-info">
+          <h3>Rajmachi Camping</h3>
+          <p>Lush green valleys, twin forts, and a night under a blanket of stars.</p>
+          <div class="trek-meta">
+            <span>🕐 2 Days</span>
+            <span>📍 Lonavala</span>
+            <span class="seats-left">4 Seats Left</span>
+          </div>
+          <div class="trek-footer">
+            <div class="trek-price">₹1,499 <small>/person</small></div>
+            <button class="btn-book">Book Now</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- UPCOMING DEPARTURES -->
+<section id="departures" class="section section-dark">
+  <div class="container">
+    <div class="section-header">
+      <span class="eyebrow">Plan Your Escape</span>
+      <h2>Upcoming <span class="gradient-text">Departures</span></h2>
+    </div>
+    <div class="departures-list">
+      <div class="dep-card">
+        <div class="dep-date"><span class="dep-day">12</span><span class="dep-month">JUL</span></div>
+        <div class="dep-info">
+          <h4>Kalsubai Night Trek</h4>
+          <p>Ahmednagar, Maharashtra</p>
+        </div>
+        <div class="dep-meta">
+          <span class="seats-badge">6 Seats Left</span>
+          <span class="dep-price">₹999</span>
+          <button class="btn-sm" onclick="openBooking('Kalsubai Night Trek','₹999','12 July')">Book</button>
+        </div>
+      </div>
+      <div class="dep-card">
+        <div class="dep-date"><span class="dep-day">19</span><span class="dep-month">JUL</span></div>
+        <div class="dep-info">
+          <h4>Harishchandragad Trek</h4>
+          <p>Ahmednagar, Maharashtra</p>
+        </div>
+        <div class="dep-meta">
+          <span class="seats-badge">10 Seats Left</span>
+          <span class="dep-price">₹1,299</span>
+          <button class="btn-sm" onclick="openBooking('Harishchandragad Trek','₹1,299','19 July')">Book</button>
+        </div>
+      </div>
+      <div class="dep-card">
+        <div class="dep-date"><span class="dep-day">26</span><span class="dep-month">JUL</span></div>
+        <div class="dep-info">
+          <h4>Rajmachi Camping</h4>
+          <p>Lonavala, Maharashtra</p>
+        </div>
+        <div class="dep-meta">
+          <span class="seats-badge urgent">4 Seats Left</span>
+          <span class="dep-price">₹1,499</span>
+          <button class="btn-sm" onclick="openBooking('Rajmachi Camping','₹1,499','26 July')">Book</button>
+        </div>
+      </div>
+      <div class="dep-card">
+        <div class="dep-date"><span class="dep-day">02</span><span class="dep-month">AUG</span></div>
+        <div class="dep-info">
+          <h4>Sandhan Valley Rappelling</h4>
+          <p>Nashik, Maharashtra</p>
+        </div>
+        <div class="dep-meta">
+          <span class="seats-badge">15 Seats Left</span>
+          <span class="dep-price">₹1,799</span>
+          <button class="btn-sm" onclick="openBooking('Sandhan Valley','₹1,799','2 Aug')">Book</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY CHOOSE US -->
+<section class="section why-us">
+  <div class="container">
+    <div class="section-header">
+      <span class="eyebrow">Why Rising Stars</span>
+      <h2>We Don't Just Trek. <span class="gradient-text">We Transform.</span></h2>
+    </div>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-icon">🛡️</div>
+        <h3>100% Safety</h3>
+        <p>Certified guides, first-aid kits, emergency protocols and live GPS tracking on every trip.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">⭐</div>
+        <h3>4.9★ Rated</h3>
+        <p>1000+ happy trekkers. Real reviews. No fake ratings. We earn trust on every trail.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">🎒</div>
+        <h3>All-Inclusive</h3>
+        <p>Transport, meals, permits, equipment — everything handled. You just show up and trek.</p>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">📸</div>
+        <h3>Memory Makers</h3>
+        <p>Professional photography, drone shots and reel creation included on select treks.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="gallery" class="section section-dark">
+  <div class="container">
+    <div class="section-header">
+      <span class="eyebrow">From the Trails</span>
+      <h2>Gallery & <span class="gradient-text">Memories</span></h2>
+    </div>
+    <div class="gallery-grid">
+      <div class="gal-item g1"><div class="gal-overlay"><span>Kalsubai Summit</span></div></div>
+      <div class="gal-item g2"><div class="gal-overlay"><span>Night Trek Vibes</span></div></div>
+      <div class="gal-item g3"><div class="gal-overlay"><span>Rajmachi Sunrise</span></div></div>
+      <div class="gal-item g4"><div class="gal-overlay"><span>Team Bonding</span></div></div>
+      <div class="gal-item g5"><div class="gal-overlay"><span>Drone View</span></div></div>
+      <div class="gal-item g6"><div class="gal-overlay"><span>Monsoon Magic</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="reviews" class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="eyebrow">Real Voices</span>
+      <h2>What Trekkers <span class="gradient-text">Say</span></h2>
+    </div>
+    <div class="reviews-grid">
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p>"Kalsubai night trek was absolutely mind-blowing. The team was professional and the sunrise was magical. 10/10 experience!"</p>
+        <div class="reviewer"><div class="reviewer-avatar">P</div><div><strong>Priya Sharma</strong><small>Pune</small></div></div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p>"Best trek organizer in Maharashtra. They took care of everything — food, safety, vibes. Will definitely book again!"</p>
+        <div class="reviewer"><div class="reviewer-avatar">R</div><div><strong>Rahul Patil</strong><small>Mumbai</small></div></div>
+      </div>
+      <div class="review-card">
+        <div class="review-stars">★★★★★</div>
+        <p>"Corporate outing with Rising Stars was the best team activity ever. Highly professional. Our entire team loved it."</p>
+        <div class="reviewer"><div class="reviewer-avatar">A</div><div><strong>Ananya Joshi</strong><small>Nashik</small></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="section section-dark about-section">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-text">
+        <span class="eyebrow">Our Story</span>
+        <h2>Born on the <span class="gradient-text">Mountains</span></h2>
+        <p>The Rising Stars was founded by a group of passionate trekkers from Nagpur who believed that every person deserves to experience the magic of the mountains — safely and affordably.</p>
+        <p>What started as weekend treks with friends has grown into Maharashtra's most trusted adventure company, with 250+ successful expeditions and 1000+ lives transformed on the trail.</p>
+        <div class="about-values">
+          <div class="value-item"><span>🏔️</span><p>Safety First</p></div>
+          <div class="value-item"><span>🤝</span><p>Community</p></div>
+          <div class="value-item"><span>🌱</span><p>Eco-Conscious</p></div>
+          <div class="value-item"><span>⚡</span><p>High Energy</p></div>
+        </div>
+      </div>
+      <div class="about-visual">
+        <div class="about-card-stack">
+          <div class="acard acard-1">
+            <div class="acard-icon">🏆</div>
+            <h4>250+</h4>
+            <p>Successful Trips</p>
+          </div>
+          <div class="acard acard-2">
+            <div class="acard-icon">👥</div>
+            <h4>1000+</h4>
+            <p>Happy Trekkers</p>
+          </div>
+          <div class="acard acard-3">
+            <div class="acard-icon">📍</div>
+            <h4>50+</h4>
+            <p>Destinations</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="eyebrow">Get In Touch</span>
+      <h2>Start Your <span class="gradient-text">Adventure</span></h2>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-form-wrap">
+        <form class="contact-form" onsubmit="handleContact(event)">
+          <div class="form-group">
+            <input type="text" placeholder="Your Name" required>
+          </div>
+          <div class="form-group">
+            <input type="email" placeholder="Email Address" required>
+          </div>
+          <div class="form-group">
+            <input type="tel" placeholder="Phone Number">
+          </div>
+          <div class="form-group">
+            <select>
+              <option value="">Interested In...</option>
+              <option>Kalsubai Night Trek</option>
+              <option>Harishchandragad Trek</option>
+              <option>Rajmachi Camping</option>
+              <option>Corporate Outing</option>
+              <option>Custom Trip</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <textarea placeholder="Your Message" rows="4"></textarea>
+          </div>
+          <button type="submit" class="btn-primary full-width">Send Message</button>
+        </form>
+      </div>
+      <div class="contact-info">
+        <div class="cinfo-card">
+          <h3>Contact Us</h3>
+          <div class="cinfo-item">
+            <span>📞</span>
+            <div><p>Call / WhatsApp</p><strong>+91 99999 99999</strong></div>
+          </div>
+          <div class="cinfo-item">
+            <span>📧</span>
+            <div><p>Email</p><strong>hello@risingstarstrek.com</strong></div>
+          </div>
+          <div class="cinfo-item">
+            <span>📍</span>
+            <div><p>Base City</p><strong>Nagpur, Maharashtra</strong></div>
+          </div>
+          <div class="social-links">
+            <a href="#" class="social-btn">Instagram</a>
+            <a href="#" class="social-btn">YouTube</a>
+            <a href="https://wa.me/919999999999" class="social-btn wa">WhatsApp</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="nav-logo"><span class="logo-the">THE</span><span class="logo-rising">RISING</span><span class="logo-stars">STARS ★</span></div>
+        <p>Premium adventure experiences across Maharashtra and India. Safety, thrill, and memories — guaranteed.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#treks">Upcoming Treks</a></li>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#gallery">Gallery</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Adventures</h4>
+        <ul>
+          <li><a href="#">Night Treks</a></li>
+          <li><a href="#">Camping</a></li>
+          <li><a href="#">Corporate Trips</a></li>
+          <li><a href="#">Custom Tours</a></li>
+        </ul>
+      </div>
+      <div class="footer-newsletter">
+        <h4>Stay Updated</h4>
+        <p>Get trek alerts and exclusive offers.</p>
+        <div class="newsletter-form">
+          <input type="email" placeholder="Your email">
+          <button>→</button>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2024 The Rising Stars. All rights reserved.</p>
+      <div class="footer-legal">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms</a>
+        <a href="#">Refund Policy</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- BOOKING MODAL -->
+<div id="bookingModal" class="modal-overlay" onclick="closeModal()">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <h3>Book Your Trek</h3>
+    <div id="modalTrekName" class="modal-trek-name"></div>
+    <div class="modal-form">
+      <div class="form-group">
+        <label>Travel Date</label>
+        <input type="date" id="modalDate">
+      </div>
+      <div class="form-group">
+        <label>Number of Members</label>
+        <div class="member-counter">
+          <button onclick="changeMember(-1)">−</button>
+          <span id="memberCount">1</span>
+          <button onclick="changeMember(1)">+</button>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" placeholder="Your name">
+      </div>
+      <div class="form-group">
+        <label>Phone</label>
+        <input type="tel" placeholder="+91 XXXXX XXXXX">
+      </div>
+      <div class="form-group">
+        <label>Coupon Code</label>
+        <input type="text" placeholder="TREK10">
+      </div>
+      <div class="modal-total">
+        <span>Total</span>
+        <span id="modalTotal" class="modal-price">₹999</span>
+      </div>
+      <button class="btn-primary full-width" onclick="confirmBooking()">Confirm Booking</button>
+    </div>
+  </div>
+</div>
+
+<script src="js/main.js"></script>
+</body>
+</html>
