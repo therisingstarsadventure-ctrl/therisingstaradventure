@@ -8,9 +8,8 @@ document.addEventListener('DOMContentLoaded', () => {
 function initAuthUI() {
   const user = window.api.getCurrentUser();
   const navLinks = document.querySelector('.nav-links');
-  const mobileNavMenu = document.querySelector('.mobile-nav-menu');
 
-  if (!navLinks || !mobileNavMenu) return;
+  if (!navLinks) return;
 
   // Remove existing auth buttons if any
   document.querySelectorAll('.auth-btn-nav, .admin-btn-nav, .my-bookings-btn-nav').forEach(el => el.remove());
@@ -24,29 +23,12 @@ function initAuthUI() {
     myBookingsLi.innerHTML = `<a href="#" onclick="openMyBookingsModal(event)">My Bookings</a>`;
     navLinks.appendChild(myBookingsLi);
 
-    const mbMobile = document.createElement('a');
-    mbMobile.className = 'my-bookings-btn-nav';
-    mbMobile.href = '#';
-    mbMobile.textContent = 'My Bookings';
-    mbMobile.onclick = (e) => { openMyBookingsModal(e); toggleMobileMenuClose(); };
-    mobileNavMenu.appendChild(mbMobile);
-
     // If Admin/Leader, add Admin Dashboard link
     if (user.role === 'ADMIN' || user.role === 'LEADER') {
       const adminLi = document.createElement('li');
       adminLi.className = 'admin-btn-nav';
       adminLi.innerHTML = `<a href="admin.html" target="_blank" style="color:var(--accent-amber); font-weight:bold;">Dashboard</a>`;
       navLinks.appendChild(adminLi);
-
-      const adminMobile = document.createElement('a');
-      adminMobile.className = 'admin-btn-nav';
-      adminMobile.href = 'admin.html';
-      adminMobile.target = '_blank';
-      adminMobile.style.color = 'var(--accent-amber)';
-      adminMobile.style.fontWeight = 'bold';
-      adminMobile.textContent = 'Dashboard';
-      adminMobile.onclick = () => toggleMobileMenuClose();
-      mobileNavMenu.appendChild(adminMobile);
     }
 
     // Add Logout link
@@ -55,35 +37,21 @@ function initAuthUI() {
     logoutLi.innerHTML = `<a href="#" onclick="handleLogout(event)" class="btn btn-secondary" style="padding: 6px 15px; font-size: 0.85rem; border-radius: 4px;">Logout (${user.name.split(' ')[0]})</a>`;
     navLinks.appendChild(logoutLi);
 
-    const logoutMobile = document.createElement('a');
-    logoutMobile.className = 'auth-btn-nav';
-    logoutMobile.href = '#';
-    logoutMobile.textContent = `Logout (${user.name.split(' ')[0]})`;
-    logoutMobile.onclick = (e) => { handleLogout(e); toggleMobileMenuClose(); };
-    mobileNavMenu.appendChild(logoutMobile);
-
   } else {
     // 2. User is Logged Out
     const loginLi = document.createElement('li');
     loginLi.className = 'auth-btn-nav';
-    loginLi.innerHTML = `<a href="#" onclick="openAuthModal(event)" class="btn btn-primary" style="padding: 6px 18px; font-size: 0.85rem; border-radius: 4px; box-shadow:none;">Login</a>`;
+    loginLi.innerHTML = `<a href="#" onclick="openAuthModal(event)" class="btn btn-primary" style="padding: 6px 18px; font-size: 0.85rem; border-radius: 4px; box-shadow:none;">Login / Signup</a>`;
     navLinks.appendChild(loginLi);
-
-    const loginMobile = document.createElement('a');
-    loginMobile.className = 'auth-btn-nav';
-    loginMobile.href = '#';
-    loginMobile.textContent = 'Login / Signup';
-    loginMobile.onclick = (e) => { openAuthModal(e); toggleMobileMenuClose(); };
-    mobileNavMenu.appendChild(loginMobile);
   }
 }
 
 function toggleMobileMenuClose() {
   const burger = document.querySelector('.hamburger');
-  const menu = document.querySelector('.mobile-nav-menu');
+  const menu = document.querySelector('.nav-links');
   if (burger && menu) {
     burger.classList.remove('active');
-    menu.classList.remove('active');
+    menu.classList.remove('open');
     burger.querySelectorAll('span').forEach(s => s.style.transform = 'none');
     burger.querySelectorAll('span')[1].style.opacity = '1';
   }

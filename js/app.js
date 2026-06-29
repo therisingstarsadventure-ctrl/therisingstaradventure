@@ -33,14 +33,14 @@ document.addEventListener('DOMContentLoaded', () => {
 /* --- MOBILE BURGER MENU CONTROLLER --- */
 function initMobileMenu() {
   const burger = document.querySelector('.hamburger');
-  const menu = document.querySelector('.mobile-nav-menu');
-  const links = document.querySelectorAll('.mobile-nav-menu a');
+  const menu = document.querySelector('.nav-links');
+  const links = document.querySelectorAll('.nav-links a');
 
   if (!burger || !menu) return;
 
   burger.addEventListener('click', () => {
     burger.classList.toggle('active');
-    menu.classList.toggle('active');
+    menu.classList.toggle('open');
     
     // Animate hamburger lines
     const spans = burger.querySelectorAll('span');
@@ -1370,9 +1370,9 @@ function initHorizontalGallery() {
         invalidateOnRefresh: true,
         anticipatePin: 1
       }
+    });
   });
 }
-
 function initNewsletterForm() {
   const form = document.querySelector('.newsletter-form');
   if (!form) return;
