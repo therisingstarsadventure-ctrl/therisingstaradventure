@@ -106,8 +106,17 @@ const adminRouter = express.Router();
 adminRouter.get('/stats', verifyToken, isAdmin, admin.getDashboardStats);
 app.use('/api/admin', adminRouter);
 
-// Base Route
-app.get('/', (req, res) => {
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Serve static frontend files (HTML, CSS, JS) from the root folder
+app.use(express.static(path.join(__dirname, '../../')));
+
+// API Status Route
+app.get('/api', (req, res) => {
   res.json({
     name: 'The Rising Stars API',
     version: '1.5.0',
