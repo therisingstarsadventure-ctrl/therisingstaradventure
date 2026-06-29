@@ -7,10 +7,11 @@
     "start": "cd backend && npm start",
     "dev": "cd backend && npm run dev",
     "db:seed": "cd backend && npm run db:seed",
-    "build": "npx prisma generate --schema=backend/prisma/schema.prisma"
+    "postinstall": "prisma generate --schema=backend/prisma/schema.prisma",
+    "build": "prisma generate --schema=backend/prisma/schema.prisma"
   },
   "dependencies": {
-    "@prisma/client": "^5.14.0",
+    "@prisma/client": "5.14.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
@@ -18,10 +19,8 @@
     "express-rate-limit": "^7.2.0",
     "helmet": "^7.1.0",
     "jsonwebtoken": "^9.0.2",
-    "morgan": "^1.10.0"
-  },
-  "devDependencies": {
-    "prisma": "^5.14.0"
+    "morgan": "^1.10.0",
+    "prisma": "5.14.0"
   },
   "author": "The Rising Stars",
   "license": "ISC"
