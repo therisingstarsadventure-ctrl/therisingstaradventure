@@ -1,0 +1,26 @@
+{
+  "name": "therisingstars-fullstack",
+  "version": "1.5.0",
+  "description": "Full-stack entry point for The Rising Stars adventure booking & live GPS tracking system",
+  "main": "backend/src/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "cd backend && npm start",
+    "dev": "cd backend && npm run dev",
+    "db:seed": "cd backend && npm run db:seed",
+    "db:migrate": "cd backend && npm run db:migrate"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.14.0",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-rate-limit": "^7.2.0",
+    "helmet": "^7.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0"
+  },
+  "author": "The Rising Stars",
+  "license": "ISC"
+}
