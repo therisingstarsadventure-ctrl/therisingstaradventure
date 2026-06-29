@@ -307,10 +307,15 @@ window.openPaymentGatewayModal = function(bookingId, amount) {
       const txnId = `TXN-${Math.random().toString(36).substring(2, 10).toUpperCase()}`;
       await window.api.processPayment(bookingId, amount, 'UPI', txnId);
       modal.classList.remove('open');
-      alert('Payment processed successfully! Booking confirmed.');
       
-      // Refresh
-      openMyBookingsModal();
+      // Show WhatsApp group join modal instead of plain alert
+      const waModal = document.getElementById('whatsapp-join-modal');
+      if (waModal) {
+        waModal.classList.add('open');
+        document.body.classList.add('modal-open');
+      } else {
+        openMyBookingsModal();
+      }
     } catch (err) {
       alert('Payment failed: ' + err.message);
     }
