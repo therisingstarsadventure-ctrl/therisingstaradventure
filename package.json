@@ -7,7 +7,7 @@
     "start": "cd backend && npm start",
     "dev": "cd backend && npm run dev",
     "db:seed": "cd backend && npm run db:seed",
-    "build": "cd backend && npx prisma generate"
+    "build": "npx prisma generate --schema=backend/prisma/schema.prisma"
   },
   "dependencies": {
     "@prisma/client": "^5.14.0",
