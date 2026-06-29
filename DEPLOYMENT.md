@@ -49,7 +49,7 @@ git push -u origin main
 ## 🚃 Step 3: Deploy Backend on Railway
 
 1. Go to [Railway.app](https://railway.app/) and log in.
-2. Click **New Project** ➔ **Deploy from GitHub repo** ➔ Select `therisingstars`.
+2. Click **New Project** ➔ **Deploy from GitHub repo** ➔ Select `therisingstaradventure`.
 3. Before it builds, click on the newly created card and go to **Settings**:
    - Scroll down to the **Root Directory** setting.
    - Change it from `/` to `/backend`. (This tells Railway to ignore the frontend code and build the Node/Express server inside the `backend` folder).
@@ -58,26 +58,19 @@ git push -u origin main
    - `JWT_SECRET` = `therisingstars_ultra_secure_premium_adventure_jwt_token_key_2026`
    - `NODE_ENV` = `production`
    - `PORT` = `5000`
-5. Go to **Settings** tab, scroll down to **Environment**, and click **Generate Domain** (or assign your custom domain `api.therisingstarsadventures.org`).
+5. Go to **Settings** tab, scroll down to **Environment / Custom Domains**, and click **Add Domain** to connect: `api.therisingstarsadventures.org`.
 6. Click **Deploy**.
-7. Railway will build, run `npm install`, and start the server. 
-8. Once the server is online, open the **References/Terminal** tab on Railway or run locally:
-   ```bash
-   # Execute db migrations and seed the Neon database
-   npx prisma db push --schema=backend/prisma/schema.prisma
-   node backend/src/utils/seed.js
-   ```
 
 ---
 
 ## ⚡ Step 4: Deploy Frontend on Vercel
 
 1. Go to [Vercel.com](https://vercel.com/) and log in.
-2. Click **Add New** ➔ **Project** ➔ Import the `therisingstars` repository from GitHub.
+2. Click **Add New** ➔ **Project** ➔ Import the `therisingstaradventure` repository from GitHub.
 3. In the project setup screen:
    - **Framework Preset**: Leave as `Other` (or static HTML/CSS).
    - **Root Directory**: Keep as `./` (the root).
-   - Under Build & Development settings, keep everything blank (we do not need a build script since it is static HTML).
+   - Under Build & Development settings, keep everything blank.
 4. Click **Deploy**.
 5. Once deployment is complete, go to project settings, click **Domains**, and add your custom domain: `therisingstarsadventures.org` (and `www.therisingstarsadventures.org`).
 
@@ -89,15 +82,8 @@ Log in to GoDaddy, open the DNS Management panel for `therisingstarsadventures.o
 
 | Type  | Name  | Value / Target | TTL |
 | :---: | :---: | :--- | :---: |
-| **A** | `@` | `76.76.21.21` *(Vercel IP Address)* | Custom |
-| **CNAME** | `www` | `cname.vercel-dns.com` *(Vercel DNS)* | Custom |
-| **CNAME** | `api` | `therisingstaradventure-production.up.railway.app` | Custom |
+| **A** | `@` | `76.76.21.21` *(Vercel IP Address)* | 1 Hour |
+| **CNAME** | `www` | `cname.vercel-dns.com` *(Vercel DNS)* | 1 Hour |
+| **CNAME** | `api` | `therisingstarsadventure-production.up.railway.app` *(Your Railway default URL)* | 1 Hour |
 
----
-
-## 🎉 Step 6: Testing Production Live
-
-1. Open `https://therisingstarsadventures.org` in your browser.
-2. The dynamic client wrapper in `js/api.js` will automatically query `https://api.therisingstarsadventures.org/api` instead of `localhost`.
-3. Try registering a user, booking a trek, paying, and tracking.
-4. Try accessing `https://therisingstarsadventures.org/admin.html` to load the leader console!
+*(Note: If you get a duplicate/invalid error on GoDaddy for A record `@`, edit the existing default "Parked" record instead of adding a new one, and change its value to `76.76.21.21`)*
