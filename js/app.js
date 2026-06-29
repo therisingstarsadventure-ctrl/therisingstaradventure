@@ -984,13 +984,20 @@ function setupSmoothScrolling() {
 
 /* --- LUXURY BRANDED CUSTOM CURSOR SYSTEM & MAGNETIC INTERACTION PHYSICS --- */
 function initCustomCursor() {
-  // Mobile / Touch devices check — Disable custom cursor visual effects entirely for better usability
-  const isTouchDevice = window.matchMedia('(hover: none) and (pointer: coarse)').matches || 
-                        ('ontouchstart' in window) || 
-                        (navigator.maxTouchPoints > 0);
+  // Safety check: GSAP must be loaded
+  if (typeof gsap === 'undefined') {
+    console.warn("GSAP not loaded. Custom cursor disabled.");
+    return;
+  }
+
+  // Mobile / Touch devices check — Only disable for primary touch input devices (phones/tablets)
+  // NOTE: We only use the CSS media query check. 'ontouchstart' and maxTouchPoints
+  // are unreliable because Windows touchscreen laptops report them as true even
+  // when the user is using a mouse/trackpad.
+  const isTouchPrimary = window.matchMedia('(hover: none) and (pointer: coarse)').matches;
   
-  if (isTouchDevice) {
-    console.log("Touch device detected. Custom cursor disabled for fluid accessibility.");
+  if (isTouchPrimary) {
+    console.log("Primary touch device detected. Custom cursor disabled for fluid accessibility.");
     return;
   }
 
