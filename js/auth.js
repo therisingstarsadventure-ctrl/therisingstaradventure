@@ -44,6 +44,11 @@ function initAuthUI() {
     loginLi.innerHTML = `<a href="#" onclick="openAuthModal(event)" class="btn btn-primary" style="padding: 6px 18px; font-size: 0.85rem; border-radius: 4px; box-shadow:none;">Login / Signup</a>`;
     navLinks.appendChild(loginLi);
   }
+
+  // Re-run luxury cursor magnetic bindings for dynamically added navigation links
+  if (typeof window.initMagneticElements === 'function') {
+    window.initMagneticElements();
+  }
 }
 
 function toggleMobileMenuClose() {

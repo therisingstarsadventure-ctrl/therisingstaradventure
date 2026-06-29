@@ -1063,7 +1063,7 @@ function initCustomCursor() {
   });
 
   // MAGNETIC SNAPPING PHYSICS: Move elements slightly towards the pointer
-  const initMagneticElements = () => {
+  window.initMagneticElements = () => {
     // Dynamic query selector for magnetic luxury interactive targets
     const magneticElements = document.querySelectorAll(
       '.nav-links a, .logo-wrap, .btn, .hamburger, .social-link, .whatsapp-floating-action, #map-reset-btn, .filter-tab'
@@ -1106,10 +1106,10 @@ function initCustomCursor() {
   };
 
   // Run on startup
-  initMagneticElements();
+  window.initMagneticElements();
 
   // Re-run magnetic elements check on dynamic content changes (like filters)
-  window.addEventListener('contentChanged', initMagneticElements);
+  window.addEventListener('contentChanged', window.initMagneticElements);
 }
 
 /* --- HERO SECTION CINEMATIC ANIME & 3D PARALLAX DEPTH ENGINE --- */
