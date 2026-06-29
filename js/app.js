@@ -1003,6 +1003,7 @@ function initCustomCursor() {
 
   document.body.appendChild(cursorDot);
   document.body.appendChild(cursorCircle);
+  document.body.classList.add('custom-cursor-enabled');
 
   // Set initial off-screen positioning
   gsap.set([cursorDot, cursorCircle], { xPercent: -50, yPercent: -50, x: -100, y: -100 });

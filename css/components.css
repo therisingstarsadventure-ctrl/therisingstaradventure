@@ -1966,8 +1966,17 @@
 
 /* --- SECTION 14: LUXURY CUSTOM CURSOR SYSTEM --- */
 @media (hover: hover) and (pointer: fine) {
-  /* Hide standard browser cursor on interactive elements */
-  body, a, button, select, input, textarea, [role="button"], .interactive-zone, .map-hotspot-group, .horizontal-slide-panel {
+  /* Hide standard browser cursor on interactive elements only when custom cursor is active */
+  .custom-cursor-enabled,
+  .custom-cursor-enabled a,
+  .custom-cursor-enabled button,
+  .custom-cursor-enabled select,
+  .custom-cursor-enabled input,
+  .custom-cursor-enabled textarea,
+  .custom-cursor-enabled [role="button"],
+  .custom-cursor-enabled .interactive-zone,
+  .custom-cursor-enabled .map-hotspot-group,
+  .custom-cursor-enabled .horizontal-slide-panel {
     cursor: none !important;
   }
 
