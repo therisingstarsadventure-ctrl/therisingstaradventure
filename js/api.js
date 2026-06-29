@@ -222,6 +222,49 @@ class ApiClient {
   async getAdminStats() {
     return this.request('/admin/stats');
   }
+
+  // Leader Console & Telemetry Endpoints
+  async updateTripLocationTelemetry(tripId, { lat, lng, status, speed, batteryLevel, eta }) {
+    return this.request(`/trips/${tripId}/location`, {
+      method: 'PUT',
+      body: JSON.stringify({ lat, lng, status, speed, batteryLevel, eta }),
+    });
+  }
+
+  async triggerSos(tripId, lat, lng) {
+    return this.request(`/trips/${tripId}/sos`, {
+      method: 'POST',
+      body: JSON.stringify({ lat, lng }),
+    });
+  }
+
+  async resolveSos(tripId) {
+    return this.request(`/trips/${tripId}/sos/resolve`, {
+      method: 'POST',
+    });
+  }
+
+  async uploadTripPhotos(tripId, urls) {
+    return this.request(`/trips/${tripId}/photos`, {
+      method: 'POST',
+      body: JSON.stringify({ urls }),
+    });
+  }
+
+  async getTripPhotos(tripId) {
+    return this.request(`/trips/${tripId}/photos`);
+  }
+
+  async getTripAttendees(tripId) {
+    return this.request(`/trips/${tripId}/attendees`);
+  }
+
+  async updateBookingStatusByLeader(bookingId, status) {
+    return this.request(`/bookings/${bookingId}/status`, {
+      method: 'PUT',
+      body: JSON.stringify({ status }),
+    });
+  }
 }
 
 // Export as a global window instance for easy access in our script files

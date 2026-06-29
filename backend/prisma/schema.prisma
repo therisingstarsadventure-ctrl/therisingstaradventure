@@ -42,20 +42,43 @@ model Trek {
 }
 
 model Trip {
-  id                 String    @id // unique trip ID (e.g. "TRIP-8F4K2Q")
+  id                 String      @id // unique trip ID (e.g. "TRIP-8F4K2Q")
   trekId             String
-  trek               Trek      @relation(fields: [trekId], references: [id])
+  trek               Trek        @relation(fields: [trekId], references: [id])
   date               DateTime
   totalSeats         Int
-  bookedSeats        Int       @default(0)
-  status             String    @default("UPCOMING") // UPCOMING, STARTING, ON_ROUTE, REACHED_DESTINATION, RETURNING, COMPLETED
+  bookedSeats        Int         @default(0)
+  status             String      @default("UPCOMING") // UPCOMING, STARTING, ON_ROUTE, REACHED_DESTINATION, RETURNING, COMPLETED
   tripLeaderId       Int?
-  tripLeader         User?     @relation(fields: [tripLeaderId], references: [id])
-  currentLat         Float     @default(0.0)
-  currentLng         Float     @default(0.0)
+  tripLeader         User?       @relation(fields: [tripLeaderId], references: [id])
+  currentLat         Float       @default(0.0)
+  currentLng         Float       @default(0.0)
   lastLocationUpdate DateTime?
-  trackingToken      String    @unique
+  trackingToken      String      @unique
   bookings           Booking[]
+  speed              Float       @default(0.0)
+  batteryLevel       Int         @default(100)
+  eta                String?
+  sosAlerts          SosAlert[]
+  photos             TripPhoto[]
+}
+
+model SosAlert {
+  id        Int      @id @default(autoincrement())
+  tripId    String
+  trip      Trip     @relation(fields: [tripId], references: [id])
+  lat       Float
+  lng       Float
+  status    String   @default("ACTIVE") // ACTIVE, RESOLVED
+  createdAt DateTime @default(now())
+}
+
+model TripPhoto {
+  id        Int      @id @default(autoincrement())
+  tripId    String
+  trip      Trip     @relation(fields: [tripId], references: [id])
+  url       String
+  createdAt DateTime @default(now())
 }
 
 model Booking {

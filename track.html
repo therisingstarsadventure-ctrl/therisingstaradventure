@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Live Trip Tracking — The Rising Stars</title>
+  <title>Parent Live GPS Tracking — The Rising Stars</title>
   
   <!-- CSS Stylesheets -->
   <link rel="stylesheet" href="css/index.css">
@@ -18,7 +18,7 @@
       padding: 0;
       width: 100%;
       height: 100%;
-      background-color: #030305;
+      background-color: #080808;
       font-family: 'Inter', sans-serif;
       overflow: hidden;
       color: #fff;
@@ -42,13 +42,13 @@
       left: 20px;
       width: 380px;
       max-width: calc(100% - 40px);
-      background: rgba(11, 12, 19, 0.85);
+      background: rgba(18, 18, 18, 0.85);
       backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
       padding: 20px;
       z-index: 10;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
     }
 
     .tracking-header {
@@ -56,13 +56,14 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 15px;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
       padding-bottom: 12px;
     }
 
     .tracking-title {
-      font-size: 1.2rem;
-      font-weight: bold;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 1.15rem;
       color: #fff;
       margin: 0;
     }
@@ -78,40 +79,52 @@
     }
 
     .status-active {
-      background: rgba(16, 185, 129, 0.2);
-      color: #10b981;
-      border: 1px solid rgba(16, 185, 129, 0.4);
+      background: rgba(0, 208, 132, 0.15);
+      color: #00D084;
+      border: 1px solid rgba(0, 208, 132, 0.3);
     }
 
     .status-upcoming {
-      background: rgba(245, 158, 11, 0.2);
-      color: #f59e0b;
-      border: 1px solid rgba(245, 158, 11, 0.4);
+      background: rgba(255, 138, 0, 0.15);
+      color: #FF8A00;
+      border: 1px solid rgba(255, 138, 0, 0.3);
     }
 
     .status-completed {
-      background: rgba(59, 130, 246, 0.2);
+      background: rgba(59, 130, 246, 0.15);
       color: #3b82f6;
-      border: 1px solid rgba(59, 130, 246, 0.4);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+    }
+
+    .status-danger {
+      background: rgba(255, 77, 77, 0.2);
+      color: #FF4D4D;
+      border: 1px solid rgba(255, 77, 77, 0.5);
+      animation: pulse-border 1s infinite alternate;
+    }
+
+    @keyframes pulse-border {
+      0% { box-shadow: 0 0 2px rgba(255, 77, 77, 0.3); }
+      100% { box-shadow: 0 0 12px rgba(255, 77, 77, 0.7); }
     }
 
     .meta-row {
       display: flex;
       justify-content: space-between;
       margin-bottom: 10px;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
     }
 
     .meta-lbl {
-      color: rgba(255,255,255,0.5);
+      color: var(--text-muted);
     }
 
     .meta-val {
-      font-weight: 500;
+      font-weight: 600;
     }
 
     .leader-box {
-      background: rgba(255,255,255,0.03);
+      background: rgba(255,255,255,0.02);
       border-radius: 8px;
       padding: 12px;
       margin-top: 15px;
@@ -119,30 +132,86 @@
     }
 
     .leader-title {
-      font-size: 0.8rem;
-      color: rgba(255,255,255,0.4);
+      font-size: 0.75rem;
+      color: var(--text-muted);
       text-transform: uppercase;
       letter-spacing: 0.05em;
       margin-bottom: 4px;
     }
 
     .leader-name {
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       font-weight: bold;
     }
 
     .leader-phone {
       font-size: 0.85rem;
-      color: var(--accent-amber);
-      margin-top: 2px;
+      color: var(--primary-gold);
+      margin-top: 4px;
+      display: block;
+      text-decoration: none;
+    }
+
+    /* Telemetry cluster */
+    .telemetry-cluster {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+      margin-top: 15px;
+    }
+
+    .telemetry-pill {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 8px;
+      padding: 8px;
+      text-align: center;
+    }
+
+    .telemetry-lbl {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .telemetry-val {
+      font-size: 0.85rem;
+      font-weight: bold;
+      color: #fff;
     }
 
     .last-update {
       font-size: 0.75rem;
-      color: rgba(255,255,255,0.4);
+      color: var(--text-muted);
       margin-top: 15px;
       text-align: center;
       font-style: italic;
+    }
+
+    /* Active SOS Warning Bar */
+    .sos-warning-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      background-color: var(--danger);
+      color: #000;
+      font-weight: bold;
+      padding: 12px;
+      text-align: center;
+      z-index: 1000;
+      font-family: 'Poppins', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 4px 15px rgba(255, 77, 77, 0.4);
+      display: none;
+      animation: blinker 1.5s linear infinite;
+    }
+
+    @keyframes blinker {
+      50% { opacity: 0.8; }
     }
 
     .error-card {
@@ -152,9 +221,9 @@
       transform: translate(-50%, -50%);
       width: 400px;
       max-width: calc(100% - 40px);
-      background: #0b0c13;
-      border: 1px solid rgba(239, 68, 68, 0.25);
-      border-radius: 12px;
+      background: var(--card-bg);
+      border: 1px solid rgba(255, 77, 77, 0.2);
+      border-radius: 16px;
       padding: 30px;
       text-align: center;
       z-index: 100;
@@ -162,15 +231,16 @@
     }
 
     .error-title {
-      color: #ef4444;
+      color: var(--danger);
+      font-family: 'Poppins', sans-serif;
       font-size: 1.4rem;
       font-weight: bold;
       margin-bottom: 15px;
     }
 
     .error-desc {
-      color: rgba(255,255,255,0.7);
-      font-size: 0.95rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
       line-height: 1.5;
       margin-bottom: 20px;
     }
@@ -178,8 +248,8 @@
     .home-btn {
       display: inline-block;
       padding: 10px 24px;
-      background: var(--accent-orange);
-      color: #fff;
+      background: var(--primary);
+      color: #000;
       text-decoration: none;
       border-radius: 6px;
       font-weight: bold;
@@ -187,23 +257,26 @@
     }
 
     .home-btn:hover {
-      background: #e06a06;
+      background: var(--primary-gold);
     }
 
-    /* Custom Map Marker styles */
     .leaflet-popup-content-wrapper {
-      background: #0b0c13 !important;
+      background: #121212 !important;
       color: #fff !important;
-      border: 1px solid rgba(255,255,255,0.1) !important;
+      border: 1px solid rgba(255,255,255,0.05) !important;
       border-radius: 8px !important;
     }
     .leaflet-popup-tip {
-      background: #0b0c13 !important;
-      border: 1px solid rgba(255,255,255,0.1) !important;
+      background: #121212 !important;
     }
   </style>
 </head>
 <body>
+
+  <!-- Top SOS Warning Overlay -->
+  <div class="sos-warning-bar" id="sos-warning-overlay">
+    🚨 EMERGENCY SOS ACTIVE: TRIP LEADER BROADCASTED AN EMERGENCY ALERT. ADMINS ARE IN CONTACT. 🚨
+  </div>
 
   <!-- Map Container -->
   <div id="map"></div>
@@ -211,7 +284,7 @@
   <!-- Tracking Control Panel -->
   <div class="tracking-panel" id="info-panel" style="display: none;">
     <div class="tracking-header">
-      <h3 class="tracking-title" id="trek-title">Trek Title</h3>
+      <h3 class="tracking-title" id="trek-title">Trek Departure</h3>
       <span class="status-indicator status-active" id="trip-status">Active</span>
     </div>
     
@@ -222,7 +295,7 @@
     
     <div class="meta-row">
       <span class="meta-lbl">Departure Date</span>
-      <span class="meta-val" id="trek-date">June 28, 2026</span>
+      <span class="meta-val" id="trek-date">June 29, 2026</span>
     </div>
 
     <div class="meta-row">
@@ -232,8 +305,24 @@
 
     <div class="leader-box">
       <div class="leader-title">Trip Leader (On-Site)</div>
-      <div class="leader-name" id="leader-name">Amit Trek Leader</div>
-      <div class="leader-phone" id="leader-phone">+91 98765 43210</div>
+      <div class="leader-name" id="leader-name">Trek Leader</div>
+      <a href="" class="leader-phone" id="leader-phone">📞 Call Leader</a>
+    </div>
+
+    <!-- Live Telemetry Pill cluster -->
+    <div class="telemetry-cluster">
+      <div class="telemetry-pill">
+        <span class="telemetry-lbl">Speed</span>
+        <span class="telemetry-val" id="telemetry-speed">0 km/h</span>
+      </div>
+      <div class="telemetry-pill">
+        <span class="telemetry-lbl">Battery</span>
+        <span class="telemetry-val" id="telemetry-battery">100%</span>
+      </div>
+      <div class="telemetry-pill">
+        <span class="telemetry-lbl">ETA</span>
+        <span class="telemetry-val" id="telemetry-eta">--:--</span>
+      </div>
     </div>
 
     <div class="last-update" id="last-update-time">
@@ -282,23 +371,23 @@
     });
 
     function initMap() {
-      // Create map centered on standard India coords, zoom level 6
+      // Create map centered on standard India coords
       map = L.map('map', {
-        zoomControl: false // custom position later
+        zoomControl: false
       }).setView([19.7, 74.0], 8);
 
       L.control.zoom({ position: 'bottomright' }).addTo(map);
 
       // Add CartoDB Dark Matter tile layer
       L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+        attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
         subdomains: 'abcd',
         maxZoom: 20
       }).addTo(map);
 
       // Initialize path line
       trackPath = L.polyline([], {
-        color: '#f59e0b', // Amber/orange line
+        color: '#FF8A00', // Premium Orange path line
         weight: 3,
         opacity: 0.8,
         dashArray: '5, 10'
@@ -307,7 +396,7 @@
 
     async function fetchTrackingLocation() {
       try {
-        const data = await window.api.getTripLiveLocation(tripId, token);
+        const data = await window.api.getLiveLocation(tripId, token);
         
         // Show info panel, hide error panel
         document.getElementById('info-panel').style.display = 'block';
@@ -318,17 +407,32 @@
         document.getElementById('trek-location').textContent = data.location;
         document.getElementById('trek-duration').textContent = data.duration;
         document.getElementById('leader-name').textContent = data.leaderName;
-        document.getElementById('leader-phone').textContent = data.leaderPhone ? `📞 ${data.leaderPhone}` : 'N/A';
+        document.getElementById('leader-phone').href = `tel:${data.leaderPhone}`;
+        document.getElementById('leader-phone').textContent = data.leaderPhone ? `📞 Call Leader (${data.leaderPhone})` : '📞 Call Leader';
         
+        // Update telemetry values
+        document.getElementById('telemetry-speed').textContent = `${data.speed || 0} km/h`;
+        document.getElementById('telemetry-battery').textContent = `${data.batteryLevel || 100}%`;
+        document.getElementById('telemetry-eta').textContent = data.eta || '--:--';
+
         const dateObj = new Date(data.tripDate);
         document.getElementById('trek-date').textContent = dateObj.toLocaleDateString('en-IN', {
           day: 'numeric', month: 'long', year: 'numeric'
         });
 
-        // Set status badge text and class
+        // Set status badge and SOS state
         const statusEl = document.getElementById('trip-status');
-        statusEl.textContent = getStatusLabel(data.status);
-        statusEl.className = 'status-indicator ' + getStatusClass(data.status);
+        const sosOverlay = document.getElementById('sos-warning-overlay');
+
+        if (data.hasActiveSos) {
+          statusEl.textContent = '⚠️ SOS ALERT';
+          statusEl.className = 'status-indicator status-danger';
+          sosOverlay.style.display = 'block';
+        } else {
+          statusEl.textContent = getStatusLabel(data.status);
+          statusEl.className = 'status-indicator ' + getStatusClass(data.status);
+          sosOverlay.style.display = 'none';
+        }
 
         // Update Last Updated time stamp
         if (data.lastLocationUpdate) {
@@ -360,24 +464,25 @@
             trackPath.setLatLngs(coordinatesHistory);
           }
 
+          const markerColor = data.hasActiveSos ? '#FF4D4D' : '#00D084'; // Red if SOS, emerald if normal
+          
           if (!marker) {
-            // Create custom animated pulse icon
             const pulseIcon = L.divIcon({
               className: 'custom-pulse-marker',
               html: `
                 <div style="
                   width: 20px; 
                   height: 20px; 
-                  background-color: #10b981; 
+                  background-color: ${markerColor}; 
                   border: 3px solid #fff; 
                   border-radius: 50%;
-                  box-shadow: 0 0 10px rgba(16, 185, 129, 0.8);
+                  box-shadow: 0 0 10px ${markerColor};
                   animation: pulse 1.5s infinite alternate;
                 "></div>
                 <style>
                   @keyframes pulse {
-                    0% { transform: scale(0.9); box-shadow: 0 0 5px rgba(16,185,129,0.5); }
-                    100% { transform: scale(1.2); box-shadow: 0 0 15px rgba(16,185,129,0.9); }
+                    0% { transform: scale(0.9); box-shadow: 0 0 5px ${markerColor}; }
+                    100% { transform: scale(1.2); box-shadow: 0 0 15px ${markerColor}; }
                   }
                 </style>
               `,
@@ -386,16 +491,17 @@
             });
 
             marker = L.marker(latlng, { icon: pulseIcon }).addTo(map);
-            marker.bindPopup(`<strong>Trek Group Current Location</strong><br>Status: ${getStatusLabel(data.status)}`).openPopup();
+            marker.bindPopup(`<strong>Trek Group Current Location</strong><br>Status: ${data.hasActiveSos ? 'EMERGENCY ALERT' : getStatusLabel(data.status)}`).openPopup();
             
-            // Center map on marker
             map.setView(latlng, 13);
           } else {
-            // Animate marker transition
             marker.setLatLng(latlng);
-            marker.getPopup().setContent(`<strong>Trek Group Current Location</strong><br>Status: ${getStatusLabel(data.status)}`);
+            // Re-render icon with correct color
+            const iconHtml = marker.getElement().querySelector('div');
+            if (iconHtml) iconHtml.style.backgroundColor = markerColor;
             
-            // Adjust bounds to include all tracking path history
+            marker.getPopup().setContent(`<strong>Trek Group Current Location</strong><br>Status: ${data.hasActiveSos ? 'EMERGENCY ALERT' : getStatusLabel(data.status)}`);
+            
             if (coordinatesHistory.length > 1) {
               map.panTo(latlng);
             } else {
@@ -403,7 +509,6 @@
             }
           }
         } else {
-          // Coords are 0 (upcoming, not started yet)
           document.getElementById('last-update-time').textContent = 'Waiting for trip leader to start location transmission.';
         }
 
@@ -428,7 +533,7 @@
     function getStatusClass(status) {
       if (status === 'COMPLETED') return 'status-completed';
       if (status === 'UPCOMING') return 'status-upcoming';
-      return 'status-active'; // STARTING, ON_ROUTE, etc.
+      return 'status-active';
     }
 
     function showError(title, message) {

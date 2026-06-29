@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Console — The Rising Stars</title>
+  <title>Admin Dashboard — The Rising Stars</title>
   
   <!-- CSS Stylesheets -->
   <link rel="stylesheet" href="css/index.css">
@@ -11,9 +11,21 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 
   <style>
+    :root {
+      --bg: #080808;
+      --card-bg: #121212;
+      --primary: #FF8A00;
+      --primary-gold: #FFB347;
+      --text: #FFFFFF;
+      --text-muted: #B5B5B5;
+      --success: #00D084;
+      --danger: #FF4D4D;
+      --glass-border: rgba(255, 255, 255, 0.05);
+    }
+
     body {
-      background-color: #030305;
-      color: #fff;
+      background-color: var(--bg);
+      color: var(--text);
       font-family: 'Inter', sans-serif;
       min-height: 100vh;
     }
@@ -26,16 +38,17 @@
     /* Sidebar styles */
     .admin-sidebar {
       width: 260px;
-      background: rgba(11, 12, 19, 0.95);
-      border-right: 1px solid rgba(255, 255, 255, 0.06);
+      background: var(--card-bg);
+      border-right: 1px solid var(--glass-border);
       padding: 30px 20px;
       display: flex;
       flex-direction: column;
     }
 
     .sidebar-brand {
-      font-size: 1.1rem;
-      font-weight: bold;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 800;
+      font-size: 1.25rem;
       color: #fff;
       margin-bottom: 40px;
       display: flex;
@@ -57,7 +70,7 @@
       align-items: center;
       gap: 12px;
       padding: 12px 16px;
-      color: rgba(255,255,255,0.6);
+      color: var(--text-muted);
       text-decoration: none;
       border-radius: 8px;
       font-size: 0.95rem;
@@ -66,19 +79,19 @@
 
     .sidebar-item.active a, .sidebar-item a:hover {
       color: #fff;
-      background: rgba(255,255,255,0.05);
+      background: rgba(255, 255, 255, 0.03);
     }
 
     .sidebar-item.active a {
-      background: var(--accent-orange);
-      color: #fff;
+      background: linear-gradient(135deg, var(--primary), #E07A00);
+      color: #000;
       font-weight: bold;
     }
 
     .sidebar-footer {
       margin-top: auto;
       padding-top: 20px;
-      border-top: 1px solid rgba(255,255,255,0.06);
+      border-top: 1px solid var(--glass-border);
     }
 
     /* Main Content styles */
@@ -96,10 +109,11 @@
     }
 
     .admin-title {
-      font-size: 1.8rem;
+      font-family: 'Poppins', sans-serif;
       font-weight: 800;
+      font-size: 1.8rem;
       margin: 0;
-      background: linear-gradient(to right, #fff, rgba(255,255,255,0.7));
+      background: linear-gradient(to right, #fff, #999);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
@@ -112,33 +126,68 @@
       margin-bottom: 40px;
     }
 
+    @media (max-width: 1024px) {
+      .stats-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
     .stat-card {
-      background: rgba(11, 12, 19, 0.6);
-      border: 1px solid rgba(255, 255, 255, 0.05);
+      background: var(--card-bg);
+      border: 1px solid var(--glass-border);
       border-radius: 12px;
       padding: 24px;
       display: flex;
       flex-direction: column;
+      position: relative;
+      overflow: hidden;
     }
 
     .stat-val {
-      font-size: 2rem;
+      font-family: 'Poppins', sans-serif;
       font-weight: 800;
+      font-size: 2rem;
       color: #fff;
       margin-bottom: 6px;
     }
 
     .stat-lbl {
-      font-size: 0.85rem;
-      color: rgba(255,255,255,0.45);
+      font-size: 0.8rem;
+      color: var(--text-muted);
       text-transform: uppercase;
       letter-spacing: 0.05em;
     }
 
-    /* Section card container */
+    /* SOS Floating Alert List */
+    .sos-alert-center {
+      background: rgba(255, 77, 77, 0.08);
+      border: 2px solid var(--danger);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 30px;
+      animation: alert-border 1.5s infinite alternate;
+    }
+
+    @keyframes alert-border {
+      0% { box-shadow: 0 0 5px rgba(255,77,77,0.2); }
+      100% { box-shadow: 0 0 15px rgba(255,77,77,0.5); }
+    }
+
+    .sos-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px;
+      background: rgba(0,0,0,0.3);
+      border-radius: 8px;
+      margin-top: 10px;
+      border: 1px solid rgba(255, 77, 77, 0.2);
+    }
+
+    /* Section containers */
     .dashboard-section {
-      background: rgba(11, 12, 19, 0.55);
-      border: 1px solid rgba(255, 255, 255, 0.05);
+      background: var(--card-bg);
+      border: 1px solid var(--glass-border);
       border-radius: 12px;
       padding: 30px;
       margin-bottom: 30px;
@@ -157,8 +206,9 @@
     }
 
     .section-title {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
       font-size: 1.25rem;
-      font-weight: bold;
       margin: 0;
     }
 
@@ -176,7 +226,7 @@
     .admin-table th {
       padding: 14px 16px;
       border-bottom: 1px solid rgba(255,255,255,0.08);
-      color: rgba(255,255,255,0.4);
+      color: var(--text-muted);
       font-size: 0.8rem;
       text-transform: uppercase;
       letter-spacing: 0.05em;
@@ -203,116 +253,42 @@
       font-weight: bold;
     }
 
-    .badge-confirm { background: rgba(16, 185, 129, 0.15); color: #10b981; }
-    .badge-pending { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
-    .badge-cancel { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
+    .badge-pending { background: rgba(255, 138, 0, 0.15); color: var(--primary); }
+    .badge-confirmed { background: rgba(0, 208, 132, 0.15); color: var(--success); }
+    .badge-checkedin { background: rgba(255, 215, 0, 0.15); color: var(--accent); }
+    .badge-ontrip { background: #3b82f633; color: #3b82f6; }
+    .badge-completed { background: rgba(255, 255, 255, 0.1); color: #fff; }
+    .badge-cancelled { background: rgba(255, 77, 77, 0.15); color: var(--danger); }
 
-    /* Action Buttons */
+    /* Action buttons */
     .action-btn {
       padding: 6px 12px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      border-radius: 4px;
-      cursor: pointer;
-      border: 1px solid transparent;
-      transition: all 0.2s;
-    }
-
-    .btn-approve { background: rgba(16,185,129,0.2); color: #10b981; }
-    .btn-approve:hover { background: #10b981; color: #fff; }
-    .btn-cancel { background: rgba(239,68,68,0.2); color: #ef4444; }
-    .btn-cancel:hover { background: #ef4444; color: #fff; }
-    
-    .btn-edit { background: rgba(255,255,255,0.05); color: #fff; border-color: rgba(255,255,255,0.1); }
-    .btn-edit:hover { background: rgba(255,255,255,0.1); }
-
-    /* Forms styles */
-    .admin-form-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
-    }
-
-    .form-group {
-      margin-bottom: 18px;
-    }
-
-    .form-group.full-width {
-      grid-column: span 2;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 0.85rem;
-      color: rgba(255,255,255,0.6);
-      margin-bottom: 8px;
-    }
-
-    .form-group input, .form-group textarea, .form-group select {
-      width: 100%;
-      padding: 12px;
+      border: 1px solid var(--glass-border);
       background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 6px;
       color: #fff;
-      font-family: inherit;
-    }
-
-    .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
-      outline: none;
-      border-color: var(--accent-orange);
-    }
-
-    /* Trip Leader GPS Panel */
-    .gps-console {
-      background: rgba(16, 185, 129, 0.05);
-      border: 1px solid rgba(16, 185, 129, 0.2);
-      border-radius: 12px;
-      padding: 24px;
-      margin-bottom: 30px;
-    }
-
-    .gps-grid {
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 30px;
-    }
-
-    .gps-controls {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-
-    .gps-btn {
-      padding: 14px 28px;
-      font-size: 1rem;
-      font-weight: bold;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      transition: background 0.2s;
-    }
-
-    .gps-btn-start { background: #10b981; color: #fff; }
-    .gps-btn-start:hover { background: #059669; }
-    .gps-btn-stop { background: #ef4444; color: #fff; }
-    .gps-btn-stop:hover { background: #dc2626; }
-
-    .gps-data-log {
-      background: #000;
-      border-radius: 8px;
-      padding: 15px;
-      font-family: monospace;
+      border-radius: 6px;
       font-size: 0.8rem;
-      height: 180px;
-      overflow-y: auto;
-      color: #10b981;
-      border: 1px solid rgba(255,255,255,0.05);
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-right: 5px;
+    }
+
+    .action-btn:hover {
+      background: var(--primary);
+      color: #000;
+      border-color: var(--primary);
+    }
+
+    .action-btn.btn-delete:hover {
+      background: var(--danger);
+      color: #fff;
+      border-color: var(--danger);
+    }
+
+    .action-btn.btn-dup:hover {
+      background: var(--accent);
+      color: #000;
+      border-color: var(--accent);
     }
   </style>
 </head>
@@ -323,502 +299,519 @@
     <!-- Sidebar -->
     <aside class="admin-sidebar">
       <div class="sidebar-brand">
-        <i class="fa-solid fa-mountain-sun" style="color: var(--accent-orange);"></i>
-        THE RISING STARS Admin
+        <span style="color:var(--primary); font-size:1.5rem;">★</span> THE RISING STARS
       </div>
       <ul class="sidebar-menu">
-        <li class="sidebar-item active" id="menu-dash" onclick="switchTab('dashboard')">
+        <li class="sidebar-item active" id="tab-dashboard" onclick="switchTab('dashboard')">
           <a href="#"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
         </li>
-        <li class="sidebar-item" id="menu-treks" onclick="switchTab('treks')">
-          <a href="#"><i class="fa-solid fa-mountain"></i> Treks Manager</a>
+        <li class="sidebar-item" id="tab-treks" onclick="switchTab('treks')">
+          <a href="#"><i class="fa-solid fa-mountain"></i> Packages</a>
         </li>
-        <li class="sidebar-item" id="menu-trips" onclick="switchTab('trips')">
-          <a href="#"><i class="fa-solid fa-calendar-days"></i> Departures (Trips)</a>
+        <li class="sidebar-item" id="tab-trips" onclick="switchTab('trips')">
+          <a href="#"><i class="fa-solid fa-calendar-days"></i> Departures</a>
         </li>
-        <li class="sidebar-item" id="menu-bookings" onclick="switchTab('bookings')">
-          <a href="#"><i class="fa-solid fa-ticket"></i> Bookings Log</a>
+        <li class="sidebar-item" id="tab-bookings" onclick="switchTab('bookings')">
+          <a href="#"><i class="fa-solid fa-ticket"></i> Bookings</a>
         </li>
-        <li class="sidebar-item" id="menu-gps" onclick="switchTab('gps')">
-          <a href="#"><i class="fa-solid fa-location-crosshairs"></i> Trip Leader GPS</a>
+        <li class="sidebar-item" id="tab-messages" onclick="switchTab('messages')">
+          <a href="#"><i class="fa-solid fa-envelope"></i> Contacts</a>
+        </li>
+        <li class="sidebar-item" id="tab-subscribers" onclick="switchTab('subscribers')">
+          <a href="#"><i class="fa-solid fa-users"></i> Subscribers</a>
         </li>
       </ul>
-      
       <div class="sidebar-footer">
-        <button class="action-btn btn-cancel" style="width:100%; padding:10px;" onclick="window.handleLogout()">
-          <i class="fa-solid fa-right-from-bracket"></i> Logout
-        </button>
+        <button class="action-btn" onclick="logoutAdmin()" style="width:100%;"><i class="fa-solid fa-power-off"></i> Logout</button>
       </div>
     </aside>
 
     <!-- Main Content Area -->
     <main class="admin-content">
       
-      <header class="admin-header">
-        <div>
-          <h2 class="admin-title" id="welcome-title">Dashboard</h2>
-          <span style="font-size:0.85rem; color:rgba(255,255,255,0.4);" id="admin-user-tag">Logged in as Administrator</span>
+      <!-- Top Header -->
+      <div class="admin-header">
+        <h2 class="admin-title" id="panel-header-title">Dashboard Overview</h2>
+        <div style="font-size:0.9rem; color:var(--text-muted);">
+          Logged in as: <strong id="admin-user-name" style="color:#fff;">Admin</strong>
         </div>
-        <div>
-          <a href="index.html" class="btn btn-secondary" style="padding:8px 20px; font-size:0.85rem;"><i class="fa-solid fa-globe"></i> View Website</a>
-        </div>
-      </header>
+      </div>
 
-      <!-- Analytics Cards -->
-      <section class="stats-grid" id="stats-grid-container">
+      <!-- SOS Alerts Banner (Drawn dynamically if active) -->
+      <div class="sos-alert-center" id="sos-alert-wrap" style="display: none;">
+        <h3 style="font-family:'Poppins'; font-size:1.1rem; color:var(--danger); display:flex; align-items:center; gap:10px;">
+          <i class="fa-solid fa-triangle-exclamation"></i> <strong>ACTIVE EMERGENCY ALERTS</strong>
+        </h3>
+        <div id="sos-alerts-list">
+          <!-- Dynamic SOS alert cards -->
+        </div>
+      </div>
+
+      <!-- Stats Cards -->
+      <div class="stats-grid">
         <div class="stat-card">
           <span class="stat-val" id="stat-revenue">₹0</span>
-          <span class="stat-label stat-lbl">Total Revenue</span>
-        </div>
-        <div class="stat-card">
-          <span class="stat-val" id="stat-bookings">0</span>
-          <span class="stat-label stat-lbl">Bookings Count</span>
+          <span class="stat-lbl">Paid Revenue</span>
         </div>
         <div class="stat-card">
           <span class="stat-val" id="stat-customers">0</span>
-          <span class="stat-label stat-lbl">Happy Customers</span>
+          <span class="stat-lbl">Customers</span>
         </div>
         <div class="stat-card">
-          <span class="stat-val" id="stat-active-trips">0</span>
-          <span class="stat-label stat-lbl">Active Live Trips</span>
+          <span class="stat-val" id="stat-bookings">0</span>
+          <span class="stat-lbl">Total Bookings</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-val" id="stat-live-trips" style="color:var(--success);">0</span>
+          <span class="stat-lbl">Live Running Trips</span>
+        </div>
+      </div>
+
+      <!-- SECTION: DASHBOARD -->
+      <section class="dashboard-section active" id="sec-dashboard">
+        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px;">
+          
+          <!-- Live Active Trips list -->
+          <div class="stat-card" style="padding: 24px;">
+            <h3 class="section-title" style="margin-bottom: 20px;"><i class="fa-solid fa-satellite-dish" style="color:var(--success);"></i> Live Telemetry Map Tracker</h3>
+            <div class="admin-table-wrap">
+              <table class="admin-table">
+                <thead>
+                  <tr>
+                    <th>Trip ID</th>
+                    <th>Trek Name</th>
+                    <th>Leader</th>
+                    <th>Status</th>
+                    <th>Speed</th>
+                    <th>Battery</th>
+                    <th>ETA</th>
+                    <th>Tracking</th>
+                  </tr>
+                </thead>
+                <tbody id="live-trips-list-body">
+                  <!-- Injected live tracking status -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Popular Trek Listings -->
+          <div class="stat-card" style="padding: 24px;">
+            <h3 class="section-title" style="margin-bottom: 20px;"><i class="fa-solid fa-star" style="color:var(--accent);"></i> Hot Sellers</h3>
+            <ul style="list-style:none; display:flex; flex-direction:column; gap:15px;" id="popular-treks-list">
+              <!-- Injected popular treks list -->
+            </ul>
+          </div>
+
         </div>
       </section>
 
-      <!-- ========================================== -->
-      <!-- TAB 1: ANALYTICS DASHBOARD -->
-      <!-- ========================================== -->
-      <section class="dashboard-section active" id="section-dashboard">
-        <div class="section-header">
-          <h3 class="section-title">Recent Pending Bookings</h3>
-        </div>
-        
-        <div class="admin-table-wrap">
-          <table class="admin-table">
-            <thead>
-              <tr>
-                <th>Booking ID</th>
-                <th>Customer</th>
-                <th>Trek Details</th>
-                <th>Members</th>
-                <th>Total Price</th>
-                <th>Status</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody id="dashboard-recent-bookings">
-              <!-- Populated dynamically -->
-            </tbody>
-          </table>
-        </div>
-
-        <div class="section-header" style="margin-top: 40px;">
-          <h3 class="section-title">Latest Contact Message Inquiries</h3>
-        </div>
-        <div class="admin-table-wrap">
-          <table class="admin-table">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Message</th>
-                <th>Submitted On</th>
-              </tr>
-            </thead>
-            <tbody id="dashboard-recent-messages">
-              <!-- Populated dynamically -->
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <!-- ========================================== -->
-      <!-- TAB 2: TREKS MANAGEMENT -->
-      <!-- ========================================== -->
-      <section class="dashboard-section" id="section-treks">
+      <!-- SECTION: PACKAGES -->
+      <section class="dashboard-section" id="sec-treks">
         <div class="section-header">
           <h3 class="section-title">Adventure Packages</h3>
-          <button class="btn btn-primary" style="padding:8px 18px; font-size:0.85rem;" onclick="openTrekFormModal()">
-            <i class="fa-solid fa-plus"></i> Add New Trek
-          </button>
+          <button class="action-btn" onclick="openTrekFormModal()" style="background:var(--primary); color:#000; font-weight:bold;"><i class="fa-solid fa-plus"></i> Add New Package</button>
         </div>
-        
         <div class="admin-table-wrap">
           <table class="admin-table">
             <thead>
               <tr>
-                <th>Trek ID</th>
-                <th>Title</th>
-                <th>Zone</th>
-                <th>Price</th>
+                <th>Code ID</th>
+                <th>Title Name</th>
+                <th>Category</th>
+                <th>Location</th>
                 <th>Difficulty</th>
-                <th>Timeline</th>
+                <th>Price</th>
                 <th>Actions</th>
               </tr>
             </thead>
-            <tbody id="treks-list-container">
-              <!-- Populated dynamically -->
+            <tbody id="treks-table-body">
+              <!-- Injected treks -->
             </tbody>
           </table>
         </div>
       </section>
 
-      <!-- ========================================== -->
-      <!-- TAB 3: DEPARTURES (TRIPS) -->
-      <!-- ========================================== -->
-      <section class="dashboard-section" id="section-trips">
+      <!-- SECTION: DEPARTURES -->
+      <section class="dashboard-section" id="sec-trips">
         <div class="section-header">
-          <h3 class="section-title">Trek Departures & Seat Management</h3>
-          <button class="btn btn-primary" style="padding:8px 18px; font-size:0.85rem;" onclick="openTripFormModal()">
-            <i class="fa-solid fa-plus"></i> Schedule Departure
-          </button>
+          <h3 class="section-title">Upcoming Trip Departures</h3>
+          <button class="action-btn" onclick="openTripFormModal()" style="background:var(--primary); color:#000; font-weight:bold;"><i class="fa-solid fa-plus"></i> Schedule Departure</button>
         </div>
-        
         <div class="admin-table-wrap">
           <table class="admin-table">
             <thead>
               <tr>
                 <th>Trip ID</th>
                 <th>Trek Package</th>
-                <th>Travel Date</th>
-                <th>Seats (Booked / Total)</th>
-                <th>Status</th>
-                <th>Leader Code / Link</th>
-                <th>Actions</th>
+                <th>Departure Date</th>
+                <th>Seats Roster</th>
+                <th>Trip Leader</th>
+                <th>Leader Status</th>
+                <th>Status Toggle</th>
               </tr>
             </thead>
-            <tbody id="trips-list-container-tab">
-              <!-- Populated dynamically -->
+            <tbody id="trips-table-body">
+              <!-- Injected departures -->
             </tbody>
           </table>
         </div>
       </section>
 
-      <!-- ========================================== -->
-      <!-- TAB 4: BOOKINGS LOG -->
-      <!-- ========================================== -->
-      <section class="dashboard-section" id="section-bookings">
+      <!-- SECTION: BOOKINGS -->
+      <section class="dashboard-section" id="sec-bookings">
         <div class="section-header">
-          <h3 class="section-title">All Customer Bookings Log</h3>
+          <h3 class="section-title">All Customer Bookings</h3>
         </div>
-        
         <div class="admin-table-wrap">
           <table class="admin-table">
             <thead>
               <tr>
-                <th>ID</th>
+                <th>Booking ID</th>
                 <th>Customer</th>
-                <th>Phone</th>
-                <th>Trip Departure</th>
-                <th>Members</th>
-                <th>Amount</th>
-                <th>Status</th>
-                <th>Payments</th>
-                <th>Actions</th>
+                <th>Trek Detail</th>
+                <th>Date</th>
+                <th>Heads</th>
+                <th>Total Cost</th>
+                <th>Booking Status</th>
+                <th>Roster Action</th>
               </tr>
             </thead>
-            <tbody id="all-bookings-list">
-              <!-- Populated dynamically -->
+            <tbody id="bookings-table-body">
+              <!-- Injected bookings -->
             </tbody>
           </table>
         </div>
       </section>
 
-      <!-- ========================================== -->
-      <!-- TAB 5: TRIP LEADER GPS CONSOLE -->
-      <!-- ========================================== -->
-      <section class="dashboard-section" id="section-gps">
+      <!-- SECTION: CONTACT MESSAGES -->
+      <section class="dashboard-section" id="sec-messages">
         <div class="section-header">
-          <h3 class="section-title">Trip Leader GPS Console</h3>
+          <h3 class="section-title">Contact Forms Logs</h3>
         </div>
+        <div class="admin-table-wrap">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Message Content</th>
+              </tr>
+            </thead>
+            <tbody id="messages-table-body">
+              <!-- Injected messages -->
+            </tbody>
+          </table>
+        </div>
+      </section>
 
-        <div class="gps-console">
-          <div class="gps-grid">
-            <div class="gps-controls">
-              <div class="form-group">
-                <label>Select Your Active Trip Departure</label>
-                <select id="gps-trip-select" onchange="handleGpsTripChange()">
-                  <!-- Dynamically loaded -->
-                </select>
-              </div>
-              <div class="form-group">
-                <label>Trip Status State Update</label>
-                <select id="gps-status-select">
-                  <option value="STARTING">STARTING — Group Assembled</option>
-                  <option value="ON_ROUTE" selected>ON_ROUTE — Wading/Hiking Canyon</option>
-                  <option value="REACHED_DESTINATION">REACHED_DESTINATION — Summit Reached</option>
-                  <option value="RETURNING">RETURNING — Descent/Vehicle Journey</option>
-                  <option value="COMPLETED">COMPLETED — Back to station</option>
-                </select>
-              </div>
-              
-              <div style="display:flex; gap:15px; margin-top:10px;">
-                <button id="gps-start-btn" class="gps-btn gps-btn-start" onclick="startGpsTracking()">
-                  <i class="fa-solid fa-play"></i> Start Location Broadcast
-                </button>
-                <button id="gps-stop-btn" class="gps-btn gps-btn-stop" style="display:none;" onclick="stopGpsTracking()">
-                  <i class="fa-solid fa-square-poll-horizontal"></i> Stop Broadcast
-                </button>
-              </div>
-            </div>
-            
-            <div>
-              <div class="leader-title">GPS Broadcast Signal Logs</div>
-              <div class="gps-data-log" id="gps-logs-console">
-                [SYSTEM]: Select a trip and click Start Location Broadcast. Requires mobile GPS coordinates transmission permissions.
-              </div>
-            </div>
-          </div>
+      <!-- SECTION: NEWSLETTER SUBSCRIBERS -->
+      <section class="dashboard-section" id="sec-subscribers">
+        <div class="section-header">
+          <h3 class="section-title">Newsletter Subscriptions</h3>
+        </div>
+        <div class="admin-table-wrap" style="max-width:500px;">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>Subscription Date</th>
+                <th>Email Address</th>
+              </tr>
+            </thead>
+            <tbody id="subscribers-table-body">
+              <!-- Injected subscribers -->
+            </tbody>
+          </table>
         </div>
       </section>
 
     </main>
+
   </div>
 
-  <!-- Modal for Creating/Editing Treks -->
-  <div id="trek-form-modal" class="detail-modal">
-    <div class="detail-drawer" style="width: 600px; max-width: 90%;">
-      <div class="drawer-header">
-        <div>
-          <h2 id="trek-modal-title-text" style="font-size:1.4rem;">Add Adventure Trek</h2>
+  <!-- POPUP MODALS -->
+
+  <!-- Add/Edit Trek Modal -->
+  <div class="booking-form-modal" id="trek-form-modal">
+    <div class="booking-form-content" style="max-width:550px;">
+      <button class="booking-form-close" onclick="closeTrekFormModal()">&times;</button>
+      <h2 style="font-family:'Poppins'; margin-bottom:20px;">Manage Adventure Package</h2>
+      
+      <form id="trek-form-el" onsubmit="handleTrekFormSubmit(event)">
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px;">
+          <div>
+            <label style="font-size:0.75rem; color:var(--text-muted); display:block; margin-bottom:5px;">Unique ID Code</label>
+            <input type="text" id="form-trek-id" class="form-control" placeholder="kalsubai-peak" required>
+          </div>
+          <div>
+            <label style="font-size:0.75rem; color:var(--text-muted); display:block; margin-bottom:5px;">Adventure Title Name</label>
+            <input type="text" id="form-trek-title" class="form-control" placeholder="Kalsubai Peak Trek" required>
+          </div>
         </div>
-        <button onclick="closeTrekFormModal()" class="drawer-close"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-      <div class="drawer-body" style="padding: 20px;">
-        <form id="trek-admin-form" onsubmit="handleTrekFormSubmit(event)">
-          <div class="admin-form-grid">
-            <div class="form-group">
-              <label>Trek ID (String unique, e.g. "kalsubai")</label>
-              <input type="text" id="form-trek-id" required>
-            </div>
-            <div class="form-group">
-              <label>Trek Title</label>
-              <input type="text" id="form-trek-title" required>
-            </div>
-            <div class="form-group">
-              <label>Zone Location Label (e.g. "Maharashtra")</label>
-              <input type="text" id="form-trek-location" required>
-            </div>
-            <div class="form-group">
-              <label>Numeric Price (₹)</label>
-              <input type="number" id="form-trek-price" required>
-            </div>
-            <div class="form-group">
-              <label>Zone Slug (maharashtra / mp / himachal)</label>
-              <select id="form-trek-zone">
-                <option value="maharashtra">maharashtra</option>
-                <option value="mp">mp</option>
-                <option value="himachal">himachal</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Difficulty Rating</label>
-              <select id="form-trek-difficulty">
-                <option value="Easy">Easy</option>
-                <option value="Moderate">Moderate</option>
-                <option value="Challenging">Challenging</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Duration Label (e.g. "1 Day")</label>
-              <input type="text" id="form-trek-duration" required>
-            </div>
-            <div class="form-group">
-              <label>Elevation (e.g. "5,400 ft")</label>
-              <input type="text" id="form-trek-elevation" required>
-            </div>
-            <div class="form-group">
-              <label>Meeting Point Details</label>
-              <input type="text" id="form-trek-meeting" required>
-            </div>
-            <div class="form-group">
-              <label>Group Size Capacity</label>
-              <input type="text" id="form-trek-groupsize" value="15-20">
-            </div>
-            <div class="form-group full-width">
-              <label>Trek Short Pitch Description</label>
-              <textarea id="form-trek-desc" rows="3" required></textarea>
-            </div>
-            <div class="form-group full-width">
-              <label>Image Gallery Links (JSON Array of strings, or comma-separated)</label>
-              <input type="text" id="form-trek-images" value='["https://images.unsplash.com/photo-1544735716-392fe2489ffa?q=80&w=800"]'>
-            </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px;">
+          <div>
+            <label style="font-size:0.75rem; color:var(--text-muted); display:block; margin-bottom:5px;">Meeting Location</label>
+            <input type="text" id="form-trek-location" class="form-control" placeholder="Bari Village, Kasara" required>
           </div>
-          <div style="margin-top:20px; text-align:right;">
-            <button type="submit" class="btn btn-primary" style="padding:10px 24px;">Save Trek</button>
+          <div>
+            <label style="font-size:0.75rem; color:var(--text-muted); display:block; margin-bottom:5px;">Base Price Cost (₹)</label>
+            <input type="number" id="form-trek-price" class="form-control" placeholder="1400" required>
           </div>
-        </form>
-      </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-bottom:12px;">
+          <div>
+            <label style="font-size:0.75rem; color:var(--text-muted); display:block; margin-bottom:5px;">Region Zone</label>
+            <select id="form-trek-zone" class="form-control">
+              <option value="maharashtra">Maharashtra</option>
+              <option value="mp">Madhya Pradesh</option>
+              <option value="himachal">Himachal / Ladakh</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size:0.75rem; color:var(--text-muted); display:block; margin-bottom:5px;">Difficulty Level</label>
+            <select id="form-trek-difficulty" class="form-control">
+              <option value="Easy">Easy</option>
+              <option value="Moderate">Moderate</option>
+              <option value="Challenging">Challenging</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size:0.75rem; color:var(--text-muted); display:block; margin-bottom:5px;">Duration Details</label>
+            <input type="text" id="form-trek-duration" class="form-control" placeholder="1 Day" required>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; margin-bottom:15px;">
+          <div>
+            <label style="font-size:0.75rem; color:var(--text-muted); display:block; margin-bottom:5px;">Max Elevation</label>
+            <input type="text" id="form-trek-elevation" class="form-control" placeholder="5,400 ft" required>
+          </div>
+          <div>
+            <label style="font-size:0.75rem; color:var(--text-muted); display:block; margin-bottom:5px;">Max Group Size</label>
+            <input type="text" id="form-trek-groupsize" class="form-control" placeholder="30 Pax" required>
+          </div>
+          <div>
+            <label style="font-size:0.75rem; color:var(--text-muted); display:block; margin-bottom:5px;">Best Season</label>
+            <input type="text" id="form-trek-season" class="form-control" placeholder="Monsoons" required>
+          </div>
+        </div>
+
+        <div style="margin-bottom:12px;">
+          <label style="font-size:0.75rem; color:var(--text-muted); display:block; margin-bottom:5px;">Trek Meeting Point details</label>
+          <input type="text" id="form-trek-meeting" class="form-control" placeholder="Bari Village Base Camp" required>
+        </div>
+
+        <div style="margin-bottom:12px;">
+          <label style="font-size:0.75rem; color:var(--text-muted); display:block; margin-bottom:5px;">Gallery Image URL (Comma separated or json array)</label>
+          <input type="text" id="form-trek-images" class="form-control" placeholder='["https://..."]' required>
+        </div>
+
+        <div style="margin-bottom:20px;">
+          <label style="font-size:0.75rem; color:var(--text-muted); display:block; margin-bottom:5px;">Long Description Content</label>
+          <textarea id="form-trek-desc" class="form-control" style="height:80px; resize:none;" placeholder="Describe the trekking adventure..." required></textarea>
+        </div>
+
+        <button type="submit" class="btn" style="width:100%;">Save Adventure Package ➔</button>
+      </form>
     </div>
   </div>
 
-  <!-- Modal for Scheduling Departures -->
-  <div id="trip-form-modal" class="detail-modal">
-    <div class="detail-drawer" style="width: 450px; max-width: 90%;">
-      <div class="drawer-header">
-        <div>
-          <h2 style="font-size:1.4rem;">Schedule Trek Departure</h2>
+  <!-- Add Trip Departure Modal -->
+  <div class="booking-form-modal" id="trip-form-modal">
+    <div class="booking-form-content" style="max-width:400px;">
+      <button class="booking-form-close" onclick="closeTripFormModal()">&times;</button>
+      <h2 style="font-family:'Poppins'; margin-bottom:20px;">Schedule Departure</h2>
+      
+      <form id="trip-form-el" onsubmit="handleTripFormSubmit(event)">
+        <div style="margin-bottom:15px;">
+          <label style="font-size:0.75rem; color:var(--text-muted); display:block; margin-bottom:5px;">Select Trek Package</label>
+          <select id="form-trip-trek" class="form-control" required></select>
         </div>
-        <button onclick="closeTripFormModal()" class="drawer-close"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-      <div class="drawer-body" style="padding: 20px;">
-        <form id="trip-admin-form" onsubmit="handleTripFormSubmit(event)">
-          <div class="form-group">
-            <label>Select Trek Package</label>
-            <select id="form-trip-trek" required>
-              <!-- Populated dynamically -->
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Travel Departure Date</label>
-            <input type="date" id="form-trip-date" required>
-          </div>
-          <div class="form-group">
-            <label>Total Available Seats</label>
-            <input type="number" id="form-trip-seats" value="30" required>
-          </div>
-          <div class="form-group">
-            <label>Assign Trip Leader</label>
-            <select id="form-trip-leader">
-              <!-- Populated dynamically -->
-            </select>
-          </div>
-          <div style="margin-top:20px; text-align:right;">
-            <button type="submit" class="btn btn-primary" style="padding:10px 24px;">Publish Departure</button>
-          </div>
-        </form>
-      </div>
+        <div style="margin-bottom:15px;">
+          <label style="font-size:0.75rem; color:var(--text-muted); display:block; margin-bottom:5px;">Travel Date</label>
+          <input type="date" id="form-trip-date" class="form-control" required>
+        </div>
+        <div style="margin-bottom:15px;">
+          <label style="font-size:0.75rem; color:var(--text-muted); display:block; margin-bottom:5px;">Max Seat Capacity</label>
+          <input type="number" id="form-trip-seats" class="form-control" placeholder="30" required>
+        </div>
+        <div style="margin-bottom:20px;">
+          <label style="font-size:0.75rem; color:var(--text-muted); display:block; margin-bottom:5px;">Assign Trip Leader</label>
+          <select id="form-trip-leader" class="form-control" required></select>
+        </div>
+        
+        <button type="submit" class="btn" style="width:100%;">Publish Departure ➔</button>
+      </form>
     </div>
   </div>
 
   <!-- Scripts -->
   <script src="js/api.js"></script>
-  <script src="js/auth.js"></script>
-
   <script>
     let activeTab = 'dashboard';
-    let gpsWatchId = null;
+    let allPackages = [];
 
-    // Verify logged in admin/leader
     document.addEventListener('DOMContentLoaded', () => {
-      const user = window.api.getCurrentUser();
-      if (!user || (user.role !== 'ADMIN' && user.role !== 'LEADER')) {
-        alert('Access denied. Admin or Leader login required.');
-        window.location.href = 'index.html';
-        return;
-      }
-      
-      // Update welcome text
-      document.getElementById('welcome-title').textContent = `${user.role === 'ADMIN' ? 'Admin' : 'Leader'} Dashboard`;
-      document.getElementById('admin-user-tag').textContent = `Logged in as ${user.name} (${user.role})`;
-
-      // If leader, hide admin-only tabs
-      if (user.role === 'LEADER') {
-        document.getElementById('menu-treks').style.display = 'none';
-        document.getElementById('menu-trips').style.display = 'none';
-        document.getElementById('menu-bookings').style.display = 'none';
-        switchTab('gps');
-      } else {
-        // Load all data
-        loadDashboardData();
-      }
+      verifyAdminAuth();
+      loadDashboardData();
     });
 
-    function switchTab(tabId) {
-      activeTab = tabId;
-      document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
-      document.querySelectorAll('.dashboard-section').forEach(el => el.classList.remove('active'));
+    function verifyAdminAuth() {
+      const user = window.api.getCurrentUser();
+      if (!user || user.role !== 'ADMIN') {
+        alert('Access Denied. Admins Only.');
+        window.location.href = 'index.html';
+      } else {
+        document.getElementById('admin-user-name').textContent = user.name;
+      }
+    }
 
-      const menuMap = {
-        'dashboard': 'menu-dash',
-        'treks': 'menu-treks',
-        'trips': 'menu-trips',
-        'bookings': 'menu-bookings',
-        'gps': 'menu-gps'
+    function logoutAdmin() {
+      if (confirm('Are you sure you want to log out from Admin Console?')) {
+        window.api.logout();
+        window.location.href = 'index.html';
+      }
+    }
+
+    function switchTab(tabName) {
+      document.querySelectorAll('.sidebar-item').forEach(item => item.classList.remove('active'));
+      document.querySelectorAll('.dashboard-section').forEach(sec => sec.classList.remove('active'));
+
+      document.getElementById(`tab-${tabName}`).classList.add('active');
+      document.getElementById(`sec-${tabName}`).classList.add('active');
+      
+      activeTab = tabName;
+      const headers = {
+        'dashboard': 'Dashboard Overview',
+        'treks': 'Adventure Packages',
+        'trips': 'Upcoming Trip Departures',
+        'bookings': 'Customer Bookings',
+        'messages': 'Contact Forms Logs',
+        'subscribers': 'Newsletter Subscriptions'
       };
+      document.getElementById('panel-header-title').textContent = headers[tabName];
 
-      document.getElementById(menuMap[tabId]).classList.add('active');
-      document.getElementById(`section-${tabId}`).style.display = 'block';
-
-      // Load specific tab data
-      if (tabId === 'dashboard') loadDashboardData();
-      if (tabId === 'treks') loadTreksData();
-      if (tabId === 'trips') loadTripsData();
-      if (tabId === 'bookings') loadBookingsData();
-      if (tabId === 'gps') loadGpsPanelData();
+      if (tabName === 'dashboard') loadDashboardData();
+      if (tabName === 'treks') loadTreksData();
+      if (tabName === 'trips') loadTripsData();
+      if (tabName === 'bookings') loadBookingsData();
+      if (tabName === 'messages') loadMessagesData();
+      if (tabName === 'subscribers') loadSubscribersData();
     }
 
     // ==========================================
-    // DATA FETCHING & RENDERING
+    // RENDERERS & FETCHERS
     // ==========================================
 
     async function loadDashboardData() {
       try {
         const data = await window.api.getAdminStats();
         
-        // Render stats cards
-        document.getElementById('stat-revenue').textContent = `₹${data.stats.totalRevenue.toLocaleString()}`;
-        document.getElementById('stat-bookings').textContent = data.stats.totalBookingsCount;
+        // Stats
+        document.getElementById('stat-revenue').textContent = `₹${data.stats.totalRevenue.toLocaleString('en-IN')}`;
         document.getElementById('stat-customers').textContent = data.stats.totalCustomers;
-        document.getElementById('stat-active-trips').textContent = data.stats.activeTripsCount;
+        document.getElementById('stat-bookings').textContent = data.stats.totalBookingsCount;
+        document.getElementById('stat-live-trips').textContent = data.stats.liveTripsCount;
 
-        // Render recent bookings (pending ones)
-        const recentContainer = document.getElementById('dashboard-recent-bookings');
-        const pendingBookings = data.recentBookings.filter(b => b.status === 'PENDING');
+        // SOS alerts
+        const sosWrap = document.getElementById('sos-alert-wrap');
+        const sosList = document.getElementById('sos-alerts-list');
         
-        if (pendingBookings.length === 0) {
-          recentContainer.innerHTML = '<tr><td colspan="7" style="text-align:center; color:rgba(255,255,255,0.4);">No pending bookings! All confirmed.</td></tr>';
-        } else {
-          recentContainer.innerHTML = pendingBookings.map(b => `
-            <tr>
-              <td><strong>${b.id}</strong></td>
-              <td>${b.userName}<br><span style="font-size:0.8rem; color:rgba(255,255,255,0.45);">${b.userEmail}</span></td>
-              <td>${b.trekName}</td>
-              <td>${b.members}</td>
-              <td>₹${b.totalAmount.toLocaleString()}</td>
-              <td><span class="admin-badge badge-pending">PENDING</span></td>
-              <td>
-                <button class="action-btn btn-approve" onclick="approveBooking(${b.id})">Approve</button>
-                <button class="action-btn btn-cancel" onclick="cancelBooking(${b.id})">Cancel</button>
-              </td>
-            </tr>
+        if (data.activeSosAlerts.length > 0) {
+          sosWrap.style.display = 'block';
+          sosList.innerHTML = data.activeSosAlerts.map(sos => `
+            <div class="sos-item">
+              <div>
+                <strong>🚨 SOS on ${sos.trekName} (${sos.tripId})</strong>
+                <p style="font-size:0.75rem; margin-top:3px; color:var(--text-muted);">
+                  Leader: <strong>${sos.leaderName}</strong> (📞 ${sos.leaderPhone}) | Coordinates: ${sos.lat.toFixed(5)}, ${sos.lng.toFixed(5)}
+                </p>
+              </div>
+              <div style="display:flex; gap:10px;">
+                <a href="https://maps.google.com/?q=${sos.lat},${sos.lng}" target="_blank" class="action-btn" style="background:#fff; color:#000;"><i class="fa-solid fa-map-location-dot"></i> View on Maps</a>
+                <button class="action-btn btn-delete" onclick="resolveAdminSos('${sos.tripId}')">Resolve SOS</button>
+              </div>
+            </div>
           `).join('');
+        } else {
+          sosWrap.style.display = 'none';
         }
 
-        // Render inquiries
-        const msgContainer = document.getElementById('dashboard-recent-messages');
-        if (data.recentMessages.length === 0) {
-          msgContainer.innerHTML = '<tr><td colspan="4" style="text-align:center; color:rgba(255,255,255,0.4);">No contact inquiries found.</td></tr>';
+        // Live Trips List
+        const liveTripsListBody = document.getElementById('live-trips-list-body');
+        if (data.liveTripsList.length === 0) {
+          liveTripsListBody.innerHTML = '<tr><td colspan="8" style="text-align:center; color:var(--text-muted);">No live active trips currently.</td></tr>';
         } else {
-          msgContainer.innerHTML = data.recentMessages.map(m => `
-            <tr>
-              <td><strong>${m.name}</strong></td>
-              <td>${m.email}</td>
-              <td>${m.message}</td>
-              <td>${new Date(m.createdAt).toLocaleDateString('en-IN')}</td>
-            </tr>
-          `).join('');
+          liveTripsListBody.innerHTML = data.liveTripsList.map(t => {
+            const hasSos = data.activeSosAlerts.some(sos => sos.tripId === t.id);
+            const statusLabel = hasSos ? '⚠️ SOS ACTIVE' : getStatusLabel(t.status);
+            const statusClass = hasSos ? 'badge-cancelled' : getStatusClass(t.status);
+
+            return `
+              <tr>
+                <td><strong>${t.id}</strong></td>
+                <td>${t.trekName}</td>
+                <td>${t.leaderName} (📞 ${t.leaderPhone})</td>
+                <td><span class="admin-badge ${statusClass}">${statusLabel}</span></td>
+                <td>${t.speed || 0} km/h</td>
+                <td>${t.batteryLevel || 100}%</td>
+                <td>${t.eta || '--:--'}</td>
+                <td>
+                  <a href="track.html?tripId=${t.id}&token=${t.trackingToken}" target="_blank" class="action-btn" style="background:var(--primary); color:#000; font-weight:bold;">Track Live ➔</a>
+                </td>
+              </tr>
+            `;
+          }).join('');
         }
+
+        // Popular treks
+        const popularList = document.getElementById('popular-treks-list');
+        popularList.innerHTML = data.popularTreks.map((t, idx) => `
+          <li style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.02); padding-bottom:10px;">
+            <div>
+              <strong style="font-size:0.9rem;">#${idx+1} ${t.title}</strong>
+              <span style="font-size:0.75rem; color:var(--text-muted); display:block;">Unit Price: ₹${t.price.toLocaleString('en-IN')}</span>
+            </div>
+            <span class="admin-badge badge-confirmed" style="font-size:0.8rem;">${t.bookedSeats} seats booked</span>
+          </li>
+        `).join('');
 
       } catch (err) {
-        console.error('Error loading dashboard stats:', err);
+        alert('Failed to load Dashboard data: ' + err.message);
+      }
+    }
+
+    async function resolveAdminSos(tripId) {
+      if (!confirm('Mark this trip SOS emergency as RESOLVED?')) return;
+      try {
+        await window.api.resolveSos(tripId);
+        alert('Emergency SOS resolved successfully.');
+        loadDashboardData();
+      } catch (err) {
+        alert('Failed to resolve: ' + err.message);
       }
     }
 
     async function loadTreksData() {
-      try {
-        const treks = await window.api.getPackages();
-        const container = document.getElementById('treks-list-container');
+      const body = document.getElementById('treks-table-body');
+      body.innerHTML = '<tr><td colspan="7" style="text-align:center;">Loading...</td></tr>';
 
-        container.innerHTML = treks.map(t => `
+      try {
+        allPackages = await window.api.getPackages();
+        body.innerHTML = allPackages.map(p => `
           <tr>
-            <td><code>${t.id}</code></td>
-            <td><strong>${t.name}</strong></td>
-            <td>${t.zoneLabel}</td>
-            <td>${t.price}</td>
-            <td>${t.difficulty}</td>
-            <td>${t.duration}</td>
+            <td><strong>${p.id}</strong></td>
+            <td>${p.title}</td>
+            <td>${p.zone.toUpperCase()}</td>
+            <td>${p.location}</td>
+            <td><span class="admin-badge badge-ontrip">${p.difficulty}</span></td>
+            <td>₹${p.price.toLocaleString('en-IN')}</td>
             <td>
-              <button class="action-btn btn-cancel" onclick="deleteTrek('${t.id}')">Delete</button>
+              <button class="action-btn btn-dup" onclick="duplicatePackage('${p.id}')"><i class="fa-solid fa-copy"></i> Duplicate</button>
+              <button class="action-btn btn-delete" onclick="deleteTrek('${p.id}')"><i class="fa-solid fa-trash"></i> Delete</button>
             </td>
           </tr>
         `).join('');
@@ -827,82 +820,114 @@
       }
     }
 
+    async function duplicatePackage(trekId) {
+      if (!confirm('Are you sure you want to duplicate this adventure package?')) return;
+      try {
+        const trek = allPackages.find(t => t.id === trekId);
+        if (!trek) return;
+        
+        const newId = `${trek.id}-copy-${Math.random().toString(36).substring(2, 6)}`;
+        const newTitle = `${trek.title} (Copy)`;
+        
+        const payload = {
+          id: newId,
+          title: newTitle,
+          location: trek.location,
+          price: trek.price,
+          days: trek.days || '1 Day',
+          description: trek.description,
+          images: trek.images,
+          zone: trek.zone,
+          difficulty: trek.difficulty,
+          duration: trek.duration,
+          elevation: trek.elevation,
+          groupSize: trek.groupSize,
+          bestSeason: trek.bestSeason,
+          meetingPoint: trek.meetingPoint,
+          inclusions: trek.inclusions || '[]',
+          exclusions: trek.exclusions || '[]',
+          timeline: trek.timeline || '[]'
+        };
+        
+        await window.api.request('/packages', {
+          method: 'POST',
+          body: JSON.stringify(payload)
+        });
+        alert('Package duplicated successfully!');
+        loadTreksData();
+      } catch (err) {
+        alert('Duplication failed: ' + err.message);
+      }
+    }
+
     async function loadTripsData() {
+      const body = document.getElementById('trips-table-body');
+      body.innerHTML = '<tr><td colspan="7" style="text-align:center;">Loading...</td></tr>';
+
       try {
         const trips = await window.api.getAllTrips();
-        const container = document.getElementById('trips-list-container-tab');
-
-        container.innerHTML = trips.map(t => {
+        body.innerHTML = trips.map(t => {
           const dateStr = new Date(t.date).toLocaleDateString('en-IN', {
             day: 'numeric', month: 'short', year: 'numeric'
           });
 
-          let statusClass = 'badge-pending';
-          if (t.status === 'COMPLETED') statusClass = 'badge-confirm';
-          if (t.status === 'STARTING' || t.status === 'ON_ROUTE') statusClass = 'badge-pending';
-
-          const trackingLink = `track.html?tripId=${t.id}&token=${t.trackingToken}`;
-
           return `
             <tr>
-              <td><code>${t.id}</code></td>
-              <td><strong>${t.trek.title}</strong></td>
+              <td><strong>${t.id}</strong></td>
+              <td>${t.trek.title}</td>
               <td>${dateStr}</td>
-              <td>${t.bookedSeats} / ${t.totalSeats}</td>
-              <td><span class="admin-badge ${statusClass}">${t.status}</span></td>
+              <td><strong>${t.bookedSeats}</strong> / ${t.totalSeats} seats</td>
+              <td>${t.tripLeader ? t.tripLeader.name : '<span style="color:var(--danger)">Unassigned</span>'}</td>
+              <td><span class="admin-badge ${getStatusClass(t.status)}">${getStatusLabel(t.status)}</span></td>
               <td>
-                <a href="${trackingLink}" target="_blank" style="color:var(--accent-amber); font-size:0.85rem;">
-                  Track Live Coords ➔
-                </a>
-              </td>
-              <td>
-                <select onchange="updateTripStatus('${t.id}', this.value)" style="background:#111; color:#fff; border:1px solid #333; padding:5px; border-radius:4px; font-size:0.8rem;">
-                  <option value="">Update Status</option>
-                  <option value="UPCOMING">UPCOMING</option>
-                  <option value="STARTING">STARTING</option>
-                  <option value="ON_ROUTE">ON_ROUTE</option>
-                  <option value="REACHED_DESTINATION">REACHED_DESTINATION</option>
-                  <option value="RETURNING">RETURNING</option>
-                  <option value="COMPLETED">COMPLETED</option>
+                <select class="form-control" style="padding:6px; font-size:0.8rem; background:var(--bg); color:#fff;" onchange="updateTripStatus('${t.id}', this.value)">
+                  <option value="">-- Toggle Status --</option>
+                  <option value="UPCOMING">Upcoming</option>
+                  <option value="STARTING">Starting</option>
+                  <option value="ON_ROUTE">On Route</option>
+                  <option value="REACHED_DESTINATION">At Destination</option>
+                  <option value="RETURNING">Returning</option>
+                  <option value="COMPLETED">Completed</option>
                 </select>
               </td>
             </tr>
           `;
         }).join('');
       } catch (err) {
-        alert('Error loading trips: ' + err.message);
+        alert('Error loading departures: ' + err.message);
       }
     }
 
     async function loadBookingsData() {
+      const body = document.getElementById('bookings-table-body');
+      body.innerHTML = '<tr><td colspan="8" style="text-align:center;">Loading...</td></tr>';
+
       try {
         const bookings = await window.api.getAllBookings();
-        const container = document.getElementById('all-bookings-list');
-
-        container.innerHTML = bookings.map(b => {
-          const dateStr = new Date(b.trip.date).toLocaleDateString('en-IN', {
-            day: 'numeric', month: 'short'
-          });
-          const statusClass = b.status === 'CONFIRMED' ? 'badge-confirm' : (b.status === 'CANCELLED' ? 'badge-cancel' : 'badge-pending');
-          const isPaid = b.payments && b.payments.some(p => p.paymentStatus === 'PAID');
-
+        body.innerHTML = bookings.map(b => {
+          const dateStr = new Date(b.createdAt).toLocaleDateString('en-IN');
           return `
             <tr>
-              <td><strong>${b.id}</strong></td>
-              <td>${b.user.name}</td>
-              <td>${b.user.phone}</td>
-              <td>${b.trip.trek.title} (${dateStr})</td>
-              <td>${b.members}</td>
-              <td>₹${b.totalAmount.toLocaleString()}</td>
-              <td><span class="admin-badge ${statusClass}">${b.status}</span></td>
-              <td><span class="admin-badge ${isPaid ? 'badge-confirm' : 'badge-cancel'}">${isPaid ? 'PAID' : 'UNPAID'}</span></td>
+              <td><strong>#${b.id}</strong></td>
               <td>
-                ${b.status === 'PENDING' ? `
-                  <button class="action-btn btn-approve" onclick="approveBooking(${b.id})">Approve</button>
-                  <button class="action-btn btn-cancel" onclick="cancelBooking(${b.id})">Cancel</button>
-                ` : `
-                  <span style="color:rgba(255,255,255,0.3); font-size:0.8rem;">No actions</span>
-                `}
+                <strong>${b.user.name}</strong><br>
+                <span style="font-size:0.75rem; color:var(--text-muted);">📧 ${b.user.email} | 📞 ${b.user.phone}</span>
+              </td>
+              <td>${b.trip.trek.title} (${b.tripId})</td>
+              <td>${dateStr}</td>
+              <td><strong>${b.members}</strong> Pax</td>
+              <td>₹${b.totalAmount.toLocaleString('en-IN')}</td>
+              <td><span class="admin-badge ${getBookingBadgeClass(b.status)}">${b.status}</span></td>
+              <td>
+                <select class="form-control" style="padding:6px; font-size:0.8rem; background:var(--bg); color:#fff;" onchange="updateBookingStatus('${b.id}', this.value)">
+                  <option value="">-- Set Status --</option>
+                  <option value="PENDING">Pending</option>
+                  <option value="CONFIRMED">Confirmed</option>
+                  <option value="CHECKED_IN">Checked In</option>
+                  <option value="ON_TRIP">On Trip</option>
+                  <option value="COMPLETED">Completed</option>
+                  <option value="CANCELLED">Cancelled</option>
+                </select>
               </td>
             </tr>
           `;
@@ -912,58 +937,18 @@
       }
     }
 
-    async function loadGpsPanelData() {
+    async function updateBookingStatus(bookingId, status) {
+      if (!status) return;
       try {
-        const trips = await window.api.getAllTrips();
-        const select = document.getElementById('gps-trip-select');
-        const user = window.api.getCurrentUser();
-
-        // Filter: If user is Leader, only show trips assigned to them.
-        const myTrips = user.role === 'ADMIN' ? trips : trips.filter(t => t.tripLeaderId === user.id);
-
-        select.innerHTML = '<option value="">-- Choose Trip Departure --</option>' + myTrips.map(t => {
-          const dateStr = new Date(t.date).toLocaleDateString('en-IN');
-          return `<option value="${t.id}">${t.trek.title} [${dateStr}] (${t.id})</option>`;
-        }).join('');
+        await window.api.request(`/bookings/${bookingId}/status`, {
+          method: 'PUT',
+          body: JSON.stringify({ status })
+        });
+        alert(`Booking status updated to ${status}.`);
+        loadBookingsData();
       } catch (err) {
-        alert('Error loading GPS console trips list: ' + err.message);
-      }
-    }
-
-    function handleGpsTripChange() {
-      const logBox = document.getElementById('gps-logs-console');
-      const tripId = document.getElementById('gps-trip-select').value;
-      if (!tripId) {
-        logBox.innerHTML = '[SYSTEM]: Select a trip to start location broadcast.';
-        return;
-      }
-      logBox.innerHTML = `[SYSTEM]: Selected Trip: ${tripId}. Ready to start broadcast signal.`;
-    }
-
-    // ==========================================
-    // BUSINESS ACTIONS
-    // ==========================================
-
-    async function approveBooking(id) {
-      try {
-        await window.api.updateBookingStatus(id, 'CONFIRMED');
-        alert('Booking approved successfully!');
-        if (activeTab === 'dashboard') loadDashboardData();
-        if (activeTab === 'bookings') loadBookingsData();
-      } catch (err) {
-        alert('Failed to approve: ' + err.message);
-      }
-    }
-
-    async function cancelBooking(id) {
-      if (!confirm('Are you sure you want to cancel this booking?')) return;
-      try {
-        await window.api.updateBookingStatus(id, 'CANCELLED');
-        alert('Booking cancelled.');
-        if (activeTab === 'dashboard') loadDashboardData();
-        if (activeTab === 'bookings') loadBookingsData();
-      } catch (err) {
-        alert('Failed to cancel: ' + err.message);
+        alert('Failed to update booking status: ' + err.message);
+        loadBookingsData();
       }
     }
 
@@ -986,13 +971,53 @@
         loadTripsData();
       } catch (err) {
         alert('Failed to update status: ' + err.message);
+        loadTripsData();
       }
     }
 
-    // ==========================================
-    // MODAL HANDLERS
-    // ==========================================
+    async function loadMessagesData() {
+      const body = document.getElementById('messages-table-body');
+      body.innerHTML = '<tr><td colspan="4" style="text-align:center;">Loading...</td></tr>';
 
+      try {
+        const msgs = await window.api.getContactMessages();
+        body.innerHTML = msgs.map(m => {
+          const dateStr = new Date(m.createdAt).toLocaleDateString('en-IN');
+          return `
+            <tr>
+              <td>${dateStr}</td>
+              <td>${m.name}</td>
+              <td>${m.email}</td>
+              <td>${m.message}</td>
+            </tr>
+          `;
+        }).join('');
+      } catch (err) {
+        alert('Error loading messages: ' + err.message);
+      }
+    }
+
+    async function loadSubscribersData() {
+      const body = document.getElementById('subscribers-table-body');
+      body.innerHTML = '<tr><td colspan="2" style="text-align:center;">Loading...</td></tr>';
+
+      try {
+        const subs = await window.api.getNewsletterSubscribers();
+        body.innerHTML = subs.map(s => {
+          const dateStr = new Date(s.createdAt).toLocaleDateString('en-IN');
+          return `
+            <tr>
+              <td>${dateStr}</td>
+              <td>${s.email}</td>
+            </tr>
+          `;
+        }).join('');
+      } catch (err) {
+        alert('Error loading subscribers: ' + err.message);
+      }
+    }
+
+    // Modal Helpers
     window.openTrekFormModal = function() {
       document.getElementById('trek-form-modal').classList.add('open');
       document.body.classList.add('modal-open');
@@ -1005,12 +1030,10 @@
 
     window.openTripFormModal = async function() {
       try {
-        // Load treks for select options
         const treks = await window.api.getPackages();
         const trekSelect = document.getElementById('form-trip-trek');
-        trekSelect.innerHTML = treks.map(t => `<option value="${t.id}">${t.name} (${t.id})</option>`).join('');
+        trekSelect.innerHTML = treks.map(t => `<option value="${t.id}">${t.title} (${t.id})</option>`).join('');
 
-        // Load leaders
         const stats = await window.api.getAdminStats();
         const leaderSelect = document.getElementById('form-trip-leader');
         leaderSelect.innerHTML = stats.leaders.map(l => `<option value="${l.id}">${l.name}</option>`).join('');
@@ -1039,6 +1062,7 @@
       const elevation = document.getElementById('form-trek-elevation').value;
       const meetingPoint = document.getElementById('form-trek-meeting').value;
       const groupSize = document.getElementById('form-trek-groupsize').value;
+      const bestSeason = document.getElementById('form-trek-season').value;
       const description = document.getElementById('form-trek-desc').value;
       
       let images = [];
@@ -1047,9 +1071,9 @@
 
       try {
         await window.api.createPackage({
-          id, title, location, price, description, images, zone, difficulty, duration, elevation, meetingPoint, groupSize
+          id, title, location, price, description, images, zone, difficulty, duration, elevation, meetingPoint, groupSize, bestSeason
         });
-        alert('Trek created successfully!');
+        alert('Trek package created successfully!');
         closeTrekFormModal();
         loadTreksData();
       } catch (err) {
@@ -1074,76 +1098,36 @@
       }
     }
 
-    // ==========================================
-    // LIVE GPS GEOLOCATION BROADCASTER
-    // ==========================================
-
-    window.startGpsTracking = function() {
-      const tripId = document.getElementById('gps-trip-select').value;
-      const logBox = document.getElementById('gps-logs-console');
-      const statusSelect = document.getElementById('gps-status-select');
-
-      if (!tripId) {
-        alert('Please choose a trip departure first.');
-        return;
-      }
-
-      if (!navigator.geolocation) {
-        logBox.innerHTML += '\n[ERROR]: Geolocation API is not supported by your browser.';
-        return;
-      }
-
-      logBox.innerHTML = `[SYSTEM]: Initiating GPS watch signal for trip ${tripId}...`;
-      document.getElementById('gps-start-btn').style.display = 'none';
-      document.getElementById('gps-stop-btn').style.display = 'inline-flex';
-
-      // Setup GPS tracking options
-      const geoOptions = {
-        enableHighAccuracy: true,
-        timeout: 10000,
-        maximumAge: 0
+    function getStatusLabel(status) {
+      const labels = {
+        'UPCOMING': 'Upcoming',
+        'STARTING': 'Starting',
+        'ON_ROUTE': 'On Route',
+        'REACHED_DESTINATION': 'At Destination',
+        'RETURNING': 'Returning',
+        'COMPLETED': 'Completed'
       };
+      return labels[status] || status;
+    }
 
-      // WatchPosition triggers every time user moves
-      gpsWatchId = navigator.geolocation.watchPosition(
-        async (position) => {
-          const lat = position.coords.latitude;
-          const lng = position.coords.longitude;
-          const status = statusSelect.value;
-          const timestamp = new Date().toLocaleTimeString();
+    function getStatusClass(status) {
+      if (status === 'COMPLETED') return 'badge-completed';
+      if (status === 'UPCOMING') return 'badge-pending';
+      return 'badge-confirmed';
+    }
 
-          logBox.innerHTML += `\n[${timestamp}] Located: Lat ${lat.toFixed(5)}, Lng ${lng.toFixed(5)}. Sending...`;
-          logBox.scrollTop = logBox.scrollHeight;
-
-          try {
-            await window.api.updateTripLocation(tripId, lat, lng, status);
-            logBox.innerHTML += ` OK. Transmitted status: ${status}`;
-          } catch (err) {
-            logBox.innerHTML += ` FAILED: ${err.message}`;
-          }
-          logBox.scrollTop = logBox.scrollHeight;
-        },
-        (error) => {
-          logBox.innerHTML += `\n[ERROR]: GPS Error code ${error.code}: ${error.message}`;
-          logBox.scrollTop = logBox.scrollHeight;
-        },
-        geoOptions
-      );
-    };
-
-    window.stopGpsTracking = function() {
-      const logBox = document.getElementById('gps-logs-console');
-      if (gpsWatchId !== null) {
-        navigator.geolocation.clearWatch(gpsWatchId);
-        gpsWatchId = null;
-      }
-
-      logBox.innerHTML += '\n[SYSTEM]: Location broadcast stopped.';
-      logBox.scrollTop = logBox.scrollHeight;
-
-      document.getElementById('gps-start-btn').style.display = 'inline-flex';
-      document.getElementById('gps-stop-btn').style.display = 'none';
-    };
+    function getBookingBadgeClass(status) {
+      const classes = {
+        'PENDING': 'badge-pending',
+        'CONFIRMED': 'badge-confirmed',
+        'CHECKED_IN': 'badge-checkedin',
+        'ON_TRIP': 'badge-ontrip',
+        'COMPLETED': 'badge-completed',
+        'CANCELLED': 'badge-cancelled'
+      };
+      return classes[status] || 'badge-pending';
+    }
   </script>
+
 </body>
 </html>

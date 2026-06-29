@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Explore Adventures — The Rising Stars</title>
+  
+  <!-- Fonts & Stylesheet references -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;800&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/map.css">
+
+  <style>
+    :root {
+      --bg: #080808;
+      --card-bg: #121212;
+      --primary: #FF8A00;
+      --primary-gold: #FFB347;
+      --accent: #FFD700;
+      --text: #FFFFFF;
+      --text-muted: #B5B5B5;
+      --success: #00D084;
+      --glass-border: rgba(255, 255, 255, 0.05);
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* Transparent Navigation Bar */
+    .nav-bar-premium {
+      background: rgba(8, 8, 8, 0.7);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--glass-border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    /* Marketplace Layout */
+    .marketplace-container {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 30px;
+      padding: 40px 0;
+    }
+
+    @media (max-width: 900px) {
+      .marketplace-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Premium Filter Sidebar */
+    .filter-sidebar {
+      background: var(--card-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 25px;
+      height: fit-content;
+      position: sticky;
+      top: 100px;
+    }
+
+    .filter-group {
+      margin-bottom: 25px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      padding-bottom: 20px;
+    }
+
+    .filter-group:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .filter-title {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-bottom: 15px;
+      color: var(--primary-gold);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+
+    .checkbox-label:hover {
+      color: var(--text);
+    }
+
+    .checkbox-label input {
+      accent-color: var(--primary);
+    }
+
+    /* Price Range slider */
+    .price-range-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .price-slider-el {
+      width: 100%;
+      accent-color: var(--primary);
+    }
+
+    .price-values {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* Marketplace Header */
+    .market-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .market-title h1 {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 800;
+      font-size: 2.2rem;
+      background: linear-gradient(135deg, #fff, #888);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .market-title p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-top: 5px;
+    }
+
+    .results-count {
+      font-size: 0.85rem;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 6px 12px;
+      border-radius: 20px;
+      border: 1px solid var(--glass-border);
+      color: var(--text-muted);
+    }
+
+    /* Grid cards */
+    .adventures-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 25px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sky fixed backdrop -->
+  <div class="sky-scroll-bg">
+    <div class="stars-overlay"></div>
+  </div>
+
+  <div id="site-wrapper">
+
+    <!-- Premium Nav Bar -->
+    <nav class="nav-bar-premium">
+      <div class="container nav-content">
+        <a href="index.html" class="logo-wrap" style="text-decoration:none;">
+          <span class="logo-text">THE RISING STARS <span style="color:var(--primary);">★</span></span>
+        </a>
+        <div class="nav-links-wrap" id="nav-links-container">
+          <a href="index.html" class="nav-link-item">Home</a>
+          <a href="treks.html" class="nav-link-item active">Adventures</a>
+          <a href="index.html#reviews" class="nav-link-item">Reviews</a>
+          <a href="index.html#contact" class="nav-link-item">Contact</a>
+          <!-- Auth buttons will be injected by auth.js -->
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Marketplace Section -->
+    <main class="container marketplace-container">
+      
+      <!-- Glass Sidebar Filters -->
+      <aside class="filter-sidebar">
+        
+        <!-- Category Filter -->
+        <div class="filter-group">
+          <div class="filter-title">Activity Category</div>
+          <label class="checkbox-label">
+            <input type="checkbox" class="category-filter" value="trek" checked>
+            <span>🏔️ Trekking</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" class="category-filter" value="camp" checked>
+            <span>🏕️ Camping</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" class="category-filter" value="cycle" checked>
+            <span>🚴 Cycling & Hikes</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" class="category-filter" value="kayak" checked>
+            <span>🛶 Kayaking / Water</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" class="category-filter" value="bike" checked>
+            <span>🏍️ Bike Expeditions</span>
+          </label>
+        </div>
+
+        <!-- Difficulty Filter -->
+        <div class="filter-group">
+          <div class="filter-title">Difficulty Level</div>
+          <label class="checkbox-label">
+            <input type="checkbox" class="difficulty-filter" value="easy" checked>
+            <span>Easy</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" class="difficulty-filter" value="moderate" checked>
+            <span>Moderate</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" class="difficulty-filter" value="challenging" checked>
+            <span>Challenging</span>
+          </label>
+        </div>
+
+        <!-- Region/Zone Filter -->
+        <div class="filter-group">
+          <div class="filter-title">Region Territory</div>
+          <label class="checkbox-label">
+            <input type="checkbox" class="zone-filter" value="maharashtra" checked>
+            <span>Maharashtra</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" class="zone-filter" value="mp" checked>
+            <span>Madhya Pradesh</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="checkbox" class="zone-filter" value="himachal" checked>
+            <span>Himachal & Ladakh</span>
+          </label>
+        </div>
+
+        <!-- Price Range Slider -->
+        <div class="filter-group">
+          <div class="filter-title">Max Price Budget</div>
+          <div class="price-range-wrap">
+            <input type="range" class="price-slider-el" id="price-slider" min="1000" max="30000" value="30000">
+            <div class="price-values">
+              <span>₹1,000</span>
+              <span id="price-slider-val" style="color:var(--primary); font-weight:bold;">₹30,000</span>
+            </div>
+          </div>
+        </div>
+
+      </aside>
+
+      <!-- Adventures listing grid -->
+      <section class="adventure-list-wrapper">
+        
+        <div class="market-header">
+          <div class="market-title">
+            <h1>Adventure Marketplace</h1>
+            <p>Select your next adrenaline-fueled premium outdoor experience.</p>
+          </div>
+          <div class="results-count" id="results-counter">0 Results</div>
+        </div>
+
+        <div class="adventures-grid" id="packages-grid-container">
+          <!-- Dynamic cards will be drawn by app.js -->
+        </div>
+
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- Injected Popup Modal Markups (Booking, Auth, details modal) -->
+  
+  <!-- 1. DETAIL MODAL -->
+  <div class="trek-modal-overlay" id="global-trek-modal">
+    <div class="trek-modal-content">
+      <button class="modal-close-btn" id="modal-close-btn">&times;</button>
+      
+      <!-- Top Image Carousel -->
+      <div class="modal-gallery-wrap">
+        <div class="modal-gallery-slides" id="modal-gallery-slides"></div>
+        <button class="gallery-nav-btn prev" id="gallery-prev">&#10094;</button>
+        <button class="gallery-nav-btn next" id="gallery-next">&#10095;</button>
+      </div>
+
+      <div class="modal-body-grid">
+        <div class="modal-main-column">
+          <div class="modal-header-meta">
+            <span class="modal-zone-tag" id="modal-zone-tag">SAHYADRIS</span>
+            <span class="trek-difficulty-badge easy" id="modal-difficulty-badge">EASY</span>
+          </div>
+          <h2 class="modal-title-el" id="modal-title">Kalsubai Peak Trek</h2>
+          
+          <div class="specs-grid-blocks">
+            <div class="spec-block"><span class="lbl">Duration</span><strong id="spec-duration">1 Day</strong></div>
+            <div class="spec-block"><span class="lbl">Altitude</span><strong id="spec-elevation">5,400 ft</strong></div>
+            <div class="spec-block"><span class="lbl">Max Group</span><strong id="spec-group">30 Pax</strong></div>
+            <div class="spec-block"><span class="lbl">Best Season</span><strong id="spec-season">Monsoon</strong></div>
+          </div>
+
+          <div class="trek-tabs-wrap">
+            <h3 style="font-family:'Poppins'; margin-bottom:10px;">About this Adventure</h3>
+            <p class="trek-long-desc" id="modal-long-desc">Trek details...</p>
+          </div>
+
+          <div class="timeline-container">
+            <h3 style="font-family:'Poppins'; margin-bottom:15px; border-left:3px solid var(--primary); padding-left:10px;">Itinerary Plan</h3>
+            <div class="timeline-trail" id="modal-timeline"></div>
+          </div>
+        </div>
+
+        <div class="modal-sticky-sidebar">
+          <div class="inclusions-exclusion-box">
+            <h3 style="font-family:'Poppins'; margin-bottom:15px; font-size:1rem;">Inclusions / Exclusions</h3>
+            <div class="inc-grid-list" id="modal-inclusions"></div>
+          </div>
+          <div class="meeting-point-box" style="margin-top:15px; padding:15px; background:rgba(255,255,255,0.02); border:1px solid var(--glass-border); border-radius:12px;">
+            <h4 style="font-family:'Poppins'; font-size:0.85rem; color:var(--primary-gold); margin-bottom:5px;">📍 Meeting Location</h4>
+            <p id="spec-meeting" style="font-size:0.8rem; color:var(--text-muted);"></p>
+          </div>
+
+          <!-- Reviews listing -->
+          <div class="reviews-box-sidebar" style="margin-top:20px;">
+            <h3 style="font-family:'Poppins'; font-size:1.1rem; margin-bottom:15px; display:flex; justify-content:space-between; align-items:center;">
+              <span>Community Reviews</span>
+            </h3>
+            <div class="reviews-simple-list" id="modal-reviews-list"></div>
+            
+            <!-- Add Review form -->
+            <form id="trek-review-form" style="display:none; margin-top:15px; padding-top:15px; border-top:1px dashed var(--glass-border);">
+              <h4 style="font-size:0.85rem; margin-bottom:8px;">Share your experience:</h4>
+              <div style="display:flex; gap:10px; margin-bottom:8px;">
+                <label style="font-size:0.75rem; color:var(--text-muted); align-self:center;">Rating:</label>
+                <select id="review-rating" style="background:var(--bg); color:var(--text); border:1px solid var(--glass-border); padding:3px; border-radius:4px;">
+                  <option value="5">⭐⭐⭐⭐⭐</option>
+                  <option value="4">⭐⭐⭐⭐</option>
+                  <option value="3">⭐⭐⭐</option>
+                  <option value="2">⭐⭐</option>
+                  <option value="1">⭐</option>
+                </select>
+              </div>
+              <textarea id="review-comment" placeholder="Write your review here..." required style="width:100%; height:60px; background:rgba(0,0,0,0.2); border:1px solid var(--glass-border); border-radius:6px; color:#fff; padding:8px; font-size:0.8rem; outline:none; resize:none; margin-bottom:8px;"></textarea>
+              <button type="submit" class="btn" style="padding:6px 12px; font-size:0.8rem; width:auto; display:inline-block;">Post Review</button>
+            </form>
+            <div id="review-auth-prompt" style="font-size:0.8rem; color:var(--text-muted); text-align:center; padding:10px 0; display:block;">
+              🔒 Please <a href="#" onclick="window.openAuthModal(event)" style="color:var(--primary); text-decoration:underline;">login</a> to write a review.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="modal-footer-pricing">
+        <div>
+          <span style="font-size:0.75rem; color:var(--text-muted); display:block; text-transform:uppercase;">Price per seat</span>
+          <strong class="modal-price-val" id="modal-footer-price">₹1,400</strong>
+        </div>
+        <div class="modal-action-buttons">
+          <a href="#" class="whatsapp-direct-btn" id="modal-whatsapp-btn" target="_blank">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>
+            <span>WhatsApp</span>
+          </a>
+          <button class="book-now-orange-btn" id="modal-online-book-btn">Book Online ➔</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. BOOKING FORM MODAL -->
+  <div class="booking-form-modal" id="booking-form-modal">
+    <div class="booking-form-content">
+      <button class="booking-form-close" id="booking-form-close-btn">&times;</button>
+      <h2 id="booking-form-title" style="font-family:'Poppins'; margin-bottom:15px;">Book Adventure</h2>
+      
+      <div style="background:rgba(255,255,255,0.02); border:1px solid var(--glass-border); padding:15px; border-radius:10px; margin-bottom:20px; display:flex; justify-content:space-between; align-items:center;">
+        <div>
+          <span style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase;">Unit Cost</span>
+          <strong id="booking-price-head" style="font-size:1.2rem; color:var(--primary-gold); display:block;">₹1,400</strong>
+        </div>
+        <div style="text-align:right;">
+          <span style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase;">Subtotal Cost</span>
+          <strong id="booking-price-total" style="font-size:1.4rem; color:var(--primary); display:block;">₹1,400</strong>
+        </div>
+      </div>
+
+      <form id="booking-form-el">
+        <div style="margin-bottom:15px;">
+          <label style="font-size:0.8rem; color:var(--text-muted); display:block; margin-bottom:6px; font-weight:600;">Choose Travel Departure Date</label>
+          <select id="booking-date-select" class="form-control" style="background:#080808; border-color:var(--glass-border); color:#fff;" required></select>
+        </div>
+        <div style="margin-bottom:20px;">
+          <label style="font-size:0.8rem; color:var(--text-muted); display:block; margin-bottom:6px; font-weight:600;">Trekkers Head Count</label>
+          <input type="number" id="booking-members" class="form-control" style="background:#080808; border-color:var(--glass-border); color:#fff;" min="1" max="10" value="1" oninput="calculateBookingCosts()" required>
+        </div>
+        <div id="booking-error-msg" style="color:var(--danger); font-size:0.85rem; margin-bottom:15px;"></div>
+        <button type="submit" class="btn" style="width:100%;">Confirm Reservation ➔</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 3. AUTH MODAL -->
+  <div class="auth-modal-overlay" id="auth-modal">
+    <div class="auth-modal-content">
+      <button class="auth-modal-close" id="auth-close-btn">&times;</button>
+      
+      <!-- Login Form tab -->
+      <div id="auth-login-tab" style="display:block;">
+        <h2 style="font-family:'Poppins'; font-weight:800; font-size:1.8rem; margin-bottom:5px;">Welcome Back</h2>
+        <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:20px;">Login to manage treks, check bookings, and track live coordinates.</p>
+        
+        <form id="auth-login-form">
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" id="login-email" class="form-control" required placeholder="user@gmail.com">
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="login-password" class="form-control" required placeholder="••••••••">
+          </div>
+          <div id="login-form-error" style="color:var(--danger); font-size:0.85rem; margin-bottom:12px;"></div>
+          <button type="submit" class="btn">Login Securely ➔</button>
+        </form>
+        <p style="font-size:0.85rem; color:var(--text-muted); text-align:center; margin-top:20px;">
+          Don't have an account? <a href="#" onclick="toggleAuthTabs('signup')" style="color:var(--primary); font-weight:bold;">Sign Up</a>
+        </p>
+      </div>
+
+      <!-- Signup Form tab -->
+      <div id="auth-signup-tab" style="display:none;">
+        <h2 style="font-family:'Poppins'; font-weight:800; font-size:1.8rem; margin-bottom:5px;">Join The Stars</h2>
+        <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:20px;">Create your account to unlock online adventure bookings.</p>
+        
+        <form id="auth-signup-form">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" id="signup-name" class="form-control" required placeholder="Rahul Sharma">
+          </div>
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" id="signup-email" class="form-control" required placeholder="rahul@gmail.com">
+          </div>
+          <div class="form-group">
+            <label>Phone Number</label>
+            <input type="tel" id="signup-phone" class="form-control" required placeholder="9373011627">
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="signup-password" class="form-control" required placeholder="••••••••">
+          </div>
+          <div id="signup-form-error" style="color:var(--danger); font-size:0.85rem; margin-bottom:12px;"></div>
+          <button type="submit" class="btn">Register Account ➔</button>
+        </form>
+        <p style="font-size:0.85rem; color:var(--text-muted); text-align:center; margin-top:20px;">
+          Already have an account? <a href="#" onclick="toggleAuthTabs('login')" style="color:var(--primary); font-weight:bold;">Log In</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. MY BOOKINGS DASHBOARD MODAL -->
+  <div class="auth-modal-overlay" id="my-bookings-modal">
+    <div class="auth-modal-content" style="max-width:600px; padding:30px;">
+      <button class="auth-modal-close" id="bookings-close-btn">&times;</button>
+      <h2 style="font-family:'Poppins'; font-weight:800; font-size:1.8rem; margin-bottom:5px;">My Reservations</h2>
+      <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:20px;">Track your live coordinates, payments, and trip photos here.</p>
+      
+      <div id="bookings-list-wrap" style="display:flex; flex-direction:column; gap:15px; max-height:400px; overflow-y:auto; padding-right:5px;">
+        <!-- Injected list of customer bookings -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. PAYMENT SIMULATION MODAL -->
+  <div class="auth-modal-overlay" id="simulation-payment-modal" style="z-index: 1000;">
+    <div class="auth-modal-content" style="max-width: 380px; text-align: center;">
+      <h2 style="font-family:'Poppins'; margin-bottom:10px;">💳 Gateway Simulation</h2>
+      <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:20px;">Secure sandbox booking transaction payment simulation.</p>
+      
+      <div style="background:rgba(255,255,255,0.02); border:1px solid var(--glass-border); padding:15px; border-radius:10px; margin-bottom:20px;">
+        <span style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase;">Amount Payable</span>
+        <strong id="payment-amount-val" style="font-size:1.8rem; color:var(--primary); display:block;">₹1,400</strong>
+        <span style="font-size:0.75rem; color:var(--text-muted); margin-top:5px; display:block;">Booking Ref ID: <strong id="payment-booking-id">#123</strong></span>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <button class="btn" id="btn-payment-success" style="background:var(--success);">Simulate Success (Paid)</button>
+        <button class="btn btn-secondary" id="btn-payment-failed" style="color:var(--danger); border-color:rgba(255,77,77,0.3);">Simulate Failure</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  
+  <script>
+    // Marketplace Page Logic
+    let allPackages = [];
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadMarketplaceData();
+      bindFilters();
+    });
+
+    async function loadMarketplaceData() {
+      const container = document.getElementById('packages-grid-container');
+      container.innerHTML = '<div style="color:var(--text-muted); grid-column:1/-1; text-align:center; padding:50px 0;">Loading packages...</div>';
+
+      try {
+        allPackages = await window.api.getPackages();
+        renderFilteredPackages();
+      } catch (err) {
+        console.warn('Backend offline, running static fallback.', err);
+        // Fallback to static TREKS_DATA if api fails
+        if (window.TREKS_DATA) {
+          allPackages = window.TREKS_DATA.map(t => ({
+            id: t.id,
+            title: t.name,
+            location: t.meetingPoint,
+            price: parseFloat(t.price.replace(/[^\d.]/g, '')),
+            difficulty: t.difficulty,
+            duration: t.duration,
+            bestSeason: t.bestSeason,
+            zone: t.zoneLabel.toLowerCase().includes('maharashtra') ? 'maharashtra' : t.zoneLabel.toLowerCase().includes('pradesh') ? 'mp' : 'himachal',
+            images: JSON.stringify(t.gallery),
+            upcomingTrips: t.upcomingTrips || []
+          }));
+          renderFilteredPackages();
+        }
+      }
+    }
+
+    function bindFilters() {
+      // Inputs
+      document.querySelectorAll('.category-filter, .difficulty-filter, .zone-filter').forEach(el => {
+        el.addEventListener('change', renderFilteredPackages);
+      });
+
+      const priceSlider = document.getElementById('price-slider');
+      const priceVal = document.getElementById('price-slider-val');
+      
+      priceSlider.addEventListener('input', (e) => {
+        priceVal.textContent = `₹${parseInt(e.target.value).toLocaleString('en-IN')}`;
+        renderFilteredPackages();
+      });
+    }
+
+    function renderFilteredPackages() {
+      const container = document.getElementById('packages-grid-container');
+      const counter = document.getElementById('results-counter');
+      
+      // Selected values
+      const categories = Array.from(document.querySelectorAll('.category-filter:checked')).map(el => el.value);
+      const difficulties = Array.from(document.querySelectorAll('.difficulty-filter:checked')).map(el => el.value);
+      const zones = Array.from(document.querySelectorAll('.zone-filter:checked')).map(el => el.value);
+      const maxPrice = parseFloat(document.getElementById('price-slider').value) || 30000;
+
+      // Filter logic
+      const filtered = allPackages.filter(p => {
+        // Map packages dynamically to category ( treks default )
+        // Some mock title checks to diversify types
+        let pCat = 'trek';
+        const titleL = p.title.toLowerCase();
+        if (titleL.includes('camp') || titleL.includes('safari') || titleL.includes('valley')) pCat = 'camp';
+        if (titleL.includes('cycle') || titleL.includes('bike') || titleL.includes('ride')) pCat = 'cycle';
+        if (titleL.includes('kayak') || titleL.includes('raft') || titleL.includes('river')) pCat = 'kayak';
+        if (titleL.includes('expedition') || titleL.includes('motorcycle')) pCat = 'bike';
+
+        const matchCat = categories.includes(pCat);
+        const matchDiff = difficulties.includes(p.difficulty.toLowerCase());
+        const matchZone = zones.includes(p.zone.toLowerCase());
+        const matchPrice = p.price <= maxPrice;
+
+        return matchCat && matchDiff && matchZone && matchPrice;
+      });
+
+      counter.textContent = `${filtered.length} Results`;
+
+      if (filtered.length === 0) {
+        container.innerHTML = '<div style="color:var(--text-muted); grid-column:1/-1; text-align:center; padding:50px 0;">No matching adventures found. Try adjusting filters.</div>';
+        return;
+      }
+
+      container.innerHTML = filtered.map(p => {
+        let gallery = [];
+        try { gallery = JSON.parse(p.images); } catch (e) {}
+        const image = gallery[0] || 'https://images.unsplash.com/photo-1501555088652-021faa106b9b?auto=format&fit=crop&w=600&q=80';
+        
+        return `
+          <div class="trek-card" data-discover="true">
+            <div class="trek-img-wrap" style="background-image: url('${image}')">
+              <span class="trek-difficulty-badge ${p.difficulty.toLowerCase()}">${p.difficulty}</span>
+            </div>
+            <div class="trek-card-body">
+              <h3 class="trek-title">${p.title}</h3>
+              <p class="trek-meta-row">
+                <span>📍 ${p.location}</span>
+                <span>⏱️ ${p.duration}</span>
+              </p>
+              <div class="trek-card-footer">
+                <span class="price-lbl">₹${p.price.toLocaleString('en-IN')}</span>
+                <button class="explore-btn" onclick="window.openTrekDetailModal('${p.id}')">Explore</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+  </script>
+
+</body>
+</html>

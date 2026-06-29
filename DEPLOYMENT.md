@@ -1,14 +1,16 @@
 # 🚀 The Rising Stars - Complete Click-by-Click Deployment Guide
 
-Project runs under the **Example 1** folder structure:
+Project runs under the following structure:
 ```text
 The rising star/
   ├── index.html        (Frontend Home)
-  ├── track.html         (Parent Map Tracking)
-  ├── admin.html         (Admin Dashboard & GPS console)
+  ├── treks.html        (Adventure Activity Marketplace)
+  ├── track.html        (Parent Map Telemetry & SOS Overlay)
+  ├── admin.html        (Admin Dashboard & departures Schedule)
+  ├── leader.html       (Mobile Leader Console - GPS Broadcaster, attendance checklist, SOS alerts, memories uploader)
   ├── js/
   ├── css/
-  └── backend/           (Node.js + Express API + Prisma)
+  └── backend/           (Node.js + Express API + Prisma + Neon PostgreSQL)
 ```
 
 ---
@@ -18,31 +20,43 @@ The rising star/
 Since Git is installed, open **Command Prompt** or **PowerShell** inside `The rising star` folder and run:
 
 ```bash
-# 1. Set your identity (if not already set globally)
-git config user.name "Shashank"
-git config user.email "your-email@example.com"
-
-# 2. Initialize and commit
+# 1. Initialize and commit
 git init
 git add .
-git commit -m "Initial commit - The Rising Stars v1.5 with Live GPS Tracking"
+git commit -m "Upgrade to v2.0 - Adventure Marketplace, Leader App, SOS Alert system, Live Telemetry"
 git branch -M main
 
-# 3. Create a blank repository named "therisingstars" on github.com
-# Then, connect and push:
-git remote add origin https://github.com/YOUR_GITHUB_USERNAME/therisingstars.git
+# 2. Push to your repository:
+git remote add origin https://github.com/therisingstarsadventure-ctrl/therisingstaradventure.git
 git push -u origin main
 ```
 
 ---
 
-## 🐘 Step 2: Create Neon PostgreSQL Database
+## 🐘 Step 2: Configure Neon PostgreSQL & Migrations
 
-1. Go to [Neon.tech](https://neon.tech/) and sign up / log in.
-2. Click **Create Project**. Name it `therisingstars` and select your nearest region.
-3. Once created, copy the connection string under **Connection Details** (make sure **Prisma** or **PostgreSQL** is selected).
-   - It will look like: `postgresql://neondb_owner:PASSWORD@ep-random-string.us-east-2.aws.neon.tech/neondb?sslmode=require`
-   - Keep this URL safe!
+1. Go to [Neon.tech](https://neon.tech/) and log in.
+2. Under Connection Details, copy the database connection URL.
+3. In `backend/.env`, configure the variable:
+   ```env
+   DATABASE_URL="postgresql://neondb_owner:PASSWORD@ep-random-string.us-east-2.aws.neon.tech/neondb?sslmode=require"
+   JWT_SECRET="therisingstars_ultra_secure_premium_adventure_jwt_token_key_2026"
+   PORT=5000
+   ```
+4. Run migrations and seed data locally (ensure nodemon is stopped first to avoid DLL locks):
+   ```bash
+   cd backend
+   # Sync Neon database schema
+   npx prisma db push
+   
+   # Populate seeded default mock users, 21 packages, departures, reviews
+   node src/utils/seed.js
+   ```
+
+### Seeded Credentials:
+- **Admin**: `admin@risingstars.com` | Password: `adminpassword`
+- **Leader**: `leader@risingstars.com` | Password: `leaderpassword`
+- **Customer**: `rahul@gmail.com` | Password: `customerpassword`
 
 ---
 
@@ -50,29 +64,24 @@ git push -u origin main
 
 1. Go to [Railway.app](https://railway.app/) and log in.
 2. Click **New Project** ➔ **Deploy from GitHub repo** ➔ Select `therisingstaradventure`.
-3. Before it builds, click on the newly created card and go to **Settings**:
-   - Scroll down to the **Root Directory** setting.
-   - Change it from `/` to `/backend`. (This tells Railway to ignore the frontend code and build the Node/Express server inside the `backend` folder).
-4. Go to **Variables** tab and click **New Variable** to add:
-   - `DATABASE_URL` = *(Your Neon PostgreSQL connection string from Step 2)*
+3. In service **Settings**:
+   - Change **Root Directory** from `/` to `/backend`.
+4. Under **Variables**, add:
+   - `DATABASE_URL` = *(Your Neon PostgreSQL connection string)*
    - `JWT_SECRET` = `therisingstars_ultra_secure_premium_adventure_jwt_token_key_2026`
    - `NODE_ENV` = `production`
    - `PORT` = `5000`
-5. Go to **Settings** tab, scroll down to **Environment / Custom Domains**, and click **Add Domain** to connect: `api.therisingstarsadventures.org`.
-6. Click **Deploy**.
+5. Go to **Settings** tab, scroll to **Environment / Custom Domains**, and click **Add Domain**: `api.therisingstarsadventures.org`.
 
 ---
 
 ## ⚡ Step 4: Deploy Frontend on Vercel
 
 1. Go to [Vercel.com](https://vercel.com/) and log in.
-2. Click **Add New** ➔ **Project** ➔ Import the `therisingstaradventure` repository from GitHub.
-3. In the project setup screen:
-   - **Framework Preset**: Leave as `Other` (or static HTML/CSS).
-   - **Root Directory**: Keep as `./` (the root).
-   - Under Build & Development settings, keep everything blank.
+2. Click **Add New** ➔ **Project** ➔ Import the `therisingstaradventure` repository.
+3. In the project setup screen, keep root directory as `./` (root).
 4. Click **Deploy**.
-5. Once deployment is complete, go to project settings, click **Domains**, and add your custom domain: `therisingstarsadventures.org` (and `www.therisingstarsadventures.org`).
+5. Once complete, go to project settings, click **Domains**, and add your custom domain: `therisingstarsadventures.org` (and `www.therisingstarsadventures.org`).
 
 ---
 

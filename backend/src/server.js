@@ -12,7 +12,7 @@ const server = app.listen(PORT, () => {
 🌐 The Rising Stars Backend Server Running
 🔌 Port: ${PORT}
 🌍 Mode: ${process.env.NODE_ENV || 'development'}
-🤖 Database: SQLite via Prisma ORM
+🤖 Database: Neon PostgreSQL via Prisma ORM
 🎯 Base Endpoint: http://localhost:${PORT}/
 🚀 ===================================================
   `);

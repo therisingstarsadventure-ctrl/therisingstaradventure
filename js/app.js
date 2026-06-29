@@ -225,7 +225,28 @@ function initFeaturedTreksFilter() {
   window.api.getPackages()
     .then(packages => {
       if (packages && packages.length > 0) {
-        activeTreksData = packages;
+        activeTreksData = packages.map(p => {
+          let gallery = [];
+          try {
+            gallery = typeof p.images === 'string' ? JSON.parse(p.images) : p.images;
+          } catch(e) {
+            gallery = [p.images || 'https://images.unsplash.com/photo-1501555088652-021faa106b9b?auto=format&fit=crop&w=600&q=80'];
+          }
+          return {
+            id: p.id,
+            name: p.title,
+            zone: p.zone,
+            zoneLabel: p.zone === 'maharashtra' ? 'Sahyadris' : p.zone === 'mp' ? 'Satpura' : 'Himalayas',
+            difficulty: p.difficulty || 'Easy',
+            duration: p.duration || '1 Day',
+            elevation: p.elevation || 'N/A',
+            price: `₹${p.price.toLocaleString('en-IN')}`,
+            gallery: gallery,
+            meetingPoint: p.meetingPoint,
+            bestSeason: p.bestSeason,
+            description: p.description
+          };
+        });
         renderTrekCards(activeTreksData);
       }
     })
@@ -627,7 +648,7 @@ function renderTrekReviews(reviews) {
 // Booking form modal operations
 let currentBookingTrekPrice = 0;
 
-function openBookingFormModal(trek) {
+async function openBookingFormModal(trek) {
   const modal = document.getElementById('booking-form-modal');
   if (!modal) return;
 
@@ -644,7 +665,15 @@ function openBookingFormModal(trek) {
 
   // Populate travel dates dropdown from upcoming departures
   const dateSelect = document.getElementById('booking-date-select');
-  const upcomingTrips = trek.upcomingTrips || [];
+  let upcomingTrips = trek.upcomingTrips || [];
+
+  if (upcomingTrips.length === 0 && window.api && typeof window.api.getUpcomingTrips === 'function') {
+    try {
+      upcomingTrips = await window.api.getUpcomingTrips();
+    } catch (err) {
+      console.warn('Unable to load upcoming trips for booking form.', err);
+    }
+  }
 
   if (upcomingTrips.length === 0) {
     dateSelect.innerHTML = '<option value="">No departures scheduled</option>';

@@ -21,13 +21,27 @@ const allowedOrigins = (process.env.CORS_ORIGINS || 'https://therisingstarsadven
   .map(origin => origin.trim())
   .filter(Boolean);
 
+const allowDynamicOrigin = (origin) => {
+  if (!origin) return true; // server-to-server or same-origin requests
+  if (allowedOrigins.includes(origin)) return true;
+  if (origin.endsWith('.vercel.app')) return true;
+  if (origin.startsWith('http://localhost') || origin.startsWith('http://127.0.0.1') || origin.startsWith('http://0.0.0.0')) return true;
+  return false;
+};
+
 // 1. Security & Logger Middlewares
 app.use(helmet({
   crossOriginResourcePolicy: false // Allow loading maps & fonts in development
 }));
 
 app.use(cors({
-  origin: allowedOrigins,
+  origin: (origin, callback) => {
+    if (allowDynamicOrigin(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error(`CORS blocked by origin: ${origin}`));
+    }
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
@@ -69,6 +83,11 @@ tripRouter.post('/', verifyToken, isAdmin, trips.createTrip);
 tripRouter.put('/:id', verifyToken, isAdmin, trips.updateTripStatus);
 tripRouter.put('/:id/location', verifyToken, isLeader, trips.updateTripLocation);
 tripRouter.get('/:id/track', trips.getLiveLocation);
+tripRouter.post('/:id/sos', verifyToken, isLeader, trips.triggerSos);
+tripRouter.post('/:id/sos/resolve', verifyToken, isLeader, trips.resolveSos);
+tripRouter.post('/:id/photos', verifyToken, isLeader, trips.uploadTripPhotos);
+tripRouter.get('/:id/photos', trips.getTripPhotos);
+tripRouter.get('/:id/attendees', verifyToken, isLeader, trips.getTripAttendees);
 app.use('/api/trips', tripRouter);
 
 // 5. Booking Routes
@@ -77,6 +96,7 @@ bookingRouter.post('/', verifyToken, bookings.createBooking);
 bookingRouter.get('/my', verifyToken, bookings.getMyBookings);
 bookingRouter.get('/', verifyToken, isAdmin, bookings.getAllBookings);
 bookingRouter.put('/:id', verifyToken, isAdmin, bookings.updateBookingStatus);
+bookingRouter.put('/:id/status', verifyToken, isLeader, bookings.updateBookingStatus);
 app.use('/api/bookings', bookingRouter);
 
 // 6. Payment Routes

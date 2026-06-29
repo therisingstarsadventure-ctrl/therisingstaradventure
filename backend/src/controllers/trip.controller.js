@@ -64,10 +64,14 @@ export const getLiveLocation = async (req, res, next) => {
       return res.status(404).json({ message: 'Trip not found.' });
     }
 
-    // Verify token matches
     if (trip.trackingToken !== token) {
       return res.status(403).json({ message: 'Access denied. Invalid tracking token.' });
     }
+
+    // Check if there is an active SOS alert
+    const activeSos = await prisma.sosAlert.findFirst({
+      where: { tripId: id, status: 'ACTIVE' }
+    });
 
     res.json({
       tripId: trip.id,
@@ -80,7 +84,11 @@ export const getLiveLocation = async (req, res, next) => {
       status: trip.status,
       currentLat: trip.currentLat,
       currentLng: trip.currentLng,
-      lastLocationUpdate: trip.lastLocationUpdate
+      lastLocationUpdate: trip.lastLocationUpdate,
+      speed: trip.speed,
+      batteryLevel: trip.batteryLevel,
+      eta: trip.eta,
+      hasActiveSos: !!activeSos
     });
   } catch (error) {
     next(error);
@@ -90,7 +98,7 @@ export const getLiveLocation = async (req, res, next) => {
 export const updateTripLocation = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { lat, lng, status } = req.body;
+    const { lat, lng, status, speed, batteryLevel, eta } = req.body;
 
     if (lat === undefined || lng === undefined) {
       return res.status(400).json({ message: 'Latitude (lat) and Longitude (lng) are required.' });
@@ -101,7 +109,6 @@ export const updateTripLocation = async (req, res, next) => {
       return res.status(404).json({ message: 'Trip not found.' });
     }
 
-    // Verify that the logged in user is either admin or the assigned trip leader
     if (req.user.role !== 'ADMIN' && trip.tripLeaderId !== req.user.id) {
       return res.status(403).json({ message: 'Forbidden. You are not the leader of this trip.' });
     }
@@ -113,11 +120,20 @@ export const updateTripLocation = async (req, res, next) => {
     };
 
     if (status) {
-      // Validate status
       const validStatuses = ['UPCOMING', 'STARTING', 'ON_ROUTE', 'REACHED_DESTINATION', 'RETURNING', 'COMPLETED'];
       if (validStatuses.includes(status)) {
         updateData.status = status;
       }
+    }
+
+    if (speed !== undefined) {
+      updateData.speed = parseFloat(speed);
+    }
+    if (batteryLevel !== undefined) {
+      updateData.batteryLevel = parseInt(batteryLevel);
+    }
+    if (eta !== undefined) {
+      updateData.eta = eta;
     }
 
     const updatedTrip = await prisma.trip.update({
@@ -135,8 +151,141 @@ export const updateTripLocation = async (req, res, next) => {
       status: updatedTrip.status,
       currentLat: updatedTrip.currentLat,
       currentLng: updatedTrip.currentLng,
-      lastLocationUpdate: updatedTrip.lastLocationUpdate
+      lastLocationUpdate: updatedTrip.lastLocationUpdate,
+      speed: updatedTrip.speed,
+      batteryLevel: updatedTrip.batteryLevel,
+      eta: updatedTrip.eta
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const triggerSos = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { lat, lng } = req.body;
+
+    const trip = await prisma.trip.findUnique({ where: { id } });
+    if (!trip) {
+      return res.status(404).json({ message: 'Trip not found.' });
+    }
+
+    if (req.user.role !== 'ADMIN' && trip.tripLeaderId !== req.user.id) {
+      return res.status(403).json({ message: 'Forbidden.' });
+    }
+
+    const sos = await prisma.sosAlert.create({
+      data: {
+        tripId: id,
+        lat: parseFloat(lat !== undefined ? lat : trip.currentLat),
+        lng: parseFloat(lng !== undefined ? lng : trip.currentLng),
+        status: 'ACTIVE'
+      }
+    });
+
+    res.json({ message: 'SOS Alert triggered successfully!', alert: sos });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const resolveSos = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const trip = await prisma.trip.findUnique({ where: { id } });
+    if (!trip) {
+      return res.status(404).json({ message: 'Trip not found.' });
+    }
+
+    if (req.user.role !== 'ADMIN' && trip.tripLeaderId !== req.user.id) {
+      return res.status(403).json({ message: 'Forbidden.' });
+    }
+
+    await prisma.sosAlert.updateMany({
+      where: { tripId: id, status: 'ACTIVE' },
+      data: { status: 'RESOLVED' }
+    });
+
+    res.json({ message: 'SOS Alerts marked as resolved.' });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const uploadTripPhotos = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { urls } = req.body; // Array of hosted photo URLs
+
+    if (!urls || !Array.isArray(urls)) {
+      return res.status(400).json({ message: 'An array of photo urls is required.' });
+    }
+
+    const trip = await prisma.trip.findUnique({ where: { id } });
+    if (!trip) {
+      return res.status(404).json({ message: 'Trip not found.' });
+    }
+
+    if (req.user.role !== 'ADMIN' && trip.tripLeaderId !== req.user.id) {
+      return res.status(403).json({ message: 'Forbidden.' });
+    }
+
+    const photosData = urls.map(url => ({
+      tripId: id,
+      url
+    }));
+
+    await prisma.tripPhoto.createMany({
+      data: photosData
+    });
+
+    res.json({ message: 'Trip photos uploaded successfully!' });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getTripPhotos = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const photos = await prisma.tripPhoto.findMany({
+      where: { tripId: id },
+      orderBy: { createdAt: 'desc' }
+    });
+
+    res.json(photos);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getTripAttendees = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const trip = await prisma.trip.findUnique({ where: { id } });
+    if (!trip) {
+      return res.status(404).json({ message: 'Trip not found.' });
+    }
+
+    if (req.user.role !== 'ADMIN' && trip.tripLeaderId !== req.user.id) {
+      return res.status(403).json({ message: 'Forbidden.' });
+    }
+
+    const bookings = await prisma.booking.findMany({
+      where: { tripId: id },
+      include: {
+        user: {
+          select: { name: true, email: true, phone: true }
+        }
+      },
+      orderBy: { createdAt: 'desc' }
+    });
+
+    res.json(bookings);
   } catch (error) {
     next(error);
   }
@@ -150,13 +299,11 @@ export const createTrip = async (req, res, next) => {
       return res.status(400).json({ message: 'trekId, date, and totalSeats are required.' });
     }
 
-    // Check if trek exists
     const trek = await prisma.trek.findUnique({ where: { id: trekId } });
     if (!trek) {
       return res.status(404).json({ message: 'Trek package not found.' });
     }
 
-    // Generate unique TRIP-ID
     const tripId = `TRIP-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
     const trackingToken = `TR-TOKEN-${trekId}-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
 

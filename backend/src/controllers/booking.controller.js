@@ -107,10 +107,11 @@ export const getAllBookings = async (req, res, next) => {
 export const updateBookingStatus = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { status } = req.body; // CONFIRMED, CANCELLED
+    const { status } = req.body;
 
-    if (!status || !['CONFIRMED', 'CANCELLED'].includes(status)) {
-      return res.status(400).json({ message: 'Invalid status. Must be CONFIRMED or CANCELLED.' });
+    const validStatuses = ['PENDING', 'CONFIRMED', 'CHECKED_IN', 'ON_TRIP', 'COMPLETED', 'CANCELLED'];
+    if (!status || !validStatuses.includes(status)) {
+      return res.status(400).json({ message: `Invalid status. Must be one of: ${validStatuses.join(', ')}` });
     }
 
     const booking = await prisma.booking.findUnique({
@@ -122,22 +123,22 @@ export const updateBookingStatus = async (req, res, next) => {
       return res.status(404).json({ message: 'Booking not found.' });
     }
 
-    // Handle seat logic adjustments on state changes
+    const isSeatOccupying = (s) => ['CONFIRMED', 'CHECKED_IN', 'ON_TRIP', 'COMPLETED'].includes(s);
+    const oldOccupying = isSeatOccupying(booking.status);
+    const newOccupying = isSeatOccupying(status);
+
     let bookedSeatsAdjustment = 0;
-    
-    if (booking.status !== 'CONFIRMED' && status === 'CONFIRMED') {
-      // Transitioning to confirmed -> increase booked seats
+    if (!oldOccupying && newOccupying) {
       bookedSeatsAdjustment = booking.members;
-    } else if (booking.status === 'CONFIRMED' && status === 'CANCELLED') {
-      // Transitioning from confirmed to cancelled -> decrease booked seats
+    } else if (oldOccupying && !newOccupying) {
       bookedSeatsAdjustment = -booking.members;
     }
 
-    // Check availability if confirming
+    // Check availability if confirming/occupying seats
     if (bookedSeatsAdjustment > 0) {
       const remaining = booking.trip.totalSeats - booking.trip.bookedSeats;
       if (bookedSeatsAdjustment > remaining) {
-        return res.status(400).json({ message: `Cannot confirm. Not enough seats. Only ${remaining} available.` });
+        return res.status(400).json({ message: `Cannot update status. Not enough seats. Only ${remaining} available.` });
       }
     }
 
