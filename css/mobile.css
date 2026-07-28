@@ -1,0 +1,888 @@
+/* ============================================================
+   THE RISING STARS — MOBILE RESPONSIVE OVERRIDES
+   Covers all pages: index.html, treks.html, admin.html
+   Breakpoints: 1024px, 768px, 480px, 360px
+   ============================================================ */
+
+/* ======== GLOBAL MOBILE BASE ======== */
+@media (max-width: 768px) {
+  html { font-size: 15px; }
+
+  .container {
+    padding: 0 16px;
+    max-width: 100%;
+  }
+
+  section, .section {
+    padding: 60px 5% !important;
+  }
+
+  .section-header {
+    margin-bottom: 36px;
+  }
+
+  .section-header h2 {
+    font-size: clamp(1.6rem, 6vw, 2.2rem) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  html { font-size: 14px; }
+
+  section, .section {
+    padding: 48px 4% !important;
+  }
+}
+
+/* ======== NAVBAR ======== */
+@media (max-width: 768px) {
+  #navbar {
+    padding: 0 4%;
+  }
+
+  .nav-inner {
+    height: 60px;
+  }
+
+  .nav-logo {
+    font-size: 0.95rem;
+  }
+
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background: rgba(8, 8, 8, 0.98);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: 20px 5%;
+    gap: 6px;
+    border-bottom: 1px solid rgba(255, 138, 0, 0.15);
+    z-index: 999;
+    max-height: calc(100vh - 60px);
+    overflow-y: auto;
+  }
+
+  .nav-links.open {
+    display: flex;
+  }
+
+  .nav-links a {
+    font-size: 1rem;
+    padding: 12px 16px;
+    border-radius: 10px;
+    transition: background 0.2s, color 0.2s;
+    width: 100%;
+    display: block;
+  }
+
+  .nav-links a:hover {
+    background: rgba(255, 138, 0, 0.08);
+  }
+
+  .btn-nav {
+    margin-top: 8px;
+    padding: 12px 20px !important;
+    font-size: 0.9rem !important;
+    display: block;
+    text-align: center;
+    border-radius: 10px !important;
+  }
+
+  .hamburger {
+    display: flex;
+    z-index: 1001;
+  }
+}
+
+/* ======== HERO SECTION ======== */
+@media (max-width: 768px) {
+  .hero {
+    padding-top: 60px;
+    min-height: 100svh;
+  }
+
+  .hero-content {
+    padding: 0 16px;
+  }
+
+  .hero-title {
+    font-size: clamp(2.2rem, 9vw, 3.5rem) !important;
+    line-height: 1.1 !important;
+    letter-spacing: -0.5px !important;
+  }
+
+  .hero-sub {
+    font-size: 0.95rem !important;
+    margin-bottom: 28px !important;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.65rem !important;
+    letter-spacing: 2px !important;
+    margin-bottom: 16px !important;
+  }
+
+  .hero-btns {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 36px !important;
+  }
+
+  .hero-btns .btn-primary,
+  .hero-btns .btn-ghost,
+  .hero-btns a {
+    width: 100%;
+    max-width: 300px;
+    text-align: center;
+    padding: 14px 24px;
+    font-size: 0.9rem;
+  }
+
+  .hero-stats {
+    gap: 12px;
+    padding: 16px 20px;
+    border-radius: 14px;
+    flex-wrap: wrap;
+    justify-content: space-around;
+  }
+
+  .hstat span {
+    font-size: 1.3rem !important;
+  }
+
+  .hstat p {
+    font-size: 0.65rem !important;
+  }
+
+  .hstat-div {
+    display: none !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: clamp(2rem, 10vw, 3rem) !important;
+  }
+
+  .hero-stats {
+    padding: 12px 16px;
+    gap: 8px;
+  }
+}
+
+/* ======== STATS BAR ======== */
+@media (max-width: 768px) {
+  .stats-bar-section {
+    margin-top: 0 !important;
+    padding: 40px 4%;
+  }
+
+  .stats-container {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 20px !important;
+    padding: 24px 20px !important;
+  }
+
+  .stat-num {
+    font-size: 2.4rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-container {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 16px !important;
+    padding: 20px 16px !important;
+  }
+
+  .stat-num {
+    font-size: 2rem !important;
+  }
+
+  .stat-label {
+    font-size: 0.72rem !important;
+  }
+}
+
+/* ======== ADVENTURE ZONES ======== */
+@media (max-width: 992px) {
+  .zones-grid {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+
+  .zone-card {
+    height: 360px !important;
+  }
+
+  .zone-title {
+    font-size: 2rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .zone-card {
+    height: 320px !important;
+    padding: 28px 24px !important;
+  }
+
+  .zone-title {
+    font-size: 1.7rem !important;
+  }
+}
+
+/* ======== TREK CARDS GRID ======== */
+@media (max-width: 992px) {
+  .treks-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 20px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .treks-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  .trek-card {
+    height: 400px !important;
+  }
+
+  .trek-card-title {
+    font-size: 1.8rem !important;
+  }
+
+  .trek-card-action {
+    transform: translateY(0) translateZ(30px) !important;
+    opacity: 1 !important;
+  }
+}
+
+/* ======== TREK DETAIL DRAWER ======== */
+@media (max-width: 992px) {
+  .detail-drawer {
+    width: 85vw !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .detail-drawer {
+    width: 100vw !important;
+    border-radius: 0 !important;
+    border-left: none !important;
+  }
+
+  .drawer-header {
+    padding: 20px 24px !important;
+  }
+
+  .drawer-header-title h2 {
+    font-size: 2rem !important;
+  }
+
+  .drawer-body {
+    padding: 24px !important;
+  }
+
+  .specs-row {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+  }
+
+  .spec-block-val {
+    font-size: 1.2rem !important;
+  }
+
+  .inclusions-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .drawer-footer {
+    flex-direction: column !important;
+    gap: 16px !important;
+    align-items: stretch !important;
+    text-align: center !important;
+    padding: 20px 24px !important;
+  }
+
+  .drawer-footer-price .val {
+    font-size: 1.8rem !important;
+  }
+
+  .modal-gallery-wrap {
+    height: 240px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .drawer-header-title h2 {
+    font-size: 1.6rem !important;
+  }
+
+  .specs-row {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .spec-block {
+    padding: 14px 10px !important;
+  }
+}
+
+/* ======== GALLERY ======== */
+@media (max-width: 768px) {
+  .horizontal-gallery-section {
+    padding: 60px 4% 40px !important;
+  }
+
+  .horizontal-slide-panel {
+    flex: 0 0 260px !important;
+    height: 340px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .horizontal-slide-panel {
+    flex: 0 0 230px !important;
+    height: 300px !important;
+  }
+
+  .slide-panel-content {
+    padding: 10px 14px !important;
+    bottom: 12px !important;
+    left: 12px !important;
+    right: 12px !important;
+  }
+
+  .slide-panel-content h3 {
+    font-size: 1rem !important;
+  }
+}
+
+/* ======== FILTER TABS ======== */
+@media (max-width: 768px) {
+  .filter-tabs {
+    gap: 8px !important;
+    margin-bottom: 32px !important;
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    flex-wrap: nowrap;
+    scrollbar-width: none;
+  }
+
+  .filter-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .filter-tab {
+    flex-shrink: 0;
+    padding: 8px 16px !important;
+    font-size: 0.78rem !important;
+  }
+}
+
+/* ======== UPCOMING EXPEDITIONS ======== */
+@media (max-width: 992px) {
+  .expedition-card {
+    flex: 0 0 calc(50% - 15px) !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .expedition-card {
+    flex: 0 0 85vw !important;
+    height: auto !important;
+    min-height: 260px;
+  }
+
+  .exp-top h4 {
+    font-size: 1.5rem !important;
+  }
+}
+
+/* ======== TESTIMONIALS ======== */
+@media (max-width: 768px) {
+  .testimonials-section {
+    padding: 60px 5% !important;
+  }
+
+  .testimonials-carousel {
+    height: auto !important;
+    min-height: 320px;
+  }
+
+  .testimonial-slide {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+  }
+
+  .test-quote {
+    font-size: 1.05rem !important;
+    line-height: 1.65 !important;
+  }
+}
+
+/* ======== TRUST GRID ======== */
+@media (max-width: 992px) {
+  .trust-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .trust-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  .trust-block {
+    padding: 32px 24px !important;
+  }
+}
+
+/* ======== CTA SECTION ======== */
+@media (max-width: 768px) {
+  .cta-section {
+    height: auto !important;
+    padding: 80px 5% !important;
+  }
+
+  .cta-content h2 {
+    font-size: clamp(2.2rem, 8vw, 3.5rem) !important;
+  }
+
+  .cta-content p {
+    font-size: 1rem !important;
+  }
+
+  .cta-buttons {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 12px !important;
+  }
+
+  .cta-buttons .btn {
+    width: 100%;
+    max-width: 280px;
+    justify-content: center;
+  }
+}
+
+/* ======== MIDPOINT / TRANSITION SECTION ======== */
+@media (max-width: 768px) {
+  .transition-midpoint-section {
+    height: 40vh !important;
+  }
+
+  .midpoint-overlay-content h2 {
+    font-size: 2.4rem !important;
+  }
+
+  .midpoint-overlay-content p {
+    font-size: 1rem !important;
+  }
+}
+
+/* ======== FOOTER ======== */
+@media (max-width: 992px) {
+  .footer-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 32px !important;
+  }
+
+  .site-footer {
+    padding: 60px 5% 32px !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .footer-grid {
+    grid-template-columns: 1fr !important;
+    gap: 28px !important;
+  }
+
+  .footer-bottom {
+    flex-direction: column !important;
+    text-align: center !important;
+    gap: 12px !important;
+  }
+
+  .footer-col h5 {
+    font-size: 1.1rem !important;
+    margin-bottom: 16px !important;
+  }
+}
+
+/* ======== FLOATING BUTTONS ======== */
+@media (max-width: 768px) {
+  .float-btn.whatsapp,
+  .whatsapp-floating-action {
+    bottom: 80px !important;
+    right: 16px !important;
+    width: 52px !important;
+    height: 52px !important;
+  }
+
+  .float-btn.book-now {
+    bottom: 20px !important;
+    right: 16px !important;
+    padding: 12px 20px !important;
+    font-size: 0.8rem !important;
+  }
+}
+
+/* ======== AUTH MODAL ======== */
+@media (max-width: 768px) {
+  .auth-modal-overlay,
+  .modal-overlay {
+    padding: 12px !important;
+    align-items: flex-end !important;
+  }
+
+  .auth-modal-content,
+  .modal-box,
+  .auth-modal-box {
+    border-radius: 20px 20px 16px 16px !important;
+    padding: 24px 20px !important;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+
+  .auth-toggle {
+    margin-bottom: 18px !important;
+  }
+
+  .auth-toggle-btn {
+    font-size: 0.85rem !important;
+    padding: 9px !important;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    font-size: 16px !important; /* Prevents iOS zoom on focus */
+    padding: 13px 14px !important;
+  }
+
+  .btn-primary.full-width {
+    padding: 14px !important;
+    font-size: 0.9rem !important;
+    margin-top: 4px;
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-modal-overlay,
+  .modal-overlay {
+    padding: 0 !important;
+    align-items: flex-end !important;
+  }
+
+  .auth-modal-content,
+  .modal-box,
+  .auth-modal-box {
+    border-radius: 20px 20px 0 0 !important;
+    padding: 24px 20px !important;
+    max-height: 90svh;
+    overflow-y: auto;
+  }
+}
+
+/* ======== BOOKING FORM MODAL ======== */
+@media (max-width: 768px) {
+  .booking-form-modal {
+    padding: 12px !important;
+    align-items: flex-end !important;
+  }
+
+  .booking-form-content {
+    border-radius: 20px 20px 12px 12px !important;
+    padding: 24px 20px !important;
+    max-width: 100% !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .booking-form-modal {
+    padding: 0 !important;
+  }
+
+  .booking-form-content {
+    border-radius: 20px 20px 0 0 !important;
+  }
+}
+
+/* ======== CENTER MODALS (Detail modal) ======== */
+@media (max-width: 768px) {
+  .detail-modal.modal-center {
+    align-items: flex-end !important;
+  }
+
+  .detail-modal.modal-center .detail-drawer {
+    width: 100% !important;
+    max-width: 100% !important;
+    border-radius: 20px 20px 0 0 !important;
+    max-height: 90svh !important;
+    transform: translateY(100%) !important;
+  }
+
+  .detail-modal.open.modal-center .detail-drawer {
+    transform: translateY(0) !important;
+  }
+}
+
+/* ======== INDEX.HTML SPECIFIC ======== */
+@media (max-width: 768px) {
+  /* Trek cards on index */
+  .trek-img {
+    height: 170px !important;
+  }
+
+  /* Gallery grid on index */
+  .gallery-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+  }
+
+  .g1 {
+    grid-column: 1/3 !important;
+    grid-row: auto !important;
+    min-height: 200px !important;
+  }
+
+  .g5 {
+    grid-column: 1/3 !important;
+  }
+
+  /* Why cards */
+  .why-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 14px !important;
+  }
+
+  .why-card {
+    padding: 24px 18px !important;
+  }
+
+  /* Departures */
+  .dep-card {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+    padding: 16px !important;
+  }
+
+  .dep-meta {
+    width: 100% !important;
+    justify-content: space-between !important;
+  }
+
+  /* About grid */
+  .about-grid {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+  }
+
+  .about-card-stack {
+    display: none !important;
+  }
+
+  .about-values {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  /* Contact */
+  .contact-grid {
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+  }
+
+  /* Reviews */
+  .reviews-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .why-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .gallery-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .g1, .g5 {
+    grid-column: auto !important;
+  }
+
+  .about-values {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ======== TREKS PAGE SPECIFIC ======== */
+@media (max-width: 768px) {
+  .treks-page-header,
+  .page-hero {
+    padding: 100px 5% 60px !important;
+  }
+
+  .search-filter-bar {
+    flex-direction: column !important;
+    gap: 12px !important;
+  }
+
+  .search-input-wrap {
+    width: 100% !important;
+  }
+
+  .filter-dropdowns {
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+
+  .filter-dropdowns select {
+    flex: 1 !important;
+    min-width: 120px !important;
+  }
+}
+
+/* ======== ADMIN DASHBOARD ======== */
+@media (max-width: 768px) {
+  /* Sidebar becomes overlay */
+  .admin-sidebar {
+    position: fixed !important;
+    left: -280px !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    width: 260px !important;
+    z-index: 9000 !important;
+    transition: left 0.3s ease !important;
+    overflow-y: auto;
+  }
+
+  .admin-sidebar.open {
+    left: 0 !important;
+    box-shadow: 0 0 0 100vw rgba(0, 0, 0, 0.6) !important;
+  }
+
+  .admin-main {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+
+  .admin-topbar {
+    padding: 0 16px !important;
+  }
+
+  .admin-stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+  }
+
+  .admin-panel-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .data-table {
+    display: block !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .data-table th,
+  .data-table td {
+    white-space: nowrap !important;
+    padding: 10px 12px !important;
+    font-size: 0.8rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .admin-stats-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ======== GENERAL TOUCH-FRIENDLY FIXES ======== */
+@media (max-width: 768px) {
+  /* Ensure tap targets are at least 44px */
+  button,
+  .btn,
+  .btn-primary,
+  .btn-ghost,
+  .btn-sm,
+  .btn-nav,
+  .btn-book {
+    min-height: 44px;
+  }
+
+  /* No hover effects on touch */
+  .trek-card:hover,
+  .zone-card:hover,
+  .trust-block:hover,
+  .expedition-card:hover {
+    transform: none !important;
+  }
+
+  /* Better text selection on mobile */
+  p, h1, h2, h3, h4, h5, span {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Smooth scrolling momentum on iOS */
+  .drawer-body,
+  .carousel-inner,
+  .horizontal-scroll-track,
+  .nav-links {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Prevent text overflow */
+  .section-header h2,
+  .hero-title {
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+
+  /* Hide custom cursor on mobile */
+  .custom-cursor-dot,
+  .custom-cursor-circle {
+    display: none !important;
+  }
+}
+
+/* ======== FORM-ERROR STYLES ======== */
+.form-error {
+  color: #ff4d4d;
+  font-size: 0.82rem;
+  margin-top: 4px;
+  min-height: 20px;
+  line-height: 1.4;
+}
+
+/* ======== VERY SMALL SCREENS ======== */
+@media (max-width: 360px) {
+  .hero-title {
+    font-size: 1.9rem !important;
+  }
+
+  .btn-primary,
+  .btn-ghost {
+    padding: 12px 20px !important;
+    font-size: 0.85rem !important;
+  }
+
+  .stats-container {
+    grid-template-columns: 1fr 1fr !important;
+    padding: 16px 12px !important;
+  }
+}
