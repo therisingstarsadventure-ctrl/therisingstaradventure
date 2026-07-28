@@ -7,11 +7,14 @@ async function seed() {
   console.log('🌱 Starting database seeding...');
 
   try {
-    // 1. Clean existing records
+    // 1. Clean existing records in correct order of relations
     await prisma.payment.deleteMany();
     await prisma.booking.deleteMany();
-    await prisma.trip.deleteMany();
     await prisma.review.deleteMany();
+    await prisma.tripPhoto.deleteMany();
+    await prisma.sosAlert.deleteMany();
+    await prisma.trip.deleteMany();
+    await prisma.image.deleteMany();
     await prisma.trek.deleteMany();
     await prisma.user.deleteMany();
     await prisma.contactMessage.deleteMany();
@@ -64,55 +67,51 @@ async function seed() {
     }
 
     const fileContent = fs.readFileSync(dataJsPath, 'utf-8');
-    // Extract array content using regex or string splits
-    const arrayStartIndex = fileContent.indexOf('const TREKS_DATA = [');
-    if (arrayStartIndex === -1) {
+    const cleanContent = fileContent.replace('const TREKS_DATA =', 'var TREKS_DATA =');
+    const vm = await import('vm');
+    const sandbox = {};
+    vm.createContext(sandbox);
+    vm.runInContext(cleanContent, sandbox);
+    const TREKS_DATA = sandbox.TREKS_DATA;
+
+    if (!Array.isArray(TREKS_DATA)) {
       throw new Error('Could not parse TREKS_DATA from js/data.js');
     }
 
-    // Write a temporary file converting global declaration to export
-    const tempFileContent = fileContent.replace('const TREKS_DATA =', 'export const TREKS_DATA =');
-    const tempFilePath = path.resolve('./src/utils/temp_data.js');
-    fs.writeFileSync(tempFilePath, tempFileContent, 'utf-8');
-
-    // Dynamic import of temp file
-    const { TREKS_DATA } = await import('./temp_data.js');
-    
-    // Clean up temporary file
-    fs.unlinkSync(tempFilePath);
-
     console.log(`📂 Read ${TREKS_DATA.length} treks from frontend data.`);
 
-    // 4. Seed Treks and create active Trips
+    // 4. Seed Treks
     const trekIds = [];
     for (const t of TREKS_DATA) {
-      // Parse price, e.g. "₹1,499" -> 1499
       const numericPrice = parseFloat(t.price.replace(/[^\d.]/g, '')) || 0;
 
       await prisma.trek.create({
         data: {
           id: t.id,
           title: t.name,
-          location: t.zoneLabel,
+          location: t.zoneLabel || t.zone,
           price: numericPrice,
           days: t.duration.split('/')[0].trim(),
           description: t.description,
-          images: JSON.stringify(t.gallery || []),
           zone: t.zone,
           difficulty: t.difficulty,
           duration: t.duration,
-          elevation: t.elevation,
-          groupSize: t.groupSize,
-          bestSeason: t.bestSeason,
-          meetingPoint: t.meetingPoint,
-          inclusions: JSON.stringify(t.inclusions || []),
-          exclusions: JSON.stringify(t.exclusions || []),
-          timeline: JSON.stringify(t.timeline || []),
+          elevation: t.elevation || 'N/A',
+          groupSize: t.groupSize || 'N/A',
+          bestSeason: t.bestSeason || 'N/A',
+          meetingPoint: t.meetingPoint || 'N/A',
+          inclusions: t.inclusions || [],
+          exclusions: t.exclusions || [],
+          timeline: t.timeline || [],
+          images: {
+            create: (t.gallery || []).map(url => ({ url })),
+          },
         },
       });
       trekIds.push(t.id);
+      console.log(`  ✓ Seeded trek: ${t.name}`);
     }
-    console.log('🏔️ Seeded Adventure Treks.');
+    console.log('🏔️ Seeded Adventure Treks with Normalized Images.');
 
     // 5. Create upcoming departures (Trips)
     const tripDepartures = [
@@ -128,11 +127,9 @@ async function seed() {
     for (const [index, dep] of tripDepartures.entries()) {
       const tripDate = new Date();
       tripDate.setDate(tripDate.getDate() + dep.daysOffset);
-      tripDate.setHours(6, 0, 0, 0); // Morning starts
+      tripDate.setHours(6, 0, 0, 0);
 
-      // Generate a mock tracking token e.g. TR-TOKEN-kalsubai-123
       const trackingToken = `TR-TOKEN-${dep.trekId}-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
-      
       const tripId = `TRIP-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
 
       const trip = await prisma.trip.create({
@@ -142,17 +139,17 @@ async function seed() {
           date: tripDate,
           totalSeats: dep.totalSeats,
           bookedSeats: 0,
-          status: index === 0 ? 'STARTING' : 'UPCOMING', // Make first trip Active/Starting for testing
+          status: index === 0 ? 'STARTING' : 'UPCOMING',
           tripLeaderId: leader.id,
           trackingToken,
-          currentLat: index === 0 ? 19.6105 : 0.0, // Bari Village (Base Camp of Kalsubai)
+          currentLat: index === 0 ? 19.6105 : 0.0,
           currentLng: index === 0 ? 73.7198 : 0.0,
           lastLocationUpdate: index === 0 ? new Date() : null,
         },
       });
       seededTrips.push(trip);
     }
-    console.log('🚐 Seeded Upcoming Departures (Trips) with unique tracking tokens.');
+    console.log('🚐 Seeded Upcoming Departures (Trips).');
 
     // 6. Seed mock Reviews
     const reviews = [
@@ -178,7 +175,7 @@ async function seed() {
     const testBooking = await prisma.booking.create({
       data: {
         userId: customer.id,
-        tripId: seededTrips[0].id, // Kalsubai
+        tripId: seededTrips[0].id,
         members: 2,
         totalAmount: 2998.00,
         status: 'CONFIRMED',

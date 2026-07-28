@@ -75,7 +75,7 @@ window.openAuthModal = function(e) {
 
 window.handleLogout = function(e) {
   if (e) e.preventDefault();
-  window.api.clearToken();
+  window.api.logout();
   initAuthUI();
   // If we are on the admin page, redirect to home
   if (window.location.pathname.includes('admin.html')) {

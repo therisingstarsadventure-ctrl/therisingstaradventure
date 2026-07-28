@@ -8,6 +8,7 @@
   <!-- CSS Stylesheets -->
   <link rel="stylesheet" href="css/index.css">
   <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/admin-cms.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 
   <style>
@@ -290,9 +291,159 @@
       color: #000;
       border-color: var(--accent);
     }
+
+    /* === MOBILE RESPONSIVE PANEL OVERRIDES === */
+    .admin-mobile-header {
+      display: none;
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--glass-border);
+      padding: 12px 20px;
+      justify-content: space-between;
+      align-items: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 60px;
+      z-index: 999;
+    }
+    
+    .mobile-menu-btn {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.3rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 5px;
+    }
+    
+    .mobile-brand {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 800;
+      font-size: 1.1rem;
+      background: linear-gradient(135deg, var(--primary), var(--primary-gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 1px;
+    }
+    
+    .mobile-logout-btn {
+      background: none;
+      border: none;
+      color: var(--danger);
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 5px;
+    }
+    
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 998;
+    }
+    
+    .sidebar-overlay.active {
+      display: block;
+    }
+
+    @media (max-width: 768px) {
+      .admin-mobile-header {
+        display: flex;
+      }
+      
+      .admin-container {
+        flex-direction: column;
+        padding-top: 60px; /* Space for mobile header */
+      }
+      
+      .admin-sidebar {
+        position: fixed;
+        top: 0;
+        left: -280px; /* Off-screen */
+        width: 280px;
+        height: 100vh;
+        z-index: 1000;
+        transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 5px 0 25px rgba(0, 0, 0, 0.5);
+      }
+      
+      .admin-sidebar.open {
+        left: 0;
+      }
+      
+      .admin-content {
+        padding: 20px;
+      }
+      
+      .admin-title {
+        font-size: 1.4rem;
+      }
+      
+      .admin-header {
+        margin-bottom: 25px;
+      }
+      
+      .stats-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        margin-bottom: 25px;
+      }
+      
+      /* Dashboard flex/grid layout stack */
+      #sec-dashboard > div {
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+      }
+      
+      /* Tables mobile scrolling */
+      .admin-table-wrap {
+        margin: 0 -20px;
+        padding: 0 20px;
+        width: calc(100% + 40px);
+      }
+      
+      /* Form modals grid stack */
+      .booking-form-content {
+        max-width: 95% !important;
+        padding: 20px !important;
+        max-height: 90vh;
+        overflow-y: auto;
+      }
+      
+      .booking-form-content form > div[style*="grid-template-columns"] {
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+      }
+    }
   </style>
 </head>
 <body>
+
+  <!-- Mobile Top Navigation Header -->
+  <div class="admin-mobile-header">
+    <button class="mobile-menu-btn" id="mobile-menu-btn">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+    <div class="mobile-brand">THE RISING STARS</div>
+    <button class="mobile-logout-btn" onclick="logoutAdmin()" title="Logout">
+      <i class="fa-solid fa-power-off"></i>
+    </button>
+  </div>
+  
+  <!-- Backdrop overlay for mobile sidebar drawer -->
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
   <div class="admin-container">
     
@@ -307,6 +458,9 @@
         </li>
         <li class="sidebar-item" id="tab-treks" onclick="switchTab('treks')">
           <a href="#"><i class="fa-solid fa-mountain"></i> Packages</a>
+        </li>
+        <li class="sidebar-item" id="tab-cms" onclick="switchTab('cms')">
+          <a href="#"><i class="fa-solid fa-laptop-code"></i> Trek CMS</a>
         </li>
         <li class="sidebar-item" id="tab-trips" onclick="switchTab('trips')">
           <a href="#"><i class="fa-solid fa-calendar-days"></i> Departures</a>
@@ -430,6 +584,11 @@
             </tbody>
           </table>
         </div>
+      </section>
+
+      <!-- SECTION: ENTERPRISE CMS -->
+      <section class="dashboard-section" id="sec-cms">
+        <!-- Injected via admin-cms.js -->
       </section>
 
       <!-- SECTION: DEPARTURES -->
@@ -605,8 +764,24 @@
         </div>
 
         <div style="margin-bottom:12px;">
-          <label style="font-size:0.75rem; color:var(--text-muted); display:block; margin-bottom:5px;">Gallery Image URL (Comma separated or json array)</label>
-          <input type="text" id="form-trek-images" class="form-control" placeholder='["https://..."]' required>
+          <label style="font-size:0.75rem; color:var(--text-muted); display:block; margin-bottom:5px;">Gallery Image URLs (One URL per line)</label>
+          <textarea id="form-trek-images" class="form-control" style="height:60px; resize:none;" placeholder="https://image1.jpg&#10;https://image2.jpg" required></textarea>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:12px;">
+          <div>
+            <label style="font-size:0.75rem; color:var(--text-muted); display:block; margin-bottom:5px;">Inclusions (One per line)</label>
+            <textarea id="form-trek-inclusions" class="form-control" style="height:60px; resize:none;" placeholder="Travel from Kasara&#10;Breakfast & Lunch" required></textarea>
+          </div>
+          <div>
+            <label style="font-size:0.75rem; color:var(--text-muted); display:block; margin-bottom:5px;">Exclusions (One per line)</label>
+            <textarea id="form-trek-exclusions" class="form-control" style="height:60px; resize:none;" placeholder="Personal expenses&#10;Dinner" required></textarea>
+          </div>
+        </div>
+
+        <div style="margin-bottom:12px;">
+          <label style="font-size:0.75rem; color:var(--text-muted); display:block; margin-bottom:5px;">Timeline (Format: Day 1 - Time | Title | Description - One per line)</label>
+          <textarea id="form-trek-timeline" class="form-control" style="height:80px; resize:none;" placeholder="Day 1 - 10:00 PM | Meeting & Travel | Gather at Kasara station" required></textarea>
         </div>
 
         <div style="margin-bottom:20px;">
@@ -650,6 +825,7 @@
 
   <!-- Scripts -->
   <script src="js/api.js?v=1.6.0"></script>
+  <script src="js/admin-cms.js?v=1.0.0"></script>
   <script>
     let activeTab = 'dashboard';
     let allPackages = [];
@@ -657,6 +833,7 @@
     document.addEventListener('DOMContentLoaded', () => {
       verifyAdminAuth();
       loadDashboardData();
+      initMobileSidebar();
     });
 
     function verifyAdminAuth() {
@@ -666,6 +843,34 @@
         window.location.href = 'index.html';
       } else {
         document.getElementById('admin-user-name').textContent = user.name;
+      }
+    }
+
+    function initMobileSidebar() {
+      const menuToggle = document.getElementById('mobile-menu-btn');
+      const sidebar = document.querySelector('.admin-sidebar');
+      const overlay = document.getElementById('sidebar-overlay');
+
+      if (menuToggle && sidebar && overlay) {
+        menuToggle.addEventListener('click', () => {
+          sidebar.classList.toggle('open');
+          overlay.classList.toggle('active');
+        });
+
+        overlay.addEventListener('click', () => {
+          sidebar.classList.remove('open');
+          overlay.classList.remove('active');
+        });
+
+        // Close sidebar when sidebar menu items are clicked on mobile
+        document.querySelectorAll('.sidebar-item').forEach(item => {
+          item.addEventListener('click', () => {
+            if (window.innerWidth <= 768) {
+              sidebar.classList.remove('open');
+              overlay.classList.remove('active');
+            }
+          });
+        });
       }
     }
 
@@ -686,15 +891,25 @@
       activeTab = tabName;
       const headers = {
         'dashboard': 'Dashboard Overview',
+        'cms': 'Enterprise Trek CMS',
         'treks': 'Adventure Packages',
         'trips': 'Upcoming Trip Departures',
         'bookings': 'Customer Bookings',
         'messages': 'Contact Forms Logs',
         'subscribers': 'Newsletter Subscriptions'
       };
-      document.getElementById('panel-header-title').textContent = headers[tabName];
+      
+      const titleElem = document.getElementById('panel-header-title');
+      if (titleElem) {
+          titleElem.textContent = headers[tabName];
+      }
 
       if (tabName === 'dashboard') loadDashboardData();
+      if (tabName === 'cms') {
+        if (typeof window.showCmsSection === 'function') {
+          window.showCmsSection();
+        }
+      }
       if (tabName === 'treks') loadTreksData();
       if (tabName === 'trips') loadTripsData();
       if (tabName === 'bookings') loadBookingsData();
@@ -1065,17 +1280,34 @@
       const bestSeason = document.getElementById('form-trek-season').value;
       const description = document.getElementById('form-trek-desc').value;
       
-      let images = [];
-      try { images = JSON.parse(document.getElementById('form-trek-images').value); } 
-      catch (e) { images = [document.getElementById('form-trek-images').value]; }
+      const images = document.getElementById('form-trek-images').value.split('\n').map(s => s.trim()).filter(Boolean);
+      const inclusions = document.getElementById('form-trek-inclusions').value.split('\n').map(s => s.trim()).filter(Boolean);
+      const exclusions = document.getElementById('form-trek-exclusions').value.split('\n').map(s => s.trim()).filter(Boolean);
+      
+      const timelineLines = document.getElementById('form-trek-timeline').value.split('\n').filter(Boolean);
+      const timeline = timelineLines.map(line => {
+        const parts = line.split('|').map(s => s.trim());
+        return { day: parts[0] || '', title: parts[1] || '', desc: parts[2] || '' };
+      });
+
+      const payload = {
+        id, title, location, price, description, images, zone, difficulty, duration, elevation, meetingPoint, groupSize, bestSeason, inclusions, exclusions, timeline
+      };
 
       try {
-        await window.api.createPackage({
-          id, title, location, price, description, images, zone, difficulty, duration, elevation, meetingPoint, groupSize, bestSeason
-        });
-        alert('Trek package created successfully!');
+        const isExisting = window.allPackages && window.allPackages.some(p => p.id === id);
+        
+        if (isExisting) {
+          await window.api.updatePackage(id, payload);
+          alert('Trek package updated successfully!');
+        } else {
+          await window.api.createPackage(payload);
+          alert('Trek package created successfully!');
+        }
+        
         closeTrekFormModal();
-        loadTreksData();
+        if (typeof loadTreksData === 'function') loadTreksData();
+        if (typeof loadDashboardData === 'function') loadDashboardData();
       } catch (err) {
         alert('Failed to save trek: ' + err.message);
       }

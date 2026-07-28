@@ -234,17 +234,23 @@ function initFeaturedTreksFilter() {
           }
           return {
             id: p.id,
-            name: p.title,
+            name: p.title || p.name,
             zone: p.zone,
-            zoneLabel: p.zone === 'maharashtra' ? 'Sahyadris' : p.zone === 'mp' ? 'Satpura' : 'Himalayas',
+            zoneLabel: p.zoneLabel || p.zone,
             difficulty: p.difficulty || 'Easy',
             duration: p.duration || '1 Day',
             elevation: p.elevation || 'N/A',
-            price: `₹${p.price.toLocaleString('en-IN')}`,
-            gallery: gallery,
+            groupSize: p.groupSize || 'N/A',
+            price: p.price,
+            numericPrice: p.numericPrice,
+            gallery: p.gallery || gallery,
             meetingPoint: p.meetingPoint,
             bestSeason: p.bestSeason,
-            description: p.description
+            description: p.description,
+            longDescription: p.description,
+            timeline: p.timeline || [],
+            inclusions: p.inclusions || [],
+            exclusions: p.exclusions || []
           };
         });
         renderTrekCards(activeTreksData);

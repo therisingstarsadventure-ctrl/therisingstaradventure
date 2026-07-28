@@ -24,6 +24,11 @@ class ApiClient {
     localStorage.removeItem('trs_user');
   }
 
+  // Clear auth session
+  logout() {
+    this.clearToken();
+  }
+
   // Core request builder
   async request(endpoint, options = {}) {
     const url = `${API_BASE_URL}${endpoint}`;
@@ -89,7 +94,7 @@ class ApiClient {
     return userStr ? JSON.parse(userStr) : null;
   }
 
-  // Packages Endpoints
+  // Packages Endpoints (Public)
   async getPackages() {
     return this.request('/packages');
   }
@@ -116,6 +121,60 @@ class ApiClient {
     return this.request(`/packages/${id}`, {
       method: 'DELETE',
     });
+  }
+
+  // Enterprise Trek CMS Endpoints (Admin)
+  async getCmsTreks(params = {}) {
+    const query = new URLSearchParams(params).toString();
+    return this.request(`/cms/treks${query ? `?${query}` : ''}`);
+  }
+
+  async getCmsTrek(id) {
+    return this.request(`/cms/treks/${id}`);
+  }
+
+  async saveCmsTrek(trekData) {
+    return this.request('/cms/treks', {
+      method: 'POST',
+      body: JSON.stringify(trekData),
+    });
+  }
+
+  async duplicateTrek(id, newId, newTitle) {
+    return this.request(`/cms/treks/${id}/duplicate`, {
+      method: 'POST',
+      body: JSON.stringify({ newId, newTitle }),
+    });
+  }
+
+  async bulkTrekAction(trekIds, action, status = null, leaderId = null) {
+    return this.request('/cms/treks/bulk-action', {
+      method: 'POST',
+      body: JSON.stringify({ trekIds, action, status, leaderId }),
+    });
+  }
+
+  async bulkCreateDepartures(trekId, startDate, endDate, daysOfWeek = [0, 6], totalSeats = 30, tripLeaderId = null) {
+    return this.request('/cms/trips/bulk-create', {
+      method: 'POST',
+      body: JSON.stringify({ trekId, startDate, endDate, daysOfWeek, totalSeats, tripLeaderId }),
+    });
+  }
+
+  async getTrekVersions(id) {
+    return this.request(`/cms/treks/${id}/versions`);
+  }
+
+  async restoreTrekVersion(id, versionId) {
+    return this.request(`/cms/treks/${id}/restore-version/${versionId}`, {
+      method: 'POST',
+    });
+  }
+
+  // Search & Filter Endpoint
+  async searchTreks(params = {}) {
+    const query = new URLSearchParams(params).toString();
+    return this.request(`/search${query ? `?${query}` : ''}`);
   }
 
   // Trips Endpoints
@@ -218,9 +277,14 @@ class ApiClient {
     return this.request('/newsletter');
   }
 
-  // Admin Dashboard stats
+  // Admin Dashboard stats & Audit Logs
   async getAdminStats() {
     return this.request('/admin/stats');
+  }
+
+  async getAuditLogs(params = {}) {
+    const query = new URLSearchParams(params).toString();
+    return this.request(`/admin/audit${query ? `?${query}` : ''}`);
   }
 
   // Leader Console & Telemetry Endpoints

@@ -589,7 +589,10 @@
         const matchCat = categories.includes(pCat);
         const matchDiff = difficulties.includes(p.difficulty.toLowerCase());
         const matchZone = zones.includes(p.zone.toLowerCase());
-        const matchPrice = p.price <= maxPrice;
+        
+        // Use numericPrice if available (dynamic backend), otherwise fallback to price property
+        const packagePrice = p.numericPrice !== undefined ? p.numericPrice : p.price;
+        const matchPrice = packagePrice <= maxPrice;
 
         return matchCat && matchDiff && matchZone && matchPrice;
       });
@@ -602,13 +605,16 @@
       }
 
       container.innerHTML = filtered.map(p => {
-        let gallery = [];
-        try { gallery = JSON.parse(p.images); } catch (e) {}
-        const image = gallery[0] || 'https://images.unsplash.com/photo-1501555088652-021faa106b9b?auto=format&fit=crop&w=600&q=80';
+        let firstImage = 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=800&q=80';
+        try {
+          // Check for gallery (dynamic API) or gallery string fallback
+          const imgs = p.gallery || (typeof p.gallery === 'string' ? JSON.parse(p.gallery) : []);
+          if (imgs && imgs.length) firstImage = imgs[0];
+        } catch(e){}
         
         return `
           <div class="trek-card" data-discover="true">
-            <div class="trek-img-wrap" style="background-image: url('${image}')">
+            <div class="trek-img-wrap" style="background-image: url('${firstImage}')">
               <span class="trek-difficulty-badge ${p.difficulty.toLowerCase()}">${p.difficulty}</span>
             </div>
             <div class="trek-card-body">

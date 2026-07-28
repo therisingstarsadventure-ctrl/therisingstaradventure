@@ -1,119 +1,232 @@
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-}
-
 generator client {
   provider = "prisma-client-js"
 }
 
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
 model User {
-  id           Int       @id @default(autoincrement())
-  name         String
-  email        String    @unique
-  phone        String
-  passwordHash String
-  role         String    @default("USER") // USER, LEADER, ADMIN
-  bookings     Booking[]
-  tripsLed     Trip[]
-  reviews      Review[]
+  id            Int            @id @default(autoincrement())
+  name          String
+  email         String         @unique
+  phone         String
+  passwordHash  String
+  role          UserRole       @default(USER)
+  avatar        String?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @default(now()) @updatedAt
+  auditLogs     AuditLog[]
+  bookings      Booking[]
+  refreshTokens RefreshToken[]
+  reviews       Review[]
+  tripsLed      Trip[]
+
+  @@index([email])
+  @@index([role])
+}
+
+model RefreshToken {
+  id              Int      @id @default(autoincrement())
+  token           String   @unique
+  userId          Int
+  expiresAt       DateTime
+  revoked         Boolean  @default(false)
+  replacedByToken String?
+  createdAt       DateTime @default(now())
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([token])
+  @@index([userId])
+}
+
+model Permission {
+  id          Int              @id @default(autoincrement())
+  name        String           @unique
+  description String?
+  createdAt   DateTime         @default(now())
+  roles       RolePermission[]
+}
+
+model RolePermission {
+  id           Int        @id @default(autoincrement())
+  role         UserRole
+  permissionId Int
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@unique([role, permissionId])
+  @@index([role])
 }
 
 model Trek {
-  id           String    @id // e.g. "kalsubai"
-  title        String
-  location     String
-  price        Float
-  days         String
-  description  String
-  images       String    // Comma-separated image URLs or JSON
-  zone         String    // maharashtra, mp, himachal
-  difficulty   String    // Easy, Moderate, Challenging
-  duration     String
-  elevation    String
-  groupSize    String
-  bestSeason   String
-  meetingPoint String
-  inclusions   String    // JSON list of strings
-  exclusions   String    // JSON list of strings
-  timeline     String    // JSON list of timeline objects
-  trips        Trip[]
-  reviews      Review[]
+  id                 String        @id
+  slug               String?       @unique
+  title              String
+  subtitle           String?
+  location           String
+  state              String?
+  price              Decimal       @db.Decimal(10, 2)
+  discountPrice      Decimal?      @db.Decimal(10, 2)
+  days               String
+  description        String
+  highlights         Json          @default("[]")
+  thingsToCarry      Json          @default("[]")
+  faqs               Json          @default("[]")
+  policies           Json          @default("[]")
+  cancellationRules  Json          @default("[]")
+  googleMapLink      String?
+  heroImage          String?
+  videos             Json          @default("[]")
+  zone               String
+  difficulty         String
+  duration           String
+  elevation          String
+  groupSize          String
+  bestSeason         String
+  meetingPoint       String
+  inclusions         Json          @default("[]")
+  exclusions         Json          @default("[]")
+  timeline           Json          @default("[]")
+  metaTitle          String?
+  metaDescription    String?
+  keywords           String?
+  ogImage            String?
+  canonicalUrl       String?
+  structuredData     Json?
+  status             String        @default("PUBLISHED")
+  publishScheduledAt DateTime?
+  version            Int           @default(1)
+  featured           Boolean       @default(false)
+  seasonal           Boolean       @default(false)
+  maxSeats           Int           @default(30)
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @default(now()) @updatedAt
+  images             Image[]
+  reviews            Review[]
+  versions           TrekVersion[]
+  trips              Trip[]
+
+  @@index([zone, price])
+  @@index([difficulty])
+  @@index([status])
+  @@index([featured])
+}
+
+model TrekVersion {
+  id        Int      @id @default(autoincrement())
+  trekId    String
+  version   Int
+  data      Json
+  editedBy  String?
+  createdAt DateTime @default(now())
+  trek      Trek     @relation(fields: [trekId], references: [id], onDelete: Cascade)
+
+  @@index([trekId, version])
+}
+
+model Image {
+  id        String   @id @default(uuid())
+  url       String
+  order     Int      @default(0)
+  trekId    String
+  createdAt DateTime @default(now())
+  trek      Trek     @relation(fields: [trekId], references: [id], onDelete: Cascade)
+
+  @@index([trekId])
 }
 
 model Trip {
-  id                 String      @id // unique trip ID (e.g. "TRIP-8F4K2Q")
+  id                 String      @id
   trekId             String
-  trek               Trek        @relation(fields: [trekId], references: [id])
   date               DateTime
   totalSeats         Int
   bookedSeats        Int         @default(0)
-  status             String      @default("UPCOMING") // UPCOMING, STARTING, ON_ROUTE, REACHED_DESTINATION, RETURNING, COMPLETED
+  status             TripStatus  @default(UPCOMING)
   tripLeaderId       Int?
-  tripLeader         User?       @relation(fields: [tripLeaderId], references: [id])
   currentLat         Float       @default(0.0)
   currentLng         Float       @default(0.0)
   lastLocationUpdate DateTime?
   trackingToken      String      @unique
-  bookings           Booking[]
   speed              Float       @default(0.0)
   batteryLevel       Int         @default(100)
   eta                String?
+  bookings           Booking[]
   sosAlerts          SosAlert[]
+  trek               Trek        @relation(fields: [trekId], references: [id])
+  tripLeader         User?       @relation(fields: [tripLeaderId], references: [id])
   photos             TripPhoto[]
+
+  @@index([trekId, status])
+  @@index([date])
+  @@index([trackingToken])
 }
 
 model SosAlert {
-  id        Int      @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   tripId    String
-  trip      Trip     @relation(fields: [tripId], references: [id])
   lat       Float
   lng       Float
-  status    String   @default("ACTIVE") // ACTIVE, RESOLVED
-  createdAt DateTime @default(now())
+  status    SosStatus @default(ACTIVE)
+  createdAt DateTime  @default(now())
+  trip      Trip      @relation(fields: [tripId], references: [id])
+
+  @@index([tripId, status])
 }
 
 model TripPhoto {
   id        Int      @id @default(autoincrement())
   tripId    String
-  trip      Trip     @relation(fields: [tripId], references: [id])
   url       String
   createdAt DateTime @default(now())
+  trip      Trip     @relation(fields: [tripId], references: [id])
+
+  @@index([tripId])
 }
 
 model Booking {
-  id          Int       @id @default(autoincrement())
+  id          Int           @id @default(autoincrement())
   userId      Int
-  user        User      @relation(fields: [userId], references: [id])
   tripId      String
-  trip        Trip      @relation(fields: [tripId], references: [id])
   members     Int
-  totalAmount Float
-  status      String    @default("PENDING") // PENDING, CONFIRMED, CANCELLED
-  createdAt   DateTime  @default(now())
+  totalAmount Decimal       @db.Decimal(10, 2)
+  status      BookingStatus @default(PENDING)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @default(now()) @updatedAt
+  trip        Trip          @relation(fields: [tripId], references: [id])
+  user        User          @relation(fields: [userId], references: [id])
   payments    Payment[]
+
+  @@index([userId, status])
+  @@index([tripId])
 }
 
 model Payment {
-  id            Int      @id @default(autoincrement())
+  id            Int           @id @default(autoincrement())
   bookingId     Int
-  booking       Booking  @relation(fields: [bookingId], references: [id])
-  amount        Float
-  paymentStatus String   @default("PENDING") // PENDING, PAID, FAILED
-  transactionId String?  @unique
-  method        String   @default("UPI") // UPI, CASH, BANK_TRANSFER
-  createdAt     DateTime @default(now())
+  amount        Decimal       @db.Decimal(10, 2)
+  paymentStatus PaymentStatus @default(PENDING)
+  transactionId String?       @unique
+  method        String        @default("UPI")
+  createdAt     DateTime      @default(now())
+  booking       Booking       @relation(fields: [bookingId], references: [id])
+
+  @@index([bookingId, paymentStatus])
+  @@index([transactionId])
 }
 
 model Review {
   id        Int      @id @default(autoincrement())
   userId    Int
-  user      User     @relation(fields: [userId], references: [id])
   trekId    String
-  trek      Trek     @relation(fields: [trekId], references: [id])
-  rating    Int      // 1 to 5 stars
+  rating    Int
   comment   String
   createdAt DateTime @default(now())
+  trek      Trek     @relation(fields: [trekId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@index([trekId, rating])
 }
 
 model ContactMessage {
@@ -128,4 +241,57 @@ model NewsletterSubscriber {
   id        Int      @id @default(autoincrement())
   email     String   @unique
   createdAt DateTime @default(now())
+}
+
+model AuditLog {
+  id        Int      @id @default(autoincrement())
+  userId    Int?
+  action    String
+  entity    String
+  entityId  String?
+  oldValue  Json?
+  newValue  Json?
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+  user      User?    @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([entity, entityId])
+  @@index([createdAt])
+}
+
+enum TripStatus {
+  UPCOMING
+  STARTING
+  ON_ROUTE
+  REACHED_DESTINATION
+  RETURNING
+  COMPLETED
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CHECKED_IN
+  ON_TRIP
+  COMPLETED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+}
+
+enum SosStatus {
+  ACTIVE
+  RESOLVED
+}
+
+enum UserRole {
+  USER
+  LEADER
+  ADMIN
 }

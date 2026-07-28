@@ -2243,4 +2243,104 @@
   margin: 0;
 }
 
+/* === Booking Form Modal Styling === */
+.booking-form-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.booking-form-modal.open {
+  display: flex;
+}
+.booking-form-content {
+  background: #121212;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  padding: 30px;
+  width: 100%;
+  max-width: 480px;
+  position: relative;
+  animation: modalIn 0.3s ease;
+  color: #fff;
+  box-sizing: border-box;
+}
+.booking-form-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  color: var(--text-muted, #B5B5B5);
+  font-size: 1.5rem;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background 0.2s, color 0.2s;
+}
+.booking-form-close:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+}
+
+/* === Auth Modal Overlay & Content === */
+.auth-modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.auth-modal-overlay.open {
+  display: flex;
+}
+.auth-modal-content {
+  background: #121212;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  padding: 30px;
+  width: 100%;
+  max-width: 440px;
+  position: relative;
+  animation: modalIn 0.3s ease;
+  color: #fff;
+  box-sizing: border-box;
+}
+.auth-modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  color: var(--text-muted, #B5B5B5);
+  font-size: 1.5rem;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background 0.2s, color 0.2s;
+}
+.auth-modal-close:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+}
+
 
